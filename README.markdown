@@ -4,7 +4,16 @@ Reactive extnsions for common lisp.
 
 ## Installation
 
-Clone this repository to your ```ql:*local-project-directories*``` .
+Clone this repository to your ```ql:*local-project-directories*```
+
+or use Roswell:
+
+```
+$ ros install JunSuzukiJapan/cl-reex
+```
+
+
+
 
 ```
 (ql:quickload :cl-reex)
