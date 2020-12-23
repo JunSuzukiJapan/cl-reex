@@ -15,8 +15,12 @@
 		:observable
 		:operator-where
 		:make-operator-where)
-  (:export :with-observable
-	   :where ))
+  (:import-from :cl-reex.macro.symbols
+		:where )
+  (:import-from :cl-reex.macro.operator-table
+		:get-operator
+		:set-operator)
+  (:export :with-observable) )
 
 (in-package :cl-reex.macro)
 
@@ -27,17 +31,21 @@
 	   (var-name (gensym)) )
       (dolist (x body)
 	(case (car x)
-	  ;;
+#|	  ;;
 	  ;; Where
 	  ;;
 	  ('where
 	   (setq var-name (gensym))
-	   (push `(,var-name
-		   (make-operator-where
-		    ,temp-observable
-		    #'(lambda ,(cadr x) ,(caddr x) )))
-		 lst )
+	   ;; (push `(,var-name
+	   ;; 	   (make-operator-where
+	   ;; 	    ,temp-observable
+	   ;; 	    #'(lambda ,(cadr x) ,(caddr x) )))
+	   ;; 	 lst )
+	   (let* ((op (get-operator :where))
+		  (elem (funcall op x var-name temp-observable)) )
+	     (push elem lst) )
 	   (setq temp-observable var-name) )
+|#
 	  ;;
 	  ;; Subscribe
 	  ('subscribe
@@ -55,6 +63,15 @@
 		   (dispose ,temp-observable) )
 		 lst )
 	   (setq temp-observable var-name) )
+	  ;;
+	  ;; otherwise
+	  ;;
+	  (t
+	   (setq var-name (gensym))
+	   (let* ((op (get-operator (car x)))
+		  (elem (funcall op x var-name temp-observable)) )
+	     (push elem lst) )
+	   (setq temp-observable var-name) )
 	  ))
       `(let* ,(nreverse lst)
 	 ,var-name ))))
@@ -71,10 +88,8 @@
 
 
 #|
-(defvar ol)
-(defvar observer)
-(setq ol (rx:observable-from '(1 2 3 4 5 6 7 8 9 10)))
-(setq observer (rx:make-observer
+(defvar ol (rx:observable-from '(1 2 3 4 5 6 7 8 9 10)))
+(defvar observer (rx:make-observer
 		#'(lambda (x) (print x))
 		#'(lambda (x) (format t "error: ~S" x))
 		#'(lambda () (print "completed")) ))

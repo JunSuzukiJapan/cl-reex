@@ -8,6 +8,11 @@
 		:on-completed)
   (:import-from :cl-reex.observable
 		:subscribe)
+  (:import-from :cl-reex.macro.operator-table
+		:get-operator
+		:set-operator)
+  (:import-from :cl-reex.macro.symbols
+		:where )
   (:export :operator
 	   :observable
 	   :operator-where
@@ -51,3 +56,21 @@
 (defmethod subscribe ((op operator-where) observer)
   (setf (observer op) observer)
   (subscribe (observable op) op) )
+
+;;
+;; in Let*-expr
+;;    make definition like below
+;;
+;; (let* (...
+;;        (var-name (rx:make-operator-where
+;;                       temp-observable
+;;                       #'(lambda (x) (evenp x)) ))
+;;        ...)
+;;    ...)
+;;
+(set-operator 'where
+    #'(lambda (x var-name temp-observable)
+	`(,var-name
+	  (make-operator-where
+	   ,temp-observable
+	   #'(lambda ,(cadr x) ,(caddr x) )))))

@@ -11,6 +11,8 @@
                 :components
                 ((:file "observable/observable")
 		 (:file "observer/observer")
+		 (:file "macro/operator-table")
+		 (:file "macro/symbols")
 		 (:file "operator/operator")
 		 (:file "macro/with-observable")
 		 (:file "cl-reex"))))

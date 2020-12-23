@@ -16,9 +16,13 @@
 		:observable
 		:operator-where
 		:make-operator-where)
+  (:import-from :cl-reex.macro.operator-table
+		:get-operator
+		:set-operator)
+  (:import-from :cl-reex.macro.symbols
+		:where )
   (:import-from :cl-reex.macro
-		:with-observable
-		:where)
+		:with-observable)
   (:export :subscribe
 	   :dispose
 	   :observable
@@ -28,6 +32,8 @@
  	   :on-next
  	   :on-error
  	   :on-completed
+	   :get-operator
+	   :set-operator
 	   :with-observable
 	   :where
 	   :operator-where
