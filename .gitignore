@@ -6,3 +6,8 @@
 *.x86f
 *~
 .#*
+
+temp.lisp
+temp.lsp
+tmp.lisp
+tmp.lsp
