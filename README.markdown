@@ -6,7 +6,7 @@ Reactive extnsions for common lisp.
 
 Clone this repository to your ```ql:*local-project-directories*```
 
-or use Roswell:
+or use [Roswell](https://github.com/roswell/roswell):
 
 ```
 $ ros install JunSuzukiJapan/cl-reex
