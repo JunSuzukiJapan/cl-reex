@@ -14,6 +14,9 @@
  		:on-completed)
   (:import-from :cl-reex.operator
 		:observable
+		:operator
+		:predicate)
+  (:import-from :cl-reex.operator.where
 		:operator-where
 		:make-operator-where)
   (:import-from :cl-reex.macro.operator-table
@@ -32,6 +35,8 @@
  	   :on-next
  	   :on-error
  	   :on-completed
+	   :operator
+	   :predicate
 	   :get-operator
 	   :set-operator
 	   :with-observable
