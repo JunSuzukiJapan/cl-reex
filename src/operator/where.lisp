@@ -58,9 +58,11 @@
 ;;    make definition like below
 ;;
 ;; (let* (...
+;;        !! from HERE !!
 ;;        (var-name (rx:make-operator-where
 ;;                       temp-observable
 ;;                       #'(lambda (x) (evenp x)) ))
+;;        !! to HERE   !!
 ;;        ...)
 ;;    ...)
 ;;

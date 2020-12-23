@@ -6,10 +6,10 @@
 
 (in-package :cl-reex.macro.operator-table)
 
-(defvar op-table (make-hash-table))
+(defvar *op-table* (make-hash-table))
 
 (defun get-operator (name)
-  (gethash name op-table))
+  (gethash name *op-table*))
 
 (defun set-operator (name op)
-  (setf (gethash name op-table) op) )
+  (setf (gethash name *op-table*) op) )
