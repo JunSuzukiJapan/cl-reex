@@ -19,11 +19,15 @@
   (:import-from :cl-reex.operator.where
 		:operator-where
 		:make-operator-where)
+  (:import-from :cl-reex.operator.select
+		:operator-select
+		:make-operator-select)
   (:import-from :cl-reex.macro.operator-table
 		:get-operator-expander
 		:set-operator-expander)
   (:import-from :cl-reex.macro.symbols
-		:where )
+		:where
+		:select)
   (:import-from :cl-reex.macro
 		:with-observable)
   (:export :subscribe
@@ -41,6 +45,7 @@
 	   :set-operator
 	   :with-observable
 	   :where
+	   :select
 	   :operator-where
 	   :make-operator-where))
 

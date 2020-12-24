@@ -15,6 +15,7 @@
 		 (:file "macro/symbols")
 		 (:file "operator/operator")
 		 (:file "operator/where")
+		 (:file "operator/select")
 		 (:file "macro/with-observable")
 		 (:file "cl-reex"))))
   :description ""

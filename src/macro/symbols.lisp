@@ -1,6 +1,11 @@
 (in-package :cl-user)
 (defpackage cl-reex.macro.symbols
   (:use :cl)
-  (:export :where ))
+  (:export :where
+	   :select))
 
 (in-package :cl-reex.macro.symbols)
+
+;;
+;; symbol definitions only
+;;

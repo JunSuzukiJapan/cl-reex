@@ -15,7 +15,8 @@
 		:where )
   (:export :operator
 	   :observable
-	   :predicate))
+	   :predicate
+	   :func))
 
 (in-package :cl-reex.operator)
 

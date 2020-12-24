@@ -1,5 +1,5 @@
 (in-package :cl-user)
-(defpackage cl-reex.operator.where
+(defpackage cl-reex.operator.select
   (:use :cl)
   (:import-from :cl-reex.observer
  		:observer
@@ -12,34 +12,35 @@
 		:get-operator-expander
 		:set-operator-expander)
   (:import-from :cl-reex.macro.symbols
-		:where )
+		:select )
   (:import-from :cl-reex.operator
 		:operator
 		:observable
-		:predicate)
-  (:export :operator-where
-	   :make-operator-where))
+		:predicate
+		:func)
+  (:export :operator-select
+	   :make-operator-select))
 
-(in-package :cl-reex.operator.where)
+(in-package :cl-reex.operator.select)
 
 
-(defclass operator-where (operator)
+(defclass operator-select (operator)
   ((observable :initarg :observable
 	       :accessor observable)
-   (predicate :initarg :predicate
-	      :accessor predicate)
+   (func :initarg :func
+	 :accessor func)
    (observer :initarg :observer
 	     :accessor observer) )
-  (:documentation "Where operator"))
+  (:documentation "Select operator"))
 
-(defun make-operator-where (observable predicate)
-  (let ((op (make-instance 'operator-where
+(defun make-operator-select (observable func)
+  (let ((op (make-instance 'operator-select
 		 :observable observable
-		 :predicate predicate )))
+		 :func func )))
     (setf (on-next op)
 	  #'(lambda (x)
-	      (when (funcall (predicate op) x)
-	  	(funcall (on-next (observer op)) x) )))
+	      (let((temp (funcall (func op) x)))
+	  	(funcall (on-next (observer op)) temp) )))
     (setf (on-error op)
 	  #'(lambda (x)
 	      (funcall (on-error (observer op))) ))
@@ -49,7 +50,7 @@
     op ))
 
 
-(defmethod subscribe ((op operator-where) observer)
+(defmethod subscribe ((op operator-select) observer)
   (setf (observer op) observer)
   (subscribe (observable op) op) )
 
@@ -59,16 +60,16 @@
 ;;
 ;; (let* (...
 ;;        !! from HERE !!
-;;        (var-name (rx:make-operator-where
+;;        (var-name (rx:make-operator-select
 ;;                       temp-observable
-;;                       #'(lambda (x) (evenp x)) ))
+;;                       #'(lambda (x) (* x x)) ))
 ;;        !! to HERE   !!
 ;;        ...)
 ;;    ...)
 ;;
-(set-operator-expander 'where
+(set-operator-expander 'select
     #'(lambda (x var-name temp-observable)
 	`(,var-name
-	  (make-operator-where
+	  (make-operator-select
 	   ,temp-observable
 	   #'(lambda ,(cadr x) ,(caddr x) )))))
