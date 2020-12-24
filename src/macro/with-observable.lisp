@@ -12,7 +12,8 @@
  		:on-error
  		:on-completed)
   (:import-from :cl-reex.operator
-		:observable
+		:observable)
+  (:import-from :cl-reex.operator.where
 		:operator-where
 		:make-operator-where)
   (:import-from :cl-reex.macro.symbols
