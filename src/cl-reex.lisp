@@ -15,7 +15,8 @@
   (:import-from :cl-reex.operator
 		:observable
 		:operator
-		:predicate)
+		:predicate
+		:func)
   (:import-from :cl-reex.operator.where
 		:operator-where
 		:make-operator-where)

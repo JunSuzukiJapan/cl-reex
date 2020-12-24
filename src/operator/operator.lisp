@@ -9,8 +9,8 @@
   (:import-from :cl-reex.observable
 		:subscribe)
   (:import-from :cl-reex.macro.operator-table
-		:get-operator
-		:set-operator)
+		:get-operator-expander
+		:set-operator-expander)
   (:import-from :cl-reex.macro.symbols
 		:where )
   (:export :operator
