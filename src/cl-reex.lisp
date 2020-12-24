@@ -20,8 +20,8 @@
 		:operator-where
 		:make-operator-where)
   (:import-from :cl-reex.macro.operator-table
-		:get-operator
-		:set-operator)
+		:get-operator-expander
+		:set-operator-expander)
   (:import-from :cl-reex.macro.symbols
 		:where )
   (:import-from :cl-reex.macro

@@ -19,8 +19,8 @@
   (:import-from :cl-reex.macro.symbols
 		:where )
   (:import-from :cl-reex.macro.operator-table
-		:get-operator
-		:set-operator)
+		:get-operator-expander
+		:set-operator-expander)
   (:export :with-observable) )
 
 (in-package :cl-reex.macro)
@@ -54,7 +54,7 @@
 	  ;;
 	  (t
 	   (setq var-name (gensym))
-	   (let* ((op (get-operator (car x)))
+	   (let* ((op (get-operator-expander (car x)))
 		  (elem (funcall op x var-name temp-observable)) )
 	     (push elem lst) )
 	   (setq temp-observable var-name) )
