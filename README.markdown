@@ -45,5 +45,11 @@ operator example:
    (rx:where (x) (evenp x))
    (rx:where (x) (eq (mod x 3) 0))
    (rx:subscribe observer) )
+
+(rx:with-observable (rx:observable-from #(1 2 3 4 5))
+  (rx:where (x) (oddp x))
+  (rx:select (x) (* x 3))
+  (rx:subscribe observer)
+  (rx:dispose) )
 ```
 
