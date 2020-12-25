@@ -7,6 +7,7 @@
 	   :on-completed
 	   :observable-from
  	   :observable-state
+	   :observable-range
 	   :dispose ))
 
 (in-package :cl-reex.observable)
@@ -66,7 +67,7 @@
   (let ((s (make-string-input-stream (source stream))))
     (do ((ch (read-char s nil) (read-char s nil)))
 	((null ch))
-	(funcall (on-next observer) ch) ))
+      (funcall (on-next observer) ch) ))
   (funcall (on-completed observer))
   (make-instance 'disposable-do-nothing
 		 :observable stream
@@ -104,8 +105,9 @@
 
 (defmethod subscribe ((stream observable-stream) observer)
   (let ((strm (source stream)))
-    (do (ch (read-char strm))
-	(funcall (on-next observer) ch)))
+    (do ((ch (read-char strm nil) (read-char strm nil)))
+	((null ch))
+      (funcall (on-next observer) ch)))
   (funcall (on-completed observer))
   (make-instance 'disposable-do-nothing
 		 :observable stream
@@ -114,10 +116,28 @@
 (defmethod observalbe-from ((source stream))
   (make-instance 'observable-stream :source source) )
 
+;;
+;; observable range
+;;
+(defclass observable-range-object ()
+  ((from :initarg :from
+	 :accessor from)
+   (count :initarg :count
+	  :accessor count-num) ))
 
+(defmethod subscribe ((obj observable-range-object) observer)
+  (do ((i 0 (1+ i))
+       (from (from obj))
+       (count (count-num obj)) )
+      ((>= i count))
+    (funcall (on-next observer) (+ from i)) )
+  (funcall (on-completed observer))
+  (make-instance 'disposable-do-nothing
+		 :observable obj
+		 :observer observer ))
 
-;(defmethod observable-from ((source fundamental-input-stream)))
+(defun observable-range (from count)
+  (make-instance 'observable-range-object
+		 :from from
+		 :count count ))
 
-
-
-;(defun observable-range (from count))
