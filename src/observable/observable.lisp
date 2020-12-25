@@ -113,7 +113,7 @@
 		 :observable stream
 		 :observer observer ))
 
-(defmethod observalbe-from ((source stream))
+(defmethod observable-from ((source stream))
   (make-instance 'observable-stream :source source) )
 
 ;;
