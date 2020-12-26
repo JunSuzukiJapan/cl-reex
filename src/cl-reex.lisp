@@ -6,6 +6,7 @@
  		:subscribe
 		:dispose
 		:observable-range
+		:observable-just
  		:observable-from)
   (:import-from :cl-reex.observer
  		:observer
@@ -35,8 +36,9 @@
   (:export :subscribe
 	   :dispose
 	   :observable
- 	   :observable-from
 	   :observable-range
+	   :observable-just
+ 	   :observable-from
  	   :observer
  	   :make-observer
  	   :on-next

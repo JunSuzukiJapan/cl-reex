@@ -8,6 +8,7 @@
 	   :observable-from
  	   :observable-state
 	   :observable-range
+	   :observable-just
 	   :dispose ))
 
 (in-package :cl-reex.observable)
@@ -140,4 +141,23 @@
   (make-instance 'observable-range-object
 		 :from from
 		 :count count ))
+
+;;
+;; observable just
+;;
+(defclass observable-just-object ()
+  ((item :initarg :item
+	 :accessor item )))
+
+(defmethod subscribe ((obj observable-just-object) observer)
+  (funcall (on-next observer) (item obj))
+  (funcall (on-completed observer))
+  (make-instance 'disposable-do-nothing
+		 :observable obj
+		 :observer observer ))
+
+
+(defun observable-just (item)
+  (make-instance 'observable-just-object
+		 :item item ))
 
