@@ -7,6 +7,7 @@
 		:dispose
 		:observable-range
 		:observable-just
+		:observable-repeat
  		:observable-from)
   (:import-from :cl-reex.observer
  		:observer
@@ -38,6 +39,7 @@
 	   :observable
 	   :observable-range
 	   :observable-just
+	   :observable-repeat
  	   :observable-from
  	   :observer
  	   :make-observer

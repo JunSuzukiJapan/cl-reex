@@ -9,6 +9,7 @@
  	   :observable-state
 	   :observable-range
 	   :observable-just
+	   :observable-repeat
 	   :dispose ))
 
 (in-package :cl-reex.observable)
@@ -165,3 +166,28 @@
   (make-instance 'observable-just-object
 		 :item item ))
 
+;;
+;; observable repeat
+;;
+(defclass observable-repeat-object ()
+  ((item :initarg :item
+	 :accessor item )
+   (count :initarg :count
+	  :accessor count-num )))
+
+(defmethod subscribe ((obj observable-repeat-object) observer)
+  (let ((count (count-num obj))
+	(item (item obj)) )
+    (do ((i 0 (1+ i)))
+	((>= i count))
+      (funcall (on-next observer) item) )
+    (funcall (on-completed observer))
+    (make-instance 'disposable-do-nothing
+		   :observable obj
+		   :observer observer )))
+
+
+(defun observable-repeat (item count)
+  (make-instance 'observable-repeat-object
+		 :item item
+		 :count count ))
