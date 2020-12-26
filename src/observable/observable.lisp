@@ -105,14 +105,18 @@
 	   :accessor source)) )
 
 (defmethod subscribe ((stream observable-stream) observer)
-  (let ((strm (source stream)))
-    (do ((ch (read-char strm nil) (read-char strm nil)))
-	((null ch))
-      (funcall (on-next observer) ch)))
-  (funcall (on-completed observer))
-  (make-instance 'disposable-do-nothing
-		 :observable stream
-		 :observer observer ))
+  (handler-bind (
+		 (error (lambda (condition)
+			  (funcall (on-error observer) condition) ))
+		 )
+    (let ((strm (source stream)))
+      (do ((ch (read-char strm nil) (read-char strm nil)))
+	  ((null ch))
+	(funcall (on-next observer) ch)))
+    (funcall (on-completed observer))
+    (make-instance 'disposable-do-nothing
+		   :observable stream
+		   :observer observer )))
 
 (defmethod observable-from ((source stream))
   (make-instance 'observable-stream :source source) )
