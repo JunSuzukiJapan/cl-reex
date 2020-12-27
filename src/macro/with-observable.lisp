@@ -18,7 +18,8 @@
 		:make-operator-where)
   (:import-from :cl-reex.macro.symbols
 		:where
-		:select)
+		:select
+		:repeat)
   (:import-from :cl-reex.macro.operator-table
 		:get-operator-expander
 		:set-operator-expander)

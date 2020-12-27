@@ -20,18 +20,13 @@
 		:operator
 		:predicate
 		:func)
-  (:import-from :cl-reex.operator.where
-		:operator-where
-		:make-operator-where)
-  (:import-from :cl-reex.operator.select
-		:operator-select
-		:make-operator-select)
   (:import-from :cl-reex.macro.operator-table
 		:get-operator-expander
 		:set-operator-expander)
   (:import-from :cl-reex.macro.symbols
 		:where
-		:select)
+		:select
+		:repeat)
   (:import-from :cl-reex.macro
 		:with-observable)
   (:export :subscribe
@@ -53,8 +48,8 @@
 	   :with-observable
 	   :where
 	   :select
-	   :operator-where
-	   :make-operator-where))
+	   :repeat
+	   :operator-where))
 
 (in-package :cl-reex)
 

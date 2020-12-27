@@ -2,7 +2,8 @@
 (defpackage cl-reex.macro.symbols
   (:use :cl)
   (:export :where
-	   :select))
+	   :select
+	   :repeat))
 
 (in-package :cl-reex.macro.symbols)
 
