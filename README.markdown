@@ -15,7 +15,7 @@ $ ros install JunSuzukiJapan/cl-reex
 
 
 
-```
+```lisp
 (ql:quickload :cl-reex)
 ```
 
@@ -23,7 +23,7 @@ $ ros install JunSuzukiJapan/cl-reex
 
 subscribe example:
 
-```
+```lisp
 (defvar observer (rx:make-observer
 	#'(lambda (x) (print x))
 	#'(lambda (x) (format t "error: ~S" x))
@@ -35,7 +35,7 @@ subscribe example:
 
 operator example:
 
-```
+```lisp
 (defvar observer (rx:make-observer
 	#'(lambda (x) (print x))
 	#'(lambda (x) (format t "error: ~S" x))
