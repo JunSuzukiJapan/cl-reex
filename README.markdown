@@ -1,6 +1,6 @@
 # Cl-Reex
 
-Reactive extnsions for common lisp.
+Reactive extensions for common lisp.
 
 ## Installation
 
