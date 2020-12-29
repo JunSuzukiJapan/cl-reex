@@ -4,7 +4,8 @@
   (:export :where
 	   :select
 	   :repeat
-	   :skip))
+	   :skip
+	   :take))
 
 (in-package :cl-reex.macro.symbols)
 

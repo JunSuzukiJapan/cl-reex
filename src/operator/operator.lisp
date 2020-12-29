@@ -11,8 +11,6 @@
   (:import-from :cl-reex.macro.operator-table
 		:get-operator-expander
 		:set-operator-expander)
-  (:import-from :cl-reex.macro.symbols
-		:where )
   (:export :operator
 	   :observable
 	   :predicate

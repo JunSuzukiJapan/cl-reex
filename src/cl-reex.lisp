@@ -27,7 +27,8 @@
 		:where
 		:select
 		:repeat
-		:skip)
+		:skip
+		:take)
   (:import-from :cl-reex.macro
 		:with-observable)
   (:export :subscribe
@@ -51,6 +52,7 @@
 	   :select
 	   :repeat
 	   :skip
+	   :take
 	   :operator-where))
 
 (in-package :cl-reex)
