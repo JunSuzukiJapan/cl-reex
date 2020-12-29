@@ -3,7 +3,8 @@
   (:use :cl)
   (:export :where
 	   :select
-	   :repeat))
+	   :repeat
+	   :skip))
 
 (in-package :cl-reex.macro.symbols)
 

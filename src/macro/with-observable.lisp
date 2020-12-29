@@ -19,7 +19,8 @@
   (:import-from :cl-reex.macro.symbols
 		:where
 		:select
-		:repeat)
+		:repeat
+		:skip)
   (:import-from :cl-reex.macro.operator-table
 		:get-operator-expander
 		:set-operator-expander)

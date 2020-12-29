@@ -26,7 +26,8 @@
   (:import-from :cl-reex.macro.symbols
 		:where
 		:select
-		:repeat)
+		:repeat
+		:skip)
   (:import-from :cl-reex.macro
 		:with-observable)
   (:export :subscribe
@@ -49,6 +50,7 @@
 	   :where
 	   :select
 	   :repeat
+	   :skip
 	   :operator-where))
 
 (in-package :cl-reex)

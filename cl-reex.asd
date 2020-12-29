@@ -17,6 +17,7 @@
 		 (:file "operator/where")
 		 (:file "operator/select")
 		 (:file "operator/repeat")
+		 (:file "operator/skip")
 		 (:file "macro/with-observable")
 		 (:file "cl-reex"))))
   :description ""
