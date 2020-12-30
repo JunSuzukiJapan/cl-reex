@@ -103,6 +103,17 @@ operator example:
 	#'(lambda () (print "completed")) ))
 ```
 
+## Operators
+
+| Operator | Example |
+|----|----|
+| Where | (rx:where (x) (evenp x)) |
+| Select | (rx:select (x) (* x x)) |
+| Repeat | (rx:repeat 10) |
+| Take | (rx:take 3) |
+| Skip | (rx:skip 3) |
+
+
 ## LICENSE
 
 [MIT](LICENSE)

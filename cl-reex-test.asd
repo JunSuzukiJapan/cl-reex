@@ -14,6 +14,8 @@
 		 (:test-file "subscribe-test")
 		 (:test-file "where-test")
 		 (:test-file "select-test")
+		 (:test-file "take-test")
+		 (:test-file "repeat-test")
 		 )))
   :description "Test system for cl-reex"
 
