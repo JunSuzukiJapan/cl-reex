@@ -6,11 +6,15 @@
   :defsystem-depends-on ("prove-asdf")
   :author ""
   :license ""
-  :depends-on ("cl-reex"
-               "prove")
+  :depends-on ("prove")
   :components ((:module "tests"
                 :components
-                ((:test-file "cl-reex"))))
+                ((:file "logger")
+                 (:test-file "logger-test")
+		 (:test-file "subscribe-test")
+		 (:test-file "where-test")
+		 (:test-file "select-test")
+		 )))
   :description "Test system for cl-reex"
 
   :perform (test-op (op c) (symbol-call :prove-asdf :run-test-system c)))
