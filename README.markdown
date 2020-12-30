@@ -53,3 +53,6 @@ operator example:
   (rx:dispose) )
 ```
 
+# LICENSE
+
+[MIT](LICENSE)
