@@ -53,7 +53,7 @@ operator example:
   (rx:dispose) )
 ```
 
-## factory methods
+## Factory methods
 
 ### observable-from
 
@@ -92,6 +92,15 @@ operator example:
 (defvar item 1)
 (defvar count 10)
 (rx:observable-repeat item count)
+```
+
+## Observer
+
+```lisp
+(defvar observer (rx:make-observer
+	#'(lambda (x) (print x))
+	#'(lambda (x) (format t "error: ~S" x))
+	#'(lambda () (print "completed")) ))
 ```
 
 ## LICENSE
