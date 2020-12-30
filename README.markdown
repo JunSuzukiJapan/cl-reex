@@ -1,4 +1,4 @@
-# Cl-Reex
+# cl-reex
 
 Reactive extensions for common lisp.
 
@@ -51,6 +51,47 @@ operator example:
   (rx:select (x) (* x 3))
   (rx:subscribe observer)
   (rx:dispose) )
+```
+
+## factory methods
+
+### observable-from
+
+```lisp
+; list
+(rx:observable-from '(1 2 3 4 5))
+
+; array
+(rx:observable-from #(1 2 3 4 5))
+
+: string
+(rx:observable-from "Hello, world!")
+
+; stream
+(defvar stream (make-string-input-stream "Hello"))
+(rx:observable-from stream)
+```
+
+### observable-range
+
+```lisp
+(defvar from 1)
+(defvar count 10)
+(rx:observable-range from count)
+```
+
+### observable-just
+
+```lisp
+(rx:observable-just 1)
+```
+
+### observable-repeat
+
+```lisp
+(defvar item 1)
+(defvar count 10)
+(rx:observable-repeat item count)
 ```
 
 ## LICENSE
