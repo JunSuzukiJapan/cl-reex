@@ -1,15 +1,21 @@
 (in-package :cl-user)
 (defpackage cl-reex.subject.subject
   (:use :cl)
-  (:import-from :cl-reex.observer
- 		:observer
-		:on-next
-		:on-error
-		:on-completed)
   (:import-from :cl-reex.observable
 		:observable
+		:on-next
+		:on-error
+		:on-completed
+		:get-on-next
+		:set-on-next
+		:get-on-error
+		:set-on-error
+		:get-on-completed
+		:set-on-completed
 		:subscribe
 		:dispose)
+  (:import-from :cl-reex.observer
+ 		:observer)
   (:export :subject
 	   :make-subject))
 
@@ -22,18 +28,21 @@
 
 (defun make-subject ()
   (let ((sub (make-instance 'subject)))
-    (setf (on-next sub)
+    (set-on-next
 	  #'(lambda (x)
 	      (dolist (observer (observers sub))
-	  	(funcall (on-next observer) x) )))
-    (setf (on-error sub)
+	  	(funcall (get-on-next observer) x) ))
+	  sub )
+    (set-on-error
 	  #'(lambda (x)
 	      (dolist (observer (observers sub))
-		(funcall (on-error observer) x) )))
-    (setf (on-completed sub)
+		(funcall (get-on-error observer) x) ))
+	  sub )
+    (set-on-completed
 	  #'(lambda ()
 	      (dolist (observer (observers sub))
-		(funcall (on-completed observer)) )))
+		(funcall (get-on-completed observer)) ))
+	  sub )
     sub ))
 
 ;;
@@ -46,7 +55,8 @@
 	     :accessor observer) ))
 
 (defmethod dispose ((dis-sub disposable-subject))
-  (delete (observer dis-sub) (observers dis-sub)) )
+  (let ((deleted (delete (observer dis-sub) (observers dis-sub))))
+    (setf (observers dis-sub) deleted) ))
 
 ;;
 ;; Subscribe
@@ -56,4 +66,16 @@
   (make-instance 'disposable-subject
 		 :subject sub
 		 :observer observer ))
+
+;;
+;; on-next, on-error & on-completed
+;;
+(defmethod on-next ((sub subject) item)
+  (funcall (get-on-next sub) item) )
+
+(defmethod on-error ((sub subject) condition)
+  (funcall (get-on-error sub) condition) )
+
+(defmethod on-completed ((sub subject))
+  (funcall (get-on-completed sub)) )
 
