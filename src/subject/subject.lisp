@@ -55,8 +55,8 @@
 	     :accessor observer) ))
 
 (defmethod dispose ((dis-sub disposable-subject))
-  (let ((deleted (delete (observer dis-sub) (observers dis-sub))))
-    (setf (observers dis-sub) deleted) ))
+  (let ((deleted (delete (observer dis-sub) (observers (subject dis-sub)))))
+    (setf (observers (subject dis-sub)) deleted) ))
 
 ;;
 ;; Subscribe
