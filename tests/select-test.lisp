@@ -21,10 +21,11 @@
 
 (with-observable (observable-from '(1 2 3 4 5 6 7 8 9 10))
   (where (x) (evenp x))
+  (select (x) (* x x))
   (subscribe observer)
   (dispose) )
 
 (is (result logger)
-    '(2 4 6 8 10 "completed"))
+    '(4 16 36 64 100 "completed"))
 
 (finalize)
