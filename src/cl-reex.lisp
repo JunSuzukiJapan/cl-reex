@@ -3,6 +3,7 @@
   (:nicknames :rx)
   (:use :cl)
   (:import-from :cl-reex.observable
+		:observable
  		:subscribe
 		:dispose
 		:observable-range
@@ -16,7 +17,6 @@
  		:on-error
  		:on-completed)
   (:import-from :cl-reex.operator
-		:observable
 		:operator
 		:predicate
 		:func)
@@ -29,6 +29,9 @@
 		:repeat
 		:skip
 		:take)
+  (:import-from :cl-reex.subject.subject
+		:subject
+		:make-subject)
   (:import-from :cl-reex.macro
 		:with-observable)
   (:export :subscribe
@@ -53,7 +56,9 @@
 	   :repeat
 	   :skip
 	   :take
-	   :operator-where))
+	   :operator-where
+	   :subject
+	   :make-subject))
 
 (in-package :cl-reex)
 

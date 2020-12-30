@@ -3,6 +3,7 @@
   (:use :cl)
   (:import-from :cl-reex.observable
  		:subscribe
+		:observable
 		:dispose
  		:observable-from)
   (:import-from :cl-reex.observer
@@ -11,8 +12,6 @@
  		:on-next
  		:on-error
  		:on-completed)
-  (:import-from :cl-reex.operator
-		:observable)
   (:import-from :cl-reex.operator.where
 		:operator-where
 		:make-operator-where)

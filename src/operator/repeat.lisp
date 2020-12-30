@@ -7,6 +7,13 @@
 		:on-error
 		:on-completed)
   (:import-from :cl-reex.observable
+		:observable
+		:get-on-next
+		:set-on-next
+		:get-on-error
+		:set-on-error
+		:get-on-completed
+		:set-on-completed
 		:subscribe)
   (:import-from :cl-reex.macro.operator-table
 		:get-operator-expander
@@ -15,7 +22,6 @@
 		:repeat )
   (:import-from :cl-reex.operator
 		:operator
-		:observable
 		:predicate)
   (:export :operator-repeat
 	   :make-operator-repeat))
@@ -39,18 +45,21 @@
   (let ((op (make-instance 'operator-repeat
 		 :observable observable
 		 :count count )))
-    (setf (on-next op)
+    (set-on-next
 	  #'(lambda (x)
-	      (funcall (on-next (observer op)) x) ))
-    (setf (on-error op)
+	      (funcall (get-on-next (observer op)) x) )
+	  op )
+    (set-on-error
 	  #'(lambda (x)
-	      (funcall (on-error (observer op))) ))
-    (setf (on-completed op)
+	      (funcall (get-on-error (observer op)) x) )
+	  op )
+    (set-on-completed
 	  #'(lambda ()
 	      (incf (current-count op))
 	      (if (>= (current-count op) (count-num op))
-		  (funcall (on-completed (observer op)))
-		  (subscribe (observable op) op) )))
+		  (funcall (get-on-completed (observer op)))
+		  (subscribe (observable op) op) ))
+	  op )
     op ))
 
 (defmethod subscribe ((op operator-repeat) observer)
@@ -59,7 +68,7 @@
 	(setf (observer op) observer)
 	(setf (current-count op) 0)
 	(subscribe (observable op) op) )
-      (funcall (on-completed observer)) ))
+      (funcall (get-on-completed observer)) ))
 
 (set-operator-expander 'repeat
     #'(lambda (x var-name temp-observable)

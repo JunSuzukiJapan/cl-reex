@@ -4,7 +4,13 @@
   (:import-from :cl-reex.observable
 		:on-next
 		:on-error
-		:on-completed)
+		:on-completed
+		:get-on-next
+		:set-on-next
+		:get-on-error
+		:set-on-error
+		:get-on-completed
+		:set-on-completed)
   (:export :observer
 	   :make-observer))
 (in-package :cl-reex.observer)
@@ -15,13 +21,16 @@
 (defclass observer ()
   ((on-next :initarg :on-next
 	    :initform (lambda (x) nil)
-	    :accessor on-next)
+	    :reader get-on-next
+	    :writer set-on-next )
    (on-error :initarg :on-error
 	     :initform (lambda (x) nil)
-	     :accessor on-error)
+	     :reader get-on-error
+	     :writer set-on-error )
    (on-completed :initarg :on-completed
 		 :initform (lambda () nil)
-		 :accessor on-completed) )
+		 :reader get-on-completed
+		 :writer set-on-completed ))
   (:documentation "Observer"))
 
 
@@ -30,21 +39,4 @@
 		 :on-next on-next
 		 :on-error on-error
 		 :on-completed on-completed))
-
-
-
-
-
-
-
-
-#|
-(defvar observer)
-(setq observer (rx:make-observer
-		#'(lambda (x) (print x))
-		#'(lambda (x) (format t "error: ~S" x))
-		#'(lambda () (print "completed")) ))
-|#
-
-
 

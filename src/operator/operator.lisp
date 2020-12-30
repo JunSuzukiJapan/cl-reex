@@ -2,17 +2,8 @@
 (defpackage cl-reex.operator
   (:use :cl)
   (:import-from :cl-reex.observer
- 		:observer
-		:on-next
-		:on-error
-		:on-completed)
-  (:import-from :cl-reex.observable
-		:subscribe)
-  (:import-from :cl-reex.macro.operator-table
-		:get-operator-expander
-		:set-operator-expander)
+ 		:observer)
   (:export :operator
-	   :observable
 	   :predicate
 	   :func))
 

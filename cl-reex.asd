@@ -19,6 +19,7 @@
 		 (:file "operator/repeat")
 		 (:file "operator/take")
 		 (:file "operator/skip")
+		 (:file "subject/subject")
 		 (:file "macro/with-observable")
 		 (:file "cl-reex"))))
   :description ""

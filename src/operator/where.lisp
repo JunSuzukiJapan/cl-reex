@@ -7,6 +7,13 @@
 		:on-error
 		:on-completed)
   (:import-from :cl-reex.observable
+		:observable
+		:get-on-next
+		:set-on-next
+		:get-on-error
+		:set-on-error
+		:get-on-completed
+		:set-on-completed
 		:subscribe)
   (:import-from :cl-reex.macro.operator-table
 		:get-operator-expander
@@ -15,7 +22,6 @@
 		:where )
   (:import-from :cl-reex.operator
 		:operator
-		:observable
 		:predicate)
   (:export :operator-where
 	   :make-operator-where))
@@ -36,16 +42,19 @@
   (let ((op (make-instance 'operator-where
 		 :observable observable
 		 :predicate predicate )))
-    (setf (on-next op)
+    (set-on-next
 	  #'(lambda (x)
 	      (when (funcall (predicate op) x)
-	  	(funcall (on-next (observer op)) x) )))
-    (setf (on-error op)
+	  	(funcall (get-on-next (observer op)) x) ))
+	  op )
+    (set-on-error
 	  #'(lambda (x)
-	      (funcall (on-error (observer op))) ))
-    (setf (on-completed op)
+	      (funcall (get-on-error (observer op)) x) )
+	  op )
+    (set-on-completed
 	  #'(lambda ()
-	      (funcall (on-completed (observer op))) ))
+	      (funcall (get-on-completed (observer op))) )
+	  op )
     op ))
 
 

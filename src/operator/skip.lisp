@@ -7,6 +7,13 @@
 		:on-error
 		:on-completed)
   (:import-from :cl-reex.observable
+		:observable
+		:get-on-next
+		:set-on-next
+		:get-on-error
+		:set-on-error
+		:get-on-completed
+		:set-on-completed
 		:subscribe)
   (:import-from :cl-reex.macro.operator-table
 		:get-operator-expander
@@ -15,7 +22,6 @@
 		:skip )
   (:import-from :cl-reex.operator
 		:operator
-		:observable
 		:predicate)
   (:export :operator-skip
 	   :make-operator-skip))
@@ -39,17 +45,20 @@
   (let ((op (make-instance 'operator-skip
 		 :observable observable
 		 :count count )))
-    (setf (on-next op)
+    (set-on-next
 	  #'(lambda (x)
 	      (if (< (current-count op) (count-num op))
 		(incf (current-count op))
-	  	(funcall (on-next (observer op)) x) )))
-    (setf (on-error op)
+	  	(funcall (get-on-next (observer op)) x) ))
+	  op )
+    (set-on-error
 	  #'(lambda (x)
-	      (funcall (on-error (observer op))) ))
-    (setf (on-completed op)
+	      (funcall (get-on-error (observer op)) x) )
+	  op )
+    (set-on-completed
 	  #'(lambda ()
-	      (funcall (on-completed (observer op))) ))
+	      (funcall (get-on-completed (observer op))) )
+	  op )
     op ))
 
 
