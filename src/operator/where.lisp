@@ -31,14 +31,8 @@
 
 
 (defclass operator-where (operator)
-  ((observable :initarg :observable
-	       :accessor observable)
-   (predicate :initarg :predicate
-	      :accessor predicate)
-   (observer :initarg :observer
-	     :accessor observer)
-   (subscription :initarg :subscription
-		 :accessor subscription) )
+  ((predicate :initarg :predicate
+	      :accessor predicate) )
   (:documentation "Where operator"))
 
 (defun make-operator-where (observable predicate)
@@ -59,13 +53,6 @@
 	      (funcall (get-on-completed (observer op))) )
 	  op )
     op ))
-
-(defmethod subscribe ((op operator-where) observer)
-  (setf (observer op) observer)
-  (when (slot-boundp op 'subscription)
-    (dispose (subscription op)) )
-  (setf (subscription op) (subscribe (observable op) op)) )
-
 
 ;;
 ;; in Let*-expr

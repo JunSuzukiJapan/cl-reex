@@ -32,14 +32,8 @@
 
 
 (defclass operator-select (operator)
-  ((observable :initarg :observable
-	       :accessor observable)
-   (func :initarg :func
-	 :accessor func)
-   (observer :initarg :observer
-	     :accessor observer)
-   (subscription :initarg :subscription
-		 :accessor subscription) )
+  ((func :initarg :func
+	 :accessor func) )
   (:documentation "Select operator"))
 
 (defun make-operator-select (observable func)
@@ -60,13 +54,6 @@
 	      (funcall (get-on-completed (observer op))) )
 	  op )
     op ))
-
-
-(defmethod subscribe ((op operator-select) observer)
-  (setf (observer op) observer)
-  (when (slot-boundp op 'subscription)
-    (dispose (subscription op)) )
-  (setf (subscription op) (subscribe (observable op) op) ))
 
 ;;
 ;; in Let*-expr

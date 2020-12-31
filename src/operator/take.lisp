@@ -31,17 +31,11 @@
 
 
 (defclass operator-take (operator)
-  ((observable :initarg :observable
-	       :accessor observable)
-   (count :initarg :count
+  ((count :initarg :count
 	  :accessor count-num)
    (current-count :initarg :current-count
 		  :initform 0
-		  :accessor current-count)
-   (observer :initarg :observer
-	     :accessor observer)
-   (subscription :initarg :subscription
-		 :accessor subscription) )
+		  :accessor current-count) )
   (:documentation "Take operator"))
 
 (defun make-operator-take (observable count)
@@ -67,11 +61,8 @@
 
 
 (defmethod subscribe ((op operator-take) observer)
-  (setf (observer op) observer)
   (setf (current-count op) 0)
-  (when (slot-boundp op 'subscription)
-    (dispose (subscription op)) )
-  (setf (subscription op) (subscribe (observable op) op) ))
+  (call-next-method) )
 
 ;;
 ;; in Let*-expr
