@@ -6,7 +6,7 @@
 
 (in-package :cl-reex.macro.operator-table)
 
-(defvar *op-table* (make-hash-table))
+(defparameter *op-table* (make-hash-table))
 
 (defun get-operator-expander (name)
   (gethash name *op-table*))
