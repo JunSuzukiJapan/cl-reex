@@ -18,6 +18,7 @@
 		 (:test-file "skip-test")
 		 (:test-file "repeat-test")
 		 (:test-file "subject-test")
+		 (:test-file "foreach-test")
 		 )))
   :description "Test system for cl-reex"
 

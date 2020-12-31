@@ -8,6 +8,7 @@
 		:on-completed)
   (:import-from :cl-reex.observable
 		:observable
+		:dispose
 		:get-on-next
 		:set-on-next
 		:get-on-error
@@ -35,7 +36,9 @@
    (predicate :initarg :predicate
 	      :accessor predicate)
    (observer :initarg :observer
-	     :accessor observer) )
+	     :accessor observer)
+   (subscription :initarg :subscription
+		 :accessor subscription) )
   (:documentation "Where operator"))
 
 (defun make-operator-where (observable predicate)
@@ -57,10 +60,12 @@
 	  op )
     op ))
 
-
 (defmethod subscribe ((op operator-where) observer)
   (setf (observer op) observer)
-  (subscribe (observable op) op) )
+  (when (slot-boundp op 'subscription)
+    (dispose (subscription op)) )
+  (setf (subscription op) (subscribe (observable op) op)) )
+
 
 ;;
 ;; in Let*-expr

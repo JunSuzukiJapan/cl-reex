@@ -8,6 +8,7 @@
 		:on-completed)
   (:import-from :cl-reex.observable
 		:observable
+		:dispose
 		:get-on-next
 		:set-on-next
 		:get-on-error
@@ -38,7 +39,9 @@
 		  :initform 0
 		  :accessor current-count)
    (observer :initarg :observer
-	     :accessor observer) )
+	     :accessor observer)
+   (subscription :initarg :subscription
+		 :accessor subscription) )
   (:documentation "Repeat operator"))
 
 (defun make-operator-repeat (observable count)
@@ -63,12 +66,11 @@
     op ))
 
 (defmethod subscribe ((op operator-repeat) observer)
-  (if (> (count-num op) 0)
-      (progn
-	(setf (observer op) observer)
-	(setf (current-count op) 0)
-	(subscribe (observable op) op) )
-      (funcall (get-on-completed observer)) ))
+  (setf (observer op) observer)
+  (setf (current-count op) 0)
+  (when (slot-boundp op 'subscription)
+    (dispose (subscription op)) )
+  (setf (subscription op) (subscribe (observable op) op) ))
 
 (set-operator-expander 'repeat
     #'(lambda (x var-name temp-observable)

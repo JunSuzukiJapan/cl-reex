@@ -10,9 +10,9 @@
 		:get-on-error
 		:set-on-error
 		:get-on-completed
-		:set-on-completed)
-  (:export :observer
-	   :make-observer))
+		:set-on-completed
+		:make-observer)
+  (:export :observer))
 (in-package :cl-reex.observer)
 
 ;; body

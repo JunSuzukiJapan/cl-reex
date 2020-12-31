@@ -14,20 +14,20 @@
 
 (defparameter logger (make-instance 'logger))
 
-(defvar observer1 (make-observer
+(defparameter observer1 (make-observer
 		#'(lambda (x) (add logger x))
 		#'(lambda (x) (add logger (format nil "error: ~S" x)))
 		#'(lambda () (add logger "completed 1")) ))
 
-(defvar observer2 (make-observer
+(defparameter observer2 (make-observer
 		#'(lambda (x) (add logger x))
 		#'(lambda (x) (add logger (format nil "error: ~S" x)))
 		#'(lambda () (add logger "completed 2")) ))
 
-(defvar sub (make-subject))
+(defparameter sub (make-subject))
 
-(defvar subscription1 (subscribe sub observer1))
-(defvar subscription2 (subscribe sub observer2))
+(defparameter subscription1 (subscribe sub observer1))
+(defparameter subscription2 (subscribe sub observer2))
 
 (on-next sub 1)
 (on-next sub 2)

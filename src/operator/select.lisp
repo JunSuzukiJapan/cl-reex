@@ -8,6 +8,7 @@
 		:on-completed)
   (:import-from :cl-reex.observable
 		:observable
+		:dispose
 		:get-on-next
 		:set-on-next
 		:get-on-error
@@ -36,7 +37,9 @@
    (func :initarg :func
 	 :accessor func)
    (observer :initarg :observer
-	     :accessor observer) )
+	     :accessor observer)
+   (subscription :initarg :subscription
+		 :accessor subscription) )
   (:documentation "Select operator"))
 
 (defun make-operator-select (observable func)
@@ -61,7 +64,9 @@
 
 (defmethod subscribe ((op operator-select) observer)
   (setf (observer op) observer)
-  (subscribe (observable op) op) )
+  (when (slot-boundp op 'subscription)
+    (dispose (subscription op)) )
+  (setf (subscription op) (subscribe (observable op) op) ))
 
 ;;
 ;; in Let*-expr

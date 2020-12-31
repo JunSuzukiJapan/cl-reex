@@ -17,6 +17,8 @@
 	   :observable-range
 	   :observable-just
 	   :observable-repeat
+	   :foreach
+	   :make-observer
 	   :dispose ))
 
 (in-package :cl-reex.observable)
@@ -44,6 +46,15 @@
 	     :accessor observer) ))
 
 (defmethod dispose ((observable disposable-do-nothing)))
+
+(defgeneric foreach (observable action))
+
+(defmethod foreach (observable action)
+  (let ((observer (make-observer
+		#'(lambda (x) (funcall action x))
+		#'(lambda (x) ) ;; do nothing?
+		#'(lambda () ) )))
+    (subscribe observable observer) ))
 
 ;;
 ;; observable from list

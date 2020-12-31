@@ -8,6 +8,7 @@
 		:on-completed)
   (:import-from :cl-reex.observable
 		:observable
+		:dispose
 		:get-on-next
 		:set-on-next
 		:get-on-error
@@ -38,7 +39,9 @@
 		  :initform 0
 		  :accessor current-count)
    (observer :initarg :observer
-	     :accessor observer) )
+	     :accessor observer)
+   (subscription :initarg :subscription
+		 :accessor subscription) )
   (:documentation "Skip operator"))
 
 (defun make-operator-skip (observable count)
@@ -56,7 +59,7 @@
 	      (funcall (get-on-error (observer op)) x) )
 	  op )
     (set-on-completed
-	  #'(lambda ()
+          #'(lambda ()
 	      (funcall (get-on-completed (observer op))) )
 	  op )
     op ))
@@ -65,7 +68,9 @@
 (defmethod subscribe ((op operator-skip) observer)
   (setf (observer op) observer)
   (setf (current-count op) 0)
-  (subscribe (observable op) op) )
+  (when (slot-boundp op 'subscription)
+    (dispose (subscription op)) )
+  (setf (subscription op) (subscribe (observable op) op) ))
 
 ;;
 ;; in Let*-expr

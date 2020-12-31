@@ -9,10 +9,11 @@
 		:observable-range
 		:observable-just
 		:observable-repeat
- 		:observable-from)
+ 		:observable-from
+ 		:make-observer
+		:foreach)
   (:import-from :cl-reex.observer
  		:observer
- 		:make-observer
  		:on-next
  		:on-error
  		:on-completed)
@@ -36,6 +37,7 @@
 		:with-observable)
   (:export :subscribe
 	   :dispose
+	   :foreach
 	   :observable
 	   :observable-range
 	   :observable-just
