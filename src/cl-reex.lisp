@@ -24,12 +24,16 @@
   (:import-from :cl-reex.macro.operator-table
 		:get-operator-expander
 		:set-operator-expander)
-  (:import-from :cl-reex.macro.symbols
-		:where
-		:select
-		:repeat
-		:skip
+  (:import-from :cl-reex.operator.where
+		:where)
+  (:import-from :cl-reex.operator.select
+		:select)
+  (:import-from :cl-reex.operator.take
 		:take)
+  (:import-from :cl-reex.operator.skip
+		:skip)
+  (:import-from :cl-reex.operator.repeat
+		:repeat)
   (:import-from :cl-reex.subject.subject
 		:subject
 		:make-subject)

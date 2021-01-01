@@ -19,12 +19,11 @@
   (:import-from :cl-reex.macro.operator-table
 		:get-operator-expander
 		:set-operator-expander)
-  (:import-from :cl-reex.macro.symbols
-		:repeat )
   (:import-from :cl-reex.operator
 		:operator
 		:predicate)
   (:export :operator-repeat
+	   :repeat
 	   :make-operator-repeat))
 
 (in-package :cl-reex.operator.repeat)

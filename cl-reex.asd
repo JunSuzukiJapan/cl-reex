@@ -12,7 +12,6 @@
                 ((:file "observable/observable")
 		 (:file "observer/observer")
 		 (:file "macro/operator-table")
-		 (:file "macro/symbols")
 		 (:file "operator/operator")
 		 (:file "operator/where")
 		 (:file "operator/select")

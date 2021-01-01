@@ -19,12 +19,11 @@
   (:import-from :cl-reex.macro.operator-table
 		:get-operator-expander
 		:set-operator-expander)
-  (:import-from :cl-reex.macro.symbols
-		:skip )
   (:import-from :cl-reex.operator
 		:operator
 		:predicate)
   (:export :operator-skip
+	   :skip
 	   :make-operator-skip))
 
 (in-package :cl-reex.operator.skip)

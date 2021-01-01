@@ -19,12 +19,11 @@
   (:import-from :cl-reex.macro.operator-table
 		:get-operator-expander
 		:set-operator-expander)
-  (:import-from :cl-reex.macro.symbols
-		:where )
   (:import-from :cl-reex.operator
 		:operator
 		:predicate)
   (:export :operator-where
+	   :where
 	   :make-operator-where))
 
 (in-package :cl-reex.operator.where)

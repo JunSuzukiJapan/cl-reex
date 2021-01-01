@@ -19,13 +19,12 @@
   (:import-from :cl-reex.macro.operator-table
 		:get-operator-expander
 		:set-operator-expander)
-  (:import-from :cl-reex.macro.symbols
-		:select )
   (:import-from :cl-reex.operator
 		:operator
 		:predicate
 		:func)
   (:export :operator-select
+	   :select
 	   :make-operator-select))
 
 (in-package :cl-reex.operator.select)

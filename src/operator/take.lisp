@@ -19,12 +19,11 @@
   (:import-from :cl-reex.macro.operator-table
 		:get-operator-expander
 		:set-operator-expander)
-  (:import-from :cl-reex.macro.symbols
-		:take )
   (:import-from :cl-reex.operator
 		:operator
 		:predicate)
   (:export :operator-take
+	   :take
 	   :make-operator-take))
 
 (in-package :cl-reex.operator.take)
