@@ -20,10 +20,10 @@
 		#'(lambda () (add logger "completed")) ))
 
 ;; plan 1
-(setq timer (observable-timer 1))
+(setq timer (observable-timer 0.1))
 (setq subscription (subscribe timer observer))
 
-(sleep 1.5)
+(sleep 0.15)
 
 (dispose subscription)
 
@@ -32,10 +32,10 @@
 
 ;; plan 2
 (reset logger)
-(setq timer (observable-timer 1 1))
+(setq timer (observable-timer 0.1 0.1))
 (setq subscription (subscribe timer observer))
 
-(sleep 3.5)
+(sleep 0.35)
 
 (dispose subscription)
 
@@ -44,10 +44,10 @@
 
 ;; plan 3
 (reset logger)
-(setq timer (observable-interval 1))
+(setq timer (observable-interval 0.1))
 (setq subscription (subscribe timer observer))
 
-(sleep 3.5)
+(sleep 0.35)
 
 (dispose subscription)
 
