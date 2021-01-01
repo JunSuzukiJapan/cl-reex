@@ -43,11 +43,12 @@
 		 :predicate predicate )))
     (set-on-next
           #'(lambda (x)
-	      (if (funcall (predicate op) x)
-  		  (funcall (get-on-next (observer op)) x)
-		  (when (not (completed op))
-		    (setf (completed op) t)
-		    (funcall (get-on-completed (observer op))) )))
+	      (when (not (completed op))
+		(if (funcall (predicate op) x)
+  		    (funcall (get-on-next (observer op)) x)
+		    (progn
+		      (setf (completed op) t)
+		      (funcall (get-on-completed (observer op))) ))))
 	  op )
     (set-on-error
 	  #'(lambda (x)
