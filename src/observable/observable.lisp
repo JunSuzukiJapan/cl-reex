@@ -19,6 +19,7 @@
 	   :observable-repeat
 	   :foreach
 	   :observable-timer
+	   :observable-interval
 	   :make-observer
 	   :dispose ))
 
@@ -94,6 +95,11 @@
 (defun observable-timer (start &optional interval)
   (make-instance 'observable-timer-object
 		 :start start
+		 :interval interval ))
+
+(defun observable-interval (interval)
+  (make-instance 'observable-timer-object
+		 :start interval
 		 :interval interval ))
 
 (defmethod subscribe ((timer observable-timer-object) observer)

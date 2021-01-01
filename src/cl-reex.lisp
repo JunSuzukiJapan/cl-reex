@@ -11,6 +11,7 @@
 		:observable-repeat
  		:observable-from
 		:observable-timer
+		:observable-interval
  		:make-observer
 		:foreach)
   (:import-from :cl-reex.observer
@@ -49,6 +50,7 @@
 	   :observable-repeat
  	   :observable-from
 	   :observable-timer
+	   :observable-interval
  	   :observer
  	   :make-observer
  	   :on-next

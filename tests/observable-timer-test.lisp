@@ -8,7 +8,7 @@
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :cl-reex)' in your Lisp.
 
-(plan 2)
+(plan 3)
 
 ;; blah blah blah.
 
@@ -33,6 +33,18 @@
 ;; plan 2
 (reset logger)
 (setq timer (observable-timer 1 1))
+(setq subscription (subscribe timer observer))
+
+(sleep 3.5)
+
+(dispose subscription)
+
+(is (result logger)
+    '(0 1 2) )
+
+;; plan 3
+(reset logger)
+(setq timer (observable-interval 1))
 (setq subscription (subscribe timer observer))
 
 (sleep 3.5)
