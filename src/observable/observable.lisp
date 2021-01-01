@@ -18,6 +18,7 @@
 	   :observable-just
 	   :observable-repeat
 	   :foreach
+	   :observable-timer
 	   :make-observer
 	   :dispose ))
 
@@ -55,6 +56,65 @@
 		#'(lambda (x) ) ;; do nothing?
 		#'(lambda () ) )))
     (subscribe observable observer) ))
+
+;;
+;; observable-timer
+;;
+(defclass observable-timer-object ()
+  ((start :initarg :start
+	  :accessor start)
+   (interval :initarg :interval
+	     :initform nil
+	     :accessor interval )))
+
+(defclass disposable-timer ()
+  ((start :initarg :start
+	  :accessor start)
+   (interval :initarg :interval
+	     :accessor interval )
+   (observer :initarg :observer
+	     :accessor observer )
+   (thread :initarg :thread
+	   :accessor thread )
+   (count :initarg :count
+	  :initform 0
+	  :accessor count-num )))
+
+(defmethod call-on-next ((dt disposable-timer))
+  (funcall (get-on-next (observer dt)) (count-num dt))
+  (incf (count-num dt)) )
+
+(defmethod dispose ((dt disposable-timer))
+  (setf (interval dt) nil)
+  (bt:destroy-thread (thread dt)) )
+
+(defmethod end-loop-p ((dt disposable-timer))
+  (null (interval dt)) )
+
+(defun observable-timer (start &optional interval)
+  (make-instance 'observable-timer-object
+		 :start start
+		 :interval interval ))
+
+(defmethod subscribe ((timer observable-timer-object) observer)
+  (let* ((start (start timer))
+	 (interval (interval timer))
+	 (dt (make-instance 'disposable-timer
+			    :observer observer
+			    :start start
+			    :interval interval
+			    :count 0 ))
+	 (thread (bt:make-thread
+		  (lambda ()
+		    (sleep start)
+		    (call-on-next dt)
+		    (do ((interval (interval dt)))
+			((or (null interval)
+			     (end-loop-p dt) ))
+		      (sleep interval)
+		      (call-on-next dt) )))) )
+    (setf (thread dt) thread)
+    dt ))
 
 ;;
 ;; observable from list

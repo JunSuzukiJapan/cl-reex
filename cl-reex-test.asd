@@ -19,6 +19,7 @@
 		 (:test-file "repeat-test")
 		 (:test-file "subject-test")
 		 (:test-file "foreach-test")
+		 (:test-file "observable-timer-test")
 		 )))
   :description "Test system for cl-reex"
 

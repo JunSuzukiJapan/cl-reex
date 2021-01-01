@@ -10,6 +10,7 @@
 		:observable-just
 		:observable-repeat
  		:observable-from
+		:observable-timer
  		:make-observer
 		:foreach)
   (:import-from :cl-reex.observer
@@ -47,6 +48,7 @@
 	   :observable-just
 	   :observable-repeat
  	   :observable-from
+	   :observable-timer
  	   :observer
  	   :make-observer
  	   :on-next

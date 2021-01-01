@@ -6,7 +6,7 @@
   :version "0.1.0"
   :author "Jun Suzuki"
   :license "MIT"
-  :depends-on ()
+  :depends-on ("bordeaux-threads")
   :components ((:module "src"
                 :components
                 ((:file "observable/observable")
