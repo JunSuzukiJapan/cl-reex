@@ -17,6 +17,7 @@
 		 (:file "operator/select")
 		 (:file "operator/repeat")
 		 (:file "operator/take")
+		 (:file "operator/take-while")
 		 (:file "operator/skip")
 		 (:file "subject/subject")
 		 (:file "macro/with-observable")

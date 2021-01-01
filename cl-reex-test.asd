@@ -15,6 +15,7 @@
 		 (:test-file "where-test")
 		 (:test-file "select-test")
 		 (:test-file "take-test")
+		 (:test-file "take-while-test")
 		 (:test-file "skip-test")
 		 (:test-file "repeat-test")
 		 (:test-file "subject-test")

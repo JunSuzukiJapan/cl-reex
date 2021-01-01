@@ -32,6 +32,8 @@
 		:select)
   (:import-from :cl-reex.operator.take
 		:take)
+  (:import-from :cl-reex.operator.take-while
+		:take-while)
   (:import-from :cl-reex.operator.skip
 		:skip)
   (:import-from :cl-reex.operator.repeat
@@ -66,6 +68,7 @@
 	   :repeat
 	   :skip
 	   :take
+	   :take-while
 	   :operator-where
 	   :subject
 	   :make-subject))
