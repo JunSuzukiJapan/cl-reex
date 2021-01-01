@@ -8,7 +8,7 @@
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :cl-reex)' in your Lisp.
 
-(plan 1)
+(plan 2)
 
 ;; blah blah blah.
 
@@ -26,5 +26,18 @@
 
 (is (result logger)
     '(5 6 7 8 9 10 1 2 3 4 5 "completed"))
+
+;; plan 2
+
+(reset logger)
+
+(with-observable (observable-from '(1 2 3 4 5 1 2 3 4 5))
+  (skip-while (x) (< x 3))
+  (repeat 2)
+  (subscribe observer)
+  (dispose) )
+
+(is (result logger)
+    '(3 4 5 1 2 3 4 5 3 4 5 1 2 3 4 5 "completed"))
 
 (finalize)
