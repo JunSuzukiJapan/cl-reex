@@ -60,6 +60,7 @@
 
 
 (defmethod subscribe ((op operator-take-while) observer)
+  (setf (completed op) nil)
   (call-next-method) )
 
 ;;
