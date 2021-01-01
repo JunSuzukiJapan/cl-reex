@@ -51,7 +51,7 @@
 	  op )
     (set-on-error
 	  #'(lambda (x)
-	      (funcall (on-error (observer op)) x) )
+	      (funcall (get-on-error (observer op)) x) )
 	  op )
     (set-on-completed
           #'(lambda () ) ;; do nothing

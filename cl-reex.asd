@@ -19,6 +19,7 @@
 		 (:file "operator/take")
 		 (:file "operator/take-while")
 		 (:file "operator/skip")
+		 (:file "operator/skip-while")
 		 (:file "subject/subject")
 		 (:file "macro/with-observable")
 		 (:file "cl-reex"))))

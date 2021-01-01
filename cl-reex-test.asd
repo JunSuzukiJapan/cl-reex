@@ -17,6 +17,7 @@
 		 (:test-file "take-test")
 		 (:test-file "take-while-test")
 		 (:test-file "skip-test")
+		 (:test-file "skip-while-test")
 		 (:test-file "repeat-test")
 		 (:test-file "subject-test")
 		 (:test-file "foreach-test")

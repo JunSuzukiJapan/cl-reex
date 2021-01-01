@@ -1,5 +1,5 @@
 (in-package :cl-user)
-(defpackage cl-reex.operator.take-while
+(defpackage cl-reex.operator.skip-while
   (:use :cl)
   (:import-from :cl-reex.observer
  		:observer
@@ -22,45 +22,45 @@
   (:import-from :cl-reex.operator
 		:operator
 		:predicate)
-  (:export :operator-take-while
-	   :take-while
-	   :make-operator-take-while))
+  (:export :operator-skip-while
+	   :skip-while
+	   :make-operator-skip-while))
 
-(in-package :cl-reex.operator.take-while)
+(in-package :cl-reex.operator.skip-while)
 
 
-(defclass operator-take-while (operator)
+(defclass operator-skip-while (operator)
   ((predicate :initarg :predicate
 	      :accessor predicate )
    (completed :initarg :completed
 	      :initform nil
 	      :accessor completed ))
-  (:documentation "Take-While operator"))
+  (:documentation "Skip-While operator"))
 
-(defun make-operator-take-while (observable predicate)
-  (let ((op (make-instance 'operator-take-while
+(defun make-operator-skip-while (observable predicate)
+  (let ((op (make-instance 'operator-skip-while
 		 :observable observable
 		 :predicate predicate )))
     (set-on-next
           #'(lambda (x)
-	      (when (not (completed op))
-		(if (funcall (predicate op) x)
-  		    (funcall (get-on-next (observer op)) x)
-		    (progn
-		      (setf (completed op) t)
-		      (funcall (get-on-completed (observer op))) ))))
+	      (if (completed op)
+  		  (funcall (get-on-next (observer op)) x)
+		(when (not (funcall (predicate op) x))
+		    (setf (completed op) t)
+  		    (funcall (get-on-next (observer op)) x) )))
 	  op )
     (set-on-error
 	  #'(lambda (x)
 	      (funcall (get-on-error (observer op)) x) )
 	  op )
     (set-on-completed
-          #'(lambda () ) ;; do nothing
+          #'(lambda ()
+	      (funcall (get-on-completed (observer op))) )
 	  op )
     op ))
 
 
-(defmethod subscribe ((op operator-take-while) observer)
+(defmethod subscribe ((op operator-skip-while) observer)
   (setf (completed op) nil)
   (call-next-method) )
 
@@ -70,7 +70,7 @@
 ;;
 ;; (let* (...
 ;;        !! from HERE !!
-;;        (var-name (rx:make-operator-take-while
+;;        (var-name (rx:make-operator-skip-while
 ;;                       temp-observable
 ;;                       #'(lambda (x) (evenp x)) ))
 ;;        !! to HERE   !!
@@ -78,10 +78,10 @@
 ;;    ...)
 ;;
 
-(set-operator-expander 'take-while
+(set-operator-expander 'skip-while
     #'(lambda (x var-name temp-observable)
 	`(,var-name
-	  (make-operator-take-while
+	  (make-operator-skip-while
 	   ,temp-observable
 	   #'(lambda ,(cadr x) ,(caddr x) )))))
 
