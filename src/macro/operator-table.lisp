@@ -30,6 +30,15 @@
 ;;        ...)
 ;;    ...)
 ;;
+
+;;
+;; set-function-operator
+;;   use when expr like (where (x) (+ x 1))  ;; arg1 is params
+;;                                           ;; arg2 is a expr
+;;
+;; set-one-arg-operator
+;;   use when expr like (repeat 3)  ;; arg length is 1.
+;;
 (defun set-function-operator (name function-name)
   (set-operator-expander name
     #'(lambda (x var-name temp-observable)

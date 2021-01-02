@@ -87,7 +87,10 @@
 
 (defmethod dispose ((dt disposable-timer))
   (setf (interval dt) nil)
-  (bt:destroy-thread (thread dt)) )
+  (let ((thread (thread dt)))
+    (when (and (not (null thread))
+	       (bt:thread-alive-p thread) )
+      (bt:destroy-thread (thread dt)) )))
 
 (defmethod end-loop-p ((dt disposable-timer))
   (null (interval dt)) )

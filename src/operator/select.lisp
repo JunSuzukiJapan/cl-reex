@@ -17,6 +17,7 @@
 		:set-on-completed
 		:subscribe)
   (:import-from :cl-reex.macro.operator-table
+		:set-function-operator
 		:get-operator-expander
 		:set-operator-expander)
   (:import-from :cl-reex.operator
@@ -67,9 +68,14 @@
 ;;        ...)
 ;;    ...)
 ;;
+
+(set-function-operator 'select 'make-operator-select)
+
+#|
 (set-operator-expander 'select
     #'(lambda (x var-name temp-observable)
 	`(,var-name
 	  (make-operator-select
 	   ,temp-observable
 	   #'(lambda ,(cadr x) ,(caddr x) )))))
+|#
