@@ -90,7 +90,8 @@
   (let ((thread (thread dt)))
     (when (and (not (null thread))
 	       (bt:thread-alive-p thread) )
-      (bt:destroy-thread (thread dt)) )))
+      (bt:destroy-thread (thread dt)) ))
+  (setf (thread dt) nil) )
 
 (defmethod end-loop-p ((dt disposable-timer))
   (null (interval dt)) )
