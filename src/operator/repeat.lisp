@@ -17,6 +17,7 @@
 		:set-on-completed
 		:subscribe)
   (:import-from :cl-reex.macro.operator-table
+		:set-one-arg-operator
 		:get-operator-expander
 		:set-operator-expander)
   (:import-from :cl-reex.operator
@@ -62,9 +63,13 @@
   (setf (current-count op) 0)
   (call-next-method) )
 
+(set-one-arg-operator 'repeat 'make-operator-repeat)
+
+#|
 (set-operator-expander 'repeat
     #'(lambda (x var-name temp-observable)
 	`(,var-name
 	  (make-operator-repeat
 	   ,temp-observable
 	   ,(cadr x) ))))
+|#
