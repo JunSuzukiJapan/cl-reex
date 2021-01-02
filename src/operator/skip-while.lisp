@@ -17,8 +17,7 @@
 		:set-on-completed
 		:subscribe)
   (:import-from :cl-reex.macro.operator-table
-		:get-operator-expander
-		:set-operator-expander)
+		:set-function-operator)
   (:import-from :cl-reex.operator
 		:operator
 		:predicate)
@@ -64,24 +63,5 @@
   (setf (completed op) nil)
   (call-next-method) )
 
-;;
-;; in Let*-expr
-;;    make definition like below
-;;
-;; (let* (...
-;;        !! from HERE !!
-;;        (var-name (rx:make-operator-skip-while
-;;                       temp-observable
-;;                       #'(lambda (x) (evenp x)) ))
-;;        !! to HERE   !!
-;;        ...)
-;;    ...)
-;;
-
-(set-operator-expander 'skip-while
-    #'(lambda (x var-name temp-observable)
-	`(,var-name
-	  (make-operator-skip-while
-	   ,temp-observable
-	   #'(lambda ,(cadr x) ,(caddr x) )))))
+(set-function-operator 'skip-while 'make-operator-skip-while)
 

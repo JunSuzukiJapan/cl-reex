@@ -17,9 +17,7 @@
 		:set-on-completed
 		:subscribe)
   (:import-from :cl-reex.macro.operator-table
-		:set-function-operator
-		:get-operator-expander
-		:set-operator-expander)
+		:set-function-operator)
   (:import-from :cl-reex.operator
 		:operator
 		:predicate
@@ -55,27 +53,5 @@
 	  op )
     op ))
 
-;;
-;; in Let*-expr
-;;    make definition like below
-;;
-;; (let* (...
-;;        !! from HERE !!
-;;        (var-name (rx:make-operator-select
-;;                       temp-observable
-;;                       #'(lambda (x) (* x x)) ))
-;;        !! to HERE   !!
-;;        ...)
-;;    ...)
-;;
-
 (set-function-operator 'select 'make-operator-select)
 
-#|
-(set-operator-expander 'select
-    #'(lambda (x var-name temp-observable)
-	`(,var-name
-	  (make-operator-select
-	   ,temp-observable
-	   #'(lambda ,(cadr x) ,(caddr x) )))))
-|#
