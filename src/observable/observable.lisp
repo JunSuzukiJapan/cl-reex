@@ -26,7 +26,8 @@
 	   :observable-just
 	   :observable-repeat
 	   :observable-of
-       :observable-empty
+	   :observable-empty
+	   :observable-never
 	   :foreach
 	   :observable-timer
 	   :observable-interval
@@ -162,6 +163,19 @@
 
 (defun observable-empty ()
   (make-instance 'observable-empty-object) )
+
+;;
+;; observable never
+;;
+(defclass observable-never-object () nil)
+
+(defmethod subscribe ((obj observable-never-object) observer)
+  (make-instance 'disposable-do-nothing
+		 :observable obj
+		 :observer observer ))
+
+(defun observable-never ()
+  (make-instance 'observable-never-object) )
 
 ;;
 ;; observable from list

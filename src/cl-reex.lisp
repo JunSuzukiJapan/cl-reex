@@ -14,6 +14,7 @@
 		:observable-interval
 		:observable-of
 		:observable-empty
+		:observable-never
  		:make-observer
 		:foreach)
   (:import-from :cl-reex.observer
@@ -61,6 +62,7 @@
 	   :observable-interval
 	   :observable-of
 	   :observable-empty
+	   :observable-never
  	   :observer
  	   :make-observer
  	   :on-next
