@@ -6,7 +6,8 @@
 	   :observable-object
 	   :is-active
 	   :observable-state
-	   :active
+           :state
+           :active
 	   :error
 	   :completed
 	   :disposed
@@ -82,7 +83,7 @@
 ;;
 ;; observable-timer
 ;;
-(defclass observable-timer-object (observable-object)
+(defclass observable-timer-object ()
   ((start :initarg :start
 	  :accessor start)
    (interval :initarg :interval
@@ -103,13 +104,11 @@
 	  :accessor count-num )))
 
 (defmethod call-on-next ((dt disposable-timer))
-  (when (is-active dt)
-    (funcall (get-on-next (observer dt)) (count-num dt))
-    (incf (count-num dt)) ))
+  (funcall (get-on-next (observer dt)) (count-num dt))
+  (incf (count-num dt)) )
 
 (defmethod dispose ((dt disposable-timer))
   (setf (interval dt) nil)
-  (setf (state dt) 'disposed)
   (let ((thread (thread dt)))
     (when (and (not (null thread))
 	       (bt:thread-alive-p thread) )

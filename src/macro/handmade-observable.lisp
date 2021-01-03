@@ -6,7 +6,8 @@
 		:observable
 		:observable-object
 		:is-active
-		:observable-state
+                :observable-state
+                :state
 		:active
 		:error
 		:completed
