@@ -3,6 +3,13 @@
   (:use :cl)
   (:export :subscribe
 	   :observable
+	   :observable-object
+	   :is-active
+	   :observable-state
+	   :active
+	   :error
+	   :completed
+	   :disposed
 	   :on-next
 	   :on-error
 	   :on-completed
@@ -21,6 +28,7 @@
 	   :observable-timer
 	   :observable-interval
 	   :make-observer
+	   :disposable-do-nothing
 	   :dispose ))
 
 (in-package :cl-reex.observable)
@@ -36,7 +44,8 @@
 
 (defgeneric dispose (obj))
 
-(deftype observable-state () '(active error completed))
+(deftype observable-state ()
+  '(member active error completed disposed) )
 
 ;;
 ;; Util
@@ -59,9 +68,21 @@
     (subscribe observable observer) ))
 
 ;;
+;;
+;;
+(defclass observable-object ()
+  ((state :initarg :state
+	  :initform 'active
+	  :accessor state )))
+
+(defmethod is-active ((obj observable-object))
+  (eq (state obj) 'active) )
+
+
+;;
 ;; observable-timer
 ;;
-(defclass observable-timer-object ()
+(defclass observable-timer-object (observable-object)
   ((start :initarg :start
 	  :accessor start)
    (interval :initarg :interval
@@ -82,11 +103,13 @@
 	  :accessor count-num )))
 
 (defmethod call-on-next ((dt disposable-timer))
-  (funcall (get-on-next (observer dt)) (count-num dt))
-  (incf (count-num dt)) )
+  (when (is-active dt)
+    (funcall (get-on-next (observer dt)) (count-num dt))
+    (incf (count-num dt)) ))
 
 (defmethod dispose ((dt disposable-timer))
   (setf (interval dt) nil)
+  (setf (state dt) 'disposed)
   (let ((thread (thread dt)))
     (when (and (not (null thread))
 	       (bt:thread-alive-p thread) )

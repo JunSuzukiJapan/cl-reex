@@ -1,30 +1,36 @@
-(defpackage subscribe-test
+(defpackage handmade-observable-test
   (:use :cl
 	:cl-reex
 	:cl-reex-test.logger
         :prove)
   (:shadowing-import-from :cl-reex :skip))
-(in-package :subscribe-test)
+(in-package :handmade-observable-test)
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :cl-reex)' in your Lisp.
 
+(plan nil)
 
-;; blah blah blah.
+;; plan 1
 
 (defparameter logger (make-instance 'logger))
 
-(defparameter ol (observable-from '(1 2 3 4 5 6 7 8 9 10)))
+(defparameter source (observable-range 1 10))
 
 (defparameter observer (make-observer
 		#'(lambda (x) (add logger x))
 		#'(lambda (x) (add logger (format nil "error: ~S" x)))
 		#'(lambda () (add logger "completed")) ))
 
-(subscribe ol observer)
-
-(plan nil)
+(with-observable (handmade-observable
+        (on-next 1)
+        (on-next 2)
+        (on-error "Error")
+        (on-next 3)
+        (on-completed) )
+    (subscribe observer)
+    (dispose) )
 
 (is (result logger)
-    '(1 2 3 4 5 6 7 8 9 10 "completed"))
+    '(1 2 "completed"))
 
 (finalize)

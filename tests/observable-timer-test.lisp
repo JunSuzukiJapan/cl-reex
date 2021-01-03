@@ -20,8 +20,8 @@
 		#'(lambda () (add logger "completed")) ))
 
 ;; plan 1
-(setq timer (observable-timer 0.1))
-(setq subscription (subscribe timer observer))
+(defparameter timer (observable-timer 0.1))
+(defparameter subscription (subscribe timer observer))
 
 (sleep 0.15)
 

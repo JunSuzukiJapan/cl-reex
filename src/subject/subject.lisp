@@ -3,6 +3,13 @@
   (:use :cl)
   (:import-from :cl-reex.observable
 		:observable
+		:observable-object
+		:is-active
+		:observable-state
+		:active
+		:error
+		:completed
+		:disposed
 		:on-next
 		:on-error
 		:on-completed
@@ -21,7 +28,7 @@
 
 (in-package :cl-reex.subject.subject)
 
-(defclass subject (observer)
+(defclass subject (observer observable-object)
   ((observers :initarg :observers
 	      :initform nil
 	      :accessor observers )))
@@ -30,18 +37,23 @@
   (let ((sub (make-instance 'subject)))
     (set-on-next
 	  #'(lambda (x)
-	      (dolist (observer (observers sub))
-	  	(funcall (get-on-next observer) x) ))
+	      (when (is-active sub)
+		(dolist (observer (observers sub))
+	  	  (funcall (get-on-next observer) x) )))
 	  sub )
     (set-on-error
 	  #'(lambda (x)
-	      (dolist (observer (observers sub))
-		(funcall (get-on-error observer) x) ))
+	      (when (is-active sub)
+		(setf (state sub) 'error)
+		(dolist (observer (observers sub))
+		  (funcall (get-on-error observer) x) )))
 	  sub )
     (set-on-completed
 	  #'(lambda ()
-	      (dolist (observer (observers sub))
-		(funcall (get-on-completed observer)) ))
+	      (when (is-active sub)
+		(setf (state sub) 'completed)
+		(dolist (observer (observers sub))
+		  (funcall (get-on-completed observer)) )))
 	  sub )
     sub ))
 

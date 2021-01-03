@@ -45,6 +45,8 @@
 		:make-subject)
   (:import-from :cl-reex.macro
 		:with-observable)
+  (:import-from :cl-reex.macro.handmade-observable
+		:handmade-observable)
   (:export :subscribe
 	   :dispose
 	   :foreach
@@ -65,6 +67,7 @@
 	   :get-operator
 	   :set-operator
 	   :with-observable
+	   :handmade-observable
 	   :where
 	   :select
 	   :repeat

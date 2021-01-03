@@ -22,6 +22,7 @@
 		 (:file "operator/skip-while")
 		 (:file "subject/subject")
 		 (:file "macro/with-observable")
+		 (:file "macro/handmade-observable")
 		 (:file "cl-reex"))))
   :description ""
   :long-description
