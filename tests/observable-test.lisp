@@ -8,7 +8,7 @@
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :cl-reex)' in your Lisp.
 
-(plan 5)
+(plan 7)
 
 ;; blah blah blah.
 
@@ -72,5 +72,27 @@
 
 (is (result logger)
     nil )
+
+;; plan 6
+(reset logger)
+
+(with-observable (observable-from "Hello, World!")
+  (subscribe observer)
+  (dispose) )
+
+(is (result logger)
+    '(#\H #\e #\l #\l #\o #\, #\Space #\W #\o #\r #\l #\d #\! "completed") )
+
+;; plan 7
+(reset logger)
+
+(defvar str-stream (make-string-input-stream "Hello, World!"))
+(with-observable (observable-from str-stream)
+  (subscribe observer)
+  (dispose) )
+
+(is (result logger)
+    '(#\H #\e #\l #\l #\o #\, #\Space #\W #\o #\r #\l #\d #\! "completed") )
+
 
 (finalize)
