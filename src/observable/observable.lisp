@@ -26,6 +26,7 @@
 	   :observable-just
 	   :observable-repeat
 	   :observable-of
+       :observable-empty
 	   :foreach
 	   :observable-timer
 	   :observable-interval
@@ -148,6 +149,19 @@
 		      (call-on-next dt) )))) )
     (setf (thread dt) thread)
     dt ))
+;;
+;; observable empty
+;;
+(defclass observable-empty-object () nil)
+
+(defmethod subscribe ((empty observable-empty-object) observer)
+  (funcall (get-on-completed observer))
+  (make-instance 'disposable-do-nothing
+		 :observable empty
+		 :observer observer ))
+
+(defun observable-empty ()
+  (make-instance 'observable-empty-object) )
 
 ;;
 ;; observable from list
