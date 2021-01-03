@@ -6,8 +6,8 @@
 	   :observable-object
 	   :is-active
 	   :observable-state
-           :state
-           :active
+	   :state
+       :active
 	   :error
 	   :completed
 	   :disposed
@@ -25,6 +25,7 @@
 	   :observable-range
 	   :observable-just
 	   :observable-repeat
+	   :observable-of
 	   :foreach
 	   :observable-timer
 	   :observable-interval
@@ -167,6 +168,9 @@
 
 (defmethod observable-from ((source list))
   (make-instance 'observable-list :src-list source))
+
+(defun observable-of (&rest body)
+  (make-instance 'observable-list :src-list body) )
 
 ;;
 ;; observable from string
