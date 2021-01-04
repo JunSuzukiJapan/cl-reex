@@ -8,22 +8,23 @@
   :license "MIT"
   :depends-on ("bordeaux-threads")
   :components ((:module "src"
-                :components
-                ((:file "observable/observable")
-		 (:file "observer/observer")
-		 (:file "macro/operator-table")
-		 (:file "operator/operator")
-		 (:file "operator/where")
-		 (:file "operator/select")
-		 (:file "operator/repeat")
-		 (:file "operator/take")
-		 (:file "operator/take-while")
-		 (:file "operator/skip")
-		 (:file "operator/skip-while")
-		 (:file "subject/subject")
-		 (:file "macro/with-observable")
-		 (:file "macro/handmade-observable")
-		 (:file "cl-reex"))))
+      :components
+        ((:file "observable/observable")
+         (:file "observer/observer")
+         (:file "macro/operator-table")
+         (:file "operator/operator")
+         (:file "operator/where")
+         (:file "operator/select")
+         (:file "operator/repeat")
+         (:file "operator/take")
+         (:file "operator/take-while")
+         (:file "operator/take-until")
+         (:file "operator/skip")
+         (:file "operator/skip-while")
+         (:file "subject/subject")
+         (:file "macro/with-observable")
+         (:file "macro/handmade-observable")
+         (:file "cl-reex"))))
   :description ""
   :long-description
   #.(read-file-string

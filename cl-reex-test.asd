@@ -24,6 +24,7 @@
        (:test-file "observable-test")
        (:test-file "observable-timer-test")
        (:test-file "handmade-observable-test")
+       (:test-file "take-until-test")
 	  )))
   :description "Test system for cl-reex"
 
