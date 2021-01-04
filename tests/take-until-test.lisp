@@ -35,6 +35,6 @@
 	 #'(lambda (x) (on-next sub x)) )
 
 (is (result logger)
-    '(1 2 3 4 5) )
+    '(1 2 3 4 5 "completed") )
 
 (finalize)

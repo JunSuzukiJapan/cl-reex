@@ -64,7 +64,8 @@
 
     (set-on-next
       #'(lambda (x)
-          (setf (triggered op) t) )
+          (setf (triggered op) t)
+          (funcall (get-on-completed (observer op))) )
       trigger-observable )
     (set-on-error
       #'(lambda (x)

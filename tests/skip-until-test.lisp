@@ -63,6 +63,6 @@
 	 #'(lambda (x) (on-next sub x)) )
 
 (is (result logger)
-    '(6 7 8 9 10) )
+    '(6 7 8 9 10 "completed") )
 
 (finalize)
