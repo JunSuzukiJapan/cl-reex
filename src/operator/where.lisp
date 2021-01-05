@@ -30,7 +30,7 @@
 
 (defclass operator-where (operator)
   ((predicate :initarg :predicate
-	      :accessor predicate) )
+              :accessor predicate ))
   (:documentation "Where operator"))
 
 (defun make-operator-where (observable predicate)

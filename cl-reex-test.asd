@@ -26,6 +26,7 @@
        (:test-file "handmade-observable-test")
        (:test-file "take-until-test")
        (:test-file "skip-until-test")
+       (:test-file "first-test")
 	  )))
   :description "Test system for cl-reex"
 

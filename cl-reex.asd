@@ -11,6 +11,7 @@
       :components
         ((:file "observable/observable")
          (:file "observer/observer")
+         (:file "util/error-conditions")
          (:file "macro/operator-table")
          (:file "operator/operator")
          (:file "operator/where")
@@ -22,6 +23,7 @@
          (:file "operator/skip")
          (:file "operator/skip-while")
          (:file "operator/skip-until")
+         (:file "operator/first")
          (:file "subject/subject")
          (:file "macro/with-observable")
          (:file "macro/handmade-observable")

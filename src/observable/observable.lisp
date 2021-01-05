@@ -161,6 +161,7 @@
               (call-on-next dt) )))) )
     (setf (thread dt) thread)
     dt ))
+
 ;;
 ;; observable empty
 ;;

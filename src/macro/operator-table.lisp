@@ -4,7 +4,9 @@
   (:export :set-one-arg-operator
 	   :set-function-operator
 	   :set-operator-expander
-	   :get-operator-expander ))
+       :get-operator-expander
+       :set-zero-or-one-arg-operator
+       :set-zero-arg-or-function-operator ))
 
 (in-package :cl-reex.macro.operator-table)
 
@@ -54,4 +56,28 @@
 	  (,function-name
 	   ,temp-observable
 	   ,(cadr x) )))))
+
+(defun set-zero-arg-or-function-operator (name function-name)
+  (set-operator-expander name
+    #'(lambda (x var-name temp-observable)
+        (if (null (cdr x))
+	        `(,var-name
+	          (,function-name
+	           ,temp-observable ))
+            `(,var-name
+	          (,function-name
+	           ,temp-observable
+	           #'(lambda ,(cadr x) ,(caddr x) )))))))
+
+(defun set-zero-or-one-arg-operator (name function-name)
+  (set-operator-expander name
+    #'(lambda (x var-name temp-observable)
+        (if (null x)
+	        `(,var-name
+	          (,function-name
+	           ,temp-observable ))
+            `(,var-name
+	          (,function-name
+	           ,temp-observable
+	           ,(cadr x) ))))))
 
