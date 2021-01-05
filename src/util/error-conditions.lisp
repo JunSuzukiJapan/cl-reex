@@ -1,10 +1,10 @@
 (in-package :cl-user)
 (defpackage cl-reex.error-conditions
   (:use :cl)
-  (:export :sequence-contaions-no-elements-error) )
+  (:export :sequence-contains-no-elements-error) )
 
 
 (in-package :cl-reex.error-conditions)
 
-(define-condition sequence-contaions-no-elements-error (simple-error)
+(define-condition sequence-contains-no-elements-error (simple-error)
   () )

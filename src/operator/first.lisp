@@ -27,7 +27,7 @@
         :operator
         :predicate)
   (:import-from :cl-reex.error-conditions
-        :sequence-contaions-no-elements-error )
+        :sequence-contains-no-elements-error )
   (:export :operator-first
         :first
         :make-operator-first ))
@@ -65,7 +65,7 @@
          #'(lambda ()
              (when (is-active op)
                (set-error op)
-               (let ((err (make-instance 'sequence-contaions-no-elements-error)))
+               (let ((err (make-instance 'sequence-contains-no-elements-error)))
                  (funcall (get-on-error (observer op)) err) )))
          op )
         op )
@@ -90,7 +90,7 @@
          #'(lambda ()
              (when (is-active op)
                (set-error op)
-               (let ((err (make-condition 'sequence-contaions-no-elements-error)))
+               (let ((err (make-condition 'sequence-contains-no-elements-error)))
                  (funcall (get-on-error (observer op)) err) )))
          op )
         op )))

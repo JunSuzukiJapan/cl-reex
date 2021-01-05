@@ -52,7 +52,7 @@
   (is (length result)
       1 )
   (is (type-of (car result))
-      'sequence-contaions-no-elements-error ))
+      'sequence-contains-no-elements-error ))
 
 ;; plan 5 & 6
 (reset logger)
@@ -71,6 +71,6 @@
   (is (length result)
       1 )
   (is (type-of (car result))
-      'sequence-contaions-no-elements-error ))
+      'sequence-contains-no-elements-error ))
 
 (finalize)

@@ -23,7 +23,7 @@
         :on-error
         :on-completed)
   (:import-from :cl-reex.error-conditions
-        :sequence-contaions-no-elements-error )
+        :sequence-contains-no-elements-error )
   (:import-from :cl-reex.operator
         :operator
         :predicate
@@ -60,7 +60,7 @@
         :handmade-observable)
   (:export :subscribe
         :dispose
-        :sequence-contaions-no-elements-error
+        :sequence-contains-no-elements-error
         :foreach
         :observable
         :observable-range
