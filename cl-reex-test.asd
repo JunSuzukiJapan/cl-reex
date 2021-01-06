@@ -27,6 +27,7 @@
        (:test-file "take-until-test")
        (:test-file "skip-until-test")
        (:test-file "first-test")
+       (:test-file "last-test")
 	  )))
   :description "Test system for cl-reex"
 

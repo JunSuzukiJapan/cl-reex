@@ -51,6 +51,8 @@
         :repeat)
   (:import-from :cl-reex.operator.first
         :first)
+  (:import-from :cl-reex.operator.last
+        :last)
   (:import-from :cl-reex.subject.subject
         :subject
         :make-subject)
@@ -93,6 +95,7 @@
         :skip-while
         :skip-until
         :first
+        :last
         :operator-where
         :subject
         :make-subject))
