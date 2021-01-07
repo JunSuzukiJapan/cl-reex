@@ -40,4 +40,5 @@ cache:
     - $HOME/.config/common-lisp
 
 script:
-  - run-prove cl-reex-test.asd
+#  - run-prove cl-reex-test.asd
+  - ros run -e "(uiop:quit (if (asdf:test-system :cl-reex) 0 1))" -q
