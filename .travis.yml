@@ -32,6 +32,7 @@ jobs:
 install:
   - curl -L https://raw.githubusercontent.com/roswell/roswell/release/scripts/install-for-ci.sh | sh
   - ros install prove
+  - ros install bordeaux-threads
 
 cache:
   directories:
