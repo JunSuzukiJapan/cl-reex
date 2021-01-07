@@ -1,8 +1,8 @@
 (defpackage logger-test
   (:use :cl
-	:cl-reex
-	:cl-reex-test.logger
-        :prove)
+    :cl-reex
+    :cl-reex-test.logger
+    :prove)
   (:shadowing-import-from :cl-reex :skip))
 (in-package :logger-test)
 

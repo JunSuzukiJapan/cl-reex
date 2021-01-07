@@ -12,6 +12,7 @@
         ((:file "observable/observable")
          (:file "observer/observer")
          (:file "util/error-conditions")
+         (:file "util/fixed-size-queue")
          (:file "macro/operator-table")
          (:file "operator/operator")
          (:file "operator/where")

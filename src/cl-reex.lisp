@@ -24,6 +24,14 @@
         :on-completed)
   (:import-from :cl-reex.error-conditions
         :sequence-contains-no-elements-error )
+  (:import-from :cl-reex.fixed-size-queue
+        :queue
+        :make-queue
+        :enqueue
+        :dequeue
+        :is-empty
+        :elements-count
+        :size )
   (:import-from :cl-reex.operator
         :operator
         :predicate
@@ -61,6 +69,12 @@
   (:import-from :cl-reex.macro.handmade-observable
         :handmade-observable)
   (:export :subscribe
+        :queue
+        :make-queue
+        :enqueue
+        :dequeue
+        :is-empty
+        :size
         :dispose
         :sequence-contains-no-elements-error
         :foreach
