@@ -144,24 +144,27 @@
          :interval interval ))
 
 (defmethod subscribe ((timer observable-timer-object) observer)
-  (let* ((start (start timer))
-     (interval (interval timer))
-     (dt (make-instance 'disposable-timer
-                :observer observer
-                :start start
-                :interval interval
-                :count 0 ))
-     (thread (bt:make-thread
-          (lambda ()
-            (sleep start)
-            (call-on-next dt)
-            (do ((interval (interval dt)))
-            ((or (null interval)
-                 (end-loop-p dt) ))
-              (sleep interval)
-              (call-on-next dt) )))) )
-    (setf (thread dt) thread)
-    dt ))
+  (handler-bind
+      ((error #'(lambda (condition)
+                  (funcall (get-on-error observer) condition) )))
+    (let* ((start (start timer))
+           (interval (interval timer))
+           (dt (make-instance 'disposable-timer
+                              :observer observer
+                              :start start
+                              :interval interval
+                              :count 0 ))
+           (thread (bt:make-thread
+                    (lambda ()
+                      (sleep start)
+                      (call-on-next dt)
+                      (do ((interval (interval dt)))
+                          ((or (null interval)
+                               (end-loop-p dt) ))
+                        (sleep interval)
+                        (call-on-next dt) )))) )
+      (setf (thread dt) thread)
+      dt )))
 
 ;;
 ;; observable empty
@@ -217,12 +220,15 @@
   (:documentation "Observable from List") )
 
 (defmethod subscribe ((lst observable-list) observer)
-  (dolist (x (src-list lst))
-    (funcall (get-on-next observer) x) )
-  (funcall (get-on-completed observer))
-  (make-instance 'disposable-do-nothing
-         :observable lst
-         :observer observer ))
+  (handler-bind
+      ((error #'(lambda (condition)
+                  (funcall (get-on-error observer) condition) )))
+    (dolist (x (src-list lst))
+      (funcall (get-on-next observer) x) )
+    (funcall (get-on-completed observer))
+    (make-instance 'disposable-do-nothing
+                   :observable lst
+                   :observer observer )))
 
 (defmethod observable-from ((source list))
   (make-instance 'observable-list :src-list source))
@@ -238,14 +244,17 @@
            :accessor source)))
 
 (defmethod subscribe ((stream observable-string) observer)
-  (let ((s (make-string-input-stream (source stream))))
-    (do ((ch (read-char s nil) (read-char s nil)))
-    ((null ch))
-      (funcall (get-on-next observer) ch) ))
-  (funcall (get-on-completed observer))
-  (make-instance 'disposable-do-nothing
-         :observable stream
-         :observer observer ))
+  (handler-bind
+      ((error #'(lambda (condition)
+                  (funcall (get-on-error observer) condition) )))
+    (let ((s (make-string-input-stream (source stream))))
+      (do ((ch (read-char s nil) (read-char s nil)))
+          ((null ch))
+        (funcall (get-on-next observer) ch) ))
+    (funcall (get-on-completed observer))
+    (make-instance 'disposable-do-nothing
+                   :observable stream
+                   :observer observer )))
 
 (defmethod observable-from ((source string))
   (make-instance 'observable-string :source source) )
@@ -260,12 +269,15 @@
            :accessor source)) )
 
 (defmethod subscribe ((ary observable-array) observer)
-  (loop for item across (source ary)
-     do (funcall (get-on-next observer) item) )
-  (funcall (get-on-completed observer))
-  (make-instance 'disposable-do-nothing
-         :observable ary
-         :observer observer ))
+  (handler-bind
+      ((error #'(lambda (condition)
+                  (funcall (get-on-error observer) condition) )))
+    (loop for item across (source ary)
+          do (funcall (get-on-next observer) item) )
+    (funcall (get-on-completed observer))
+    (make-instance 'disposable-do-nothing
+                   :observable ary
+                   :observer observer )))
 
 (defmethod observable-from ((source array))
   (make-instance 'observable-array :source source) )
@@ -304,15 +316,18 @@
           :accessor count-num) ))
 
 (defmethod subscribe ((obj observable-range-object) observer)
-  (do ((i 0 (1+ i))
-       (from (from obj))
-       (count (count-num obj)) )
-      ((>= i count))
-    (funcall (get-on-next observer) (+ from i)) )
-  (funcall (get-on-completed observer))
-  (make-instance 'disposable-do-nothing
-         :observable obj
-         :observer observer ))
+  (handler-bind
+      ((error #'(lambda (condition)
+                  (funcall (get-on-error observer) condition) )))
+    (do ((i 0 (1+ i))
+         (from (from obj))
+         (count (count-num obj)) )
+        ((>= i count))
+      (funcall (get-on-next observer) (+ from i)) )
+    (funcall (get-on-completed observer))
+    (make-instance 'disposable-do-nothing
+                   :observable obj
+                   :observer observer )))
 
 (defun observable-range (from count)
   (make-instance 'observable-range-object
@@ -327,11 +342,14 @@
          :accessor item )))
 
 (defmethod subscribe ((obj observable-just-object) observer)
-  (funcall (get-on-next observer) (item obj))
-  (funcall (get-on-completed observer))
-  (make-instance 'disposable-do-nothing
-         :observable obj
-         :observer observer ))
+  (handler-bind
+      ((error #'(lambda (condition)
+                  (funcall (get-on-error observer) condition) )))
+    (funcall (get-on-next observer) (item obj))
+    (funcall (get-on-completed observer))
+    (make-instance 'disposable-do-nothing
+                   :observable obj
+                   :observer observer )))
 
 
 (defun observable-just (item)
@@ -348,15 +366,18 @@
           :accessor count-num )))
 
 (defmethod subscribe ((obj observable-repeat-object) observer)
-  (let ((count (count-num obj))
-    (item (item obj)) )
-    (do ((i 0 (1+ i)))
-    ((>= i count))
-      (funcall (get-on-next observer) item) )
-    (funcall (get-on-completed observer))
-    (make-instance 'disposable-do-nothing
-           :observable obj
-           :observer observer )))
+  (handler-bind
+      ((error #'(lambda (condition)
+                  (funcall (get-on-error observer) condition) )))
+    (let ((count (count-num obj))
+          (item (item obj)) )
+      (do ((i 0 (1+ i)))
+          ((>= i count))
+        (funcall (get-on-next observer) item) )
+      (funcall (get-on-completed observer))
+      (make-instance 'disposable-do-nothing
+                     :observable obj
+                     :observer observer ))))
 
 
 (defun observable-repeat (item count)
