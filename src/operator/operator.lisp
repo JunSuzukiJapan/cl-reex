@@ -2,14 +2,14 @@
 (defpackage cl-reex.operator
   (:use :cl)
   (:import-from :cl-reex.observable
-		:observable
-		:dispose
-		:subscribe)
+        :observable
+        :dispose
+        :subscribe)
   (:import-from :cl-reex.observer
- 		:observer)
+        :observer)
   (:export :operator
-	   :predicate
-	   :func))
+        :predicate
+        :func))
 
 (in-package :cl-reex.operator)
 
@@ -17,11 +17,11 @@
 
 (defclass operator (observer)
   ((observable :initarg :observable
-	       :accessor observable)
+               :accessor observable)
    (observer :initarg :observer
-	     :accessor observer)
+             :accessor observer)
    (subscription :initarg :subscription
-		 :accessor subscription) ))
+                 :accessor subscription) ))
 
 (defmethod subscribe ((op operator) observer)
   (setf (observer op) observer)

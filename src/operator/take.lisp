@@ -2,59 +2,59 @@
 (defpackage cl-reex.operator.take
   (:use :cl)
   (:import-from :cl-reex.observer
- 		:observer
-		:on-next
-		:on-error
-		:on-completed)
+        :observer
+        :on-next
+        :on-error
+        :on-completed)
   (:import-from :cl-reex.observable
-		:observable
-		:dispose
-		:get-on-next
-		:set-on-next
-		:get-on-error
-		:set-on-error
-		:get-on-completed
-		:set-on-completed
-		:subscribe)
+        :observable
+        :dispose
+        :get-on-next
+        :set-on-next
+        :get-on-error
+        :set-on-error
+        :get-on-completed
+        :set-on-completed
+        :subscribe)
   (:import-from :cl-reex.macro.operator-table
-		:set-one-arg-operator)
+        :set-one-arg-operator)
   (:import-from :cl-reex.operator
-		:operator
-		:predicate)
+        :operator
+        :predicate)
   (:export :operator-take
-	   :take
-	   :make-operator-take))
+        :take
+        :make-operator-take))
 
 (in-package :cl-reex.operator.take)
 
 
 (defclass operator-take (operator)
   ((count :initarg :count
-	  :accessor count-num)
+          :accessor count-num)
    (current-count :initarg :current-count
-		  :initform 0
-		  :accessor current-count) )
+                  :initform 0
+                  :accessor current-count) )
   (:documentation "Take operator"))
 
 (defun make-operator-take (observable count)
   (let ((op (make-instance 'operator-take
-		 :observable observable
-		 :count count )))
+                           :observable observable
+                           :count count )))
     (set-on-next
-	  #'(lambda (x)
-	      (when (< (current-count op) (count-num op))
-		(incf (current-count op))
-	  	(funcall (get-on-next (observer op)) x)
-		(when (>= (current-count op) (count-num op))
-		  (funcall (get-on-completed (observer op))) )))
-	  op )
+      #'(lambda (x)
+          (when (< (current-count op) (count-num op))
+            (incf (current-count op))
+            (funcall (get-on-next (observer op)) x)
+            (when (>= (current-count op) (count-num op))
+              (funcall (get-on-completed (observer op))) )))
+      op )
     (set-on-error
-	  #'(lambda (x)
-	      (funcall (get-on-error (observer op)) x) )
-	  op )
+      #'(lambda (x)
+          (funcall (get-on-error (observer op)) x) )
+      op )
     (set-on-completed
-          #'(lambda () ) ;; do nothing
-	  op )
+      #'(lambda () ) ;; do nothing
+      op )
     op ))
 
 

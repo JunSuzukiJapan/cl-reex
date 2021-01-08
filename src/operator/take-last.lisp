@@ -1,5 +1,5 @@
 (in-package :cl-user)
-(defpackage cl-reex.operator.take-while
+(defpackage cl-reex.operator.take-last
   (:use :cl)
   (:import-from :cl-reex.observer
         :observer
@@ -21,25 +21,25 @@
   (:import-from :cl-reex.operator
         :operator
         :predicate)
-  (:export :operator-take-while
-        :take-while
-        :make-operator-take-while))
+  (:export :operator-take-last
+        :take-last
+        :make-operator-take-last))
 
-(in-package :cl-reex.operator.take-while)
+(in-package :cl-reex.operator.take-last)
 
 
-(defclass operator-take-while (operator)
+(defclass operator-take-last (operator)
   ((predicate :initarg :predicate
-              :accessor predicate )
+          :accessor predicate )
    (completed :initarg :completed
-              :initform nil
-              :accessor completed ))
-  (:documentation "Take-While operator"))
+          :initform nil
+          :accessor completed ))
+  (:documentation "Take-Last operator"))
 
-(defun make-operator-take-while (observable predicate)
-  (let ((op (make-instance 'operator-take-while
-                           :observable observable
-                           :predicate predicate )))
+(defun make-operator-take-last (observable predicate)
+  (let ((op (make-instance 'operator-take-last
+         :observable observable
+         :predicate predicate )))
     (set-on-next
       #'(lambda (x)
           (when (not (completed op))
@@ -59,9 +59,9 @@
     op ))
 
 
-(defmethod subscribe ((op operator-take-while) observer)
+(defmethod subscribe ((op operator-take-last) observer)
   (setf (completed op) nil)
   (call-next-method) )
 
-(set-function-operator 'take-while 'make-operator-take-while)
+(set-function-operator 'take-last 'make-operator-take-last)
 
