@@ -31,6 +31,7 @@
        (:test-file "fixed-size-queue-test")
        (:test-file "take-last-test")
        (:test-file "skip-last-test")
+       (:test-file "ignore-elements-test")
 	  )))
   :description "Test system for cl-reex"
 

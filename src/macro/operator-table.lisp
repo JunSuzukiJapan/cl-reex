@@ -5,6 +5,7 @@
        :set-function-operator
        :set-operator-expander
        :get-operator-expander
+       :set-zero-arg-operator
        :set-zero-or-one-arg-operator
        :set-zero-arg-or-function-operator ))
 
@@ -48,6 +49,13 @@
           (,function-name
            ,temp-observable
            #'(lambda ,(cadr x) ,(caddr x) ))))))
+
+(defun set-zero-arg-operator (name function-name)
+  (set-operator-expander name
+    #'(lambda (x var-name temp-observable)
+        `(,var-name
+          (,function-name
+           ,temp-observable )))))
 
 (defun set-one-arg-operator (name function-name)
   (set-operator-expander name
