@@ -68,6 +68,9 @@
         :last)
   (:import-from :cl-reex.operator.ignore-elements
         :ignore-elements)
+  (:import-from :cl-reex.operator.distinct
+        :distinct
+        :distinct-until-changed )
   (:import-from :cl-reex.subject.subject
         :subject
         :make-subject)
@@ -122,6 +125,8 @@
         :last
         :operator-where
         :ignore-elements
+        :distinct
+        :distinct-until-changed
         :subject
         :make-subject))
 

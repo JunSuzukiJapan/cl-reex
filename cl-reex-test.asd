@@ -32,6 +32,7 @@
        (:test-file "take-last-test")
        (:test-file "skip-last-test")
        (:test-file "ignore-elements-test")
+       (:test-file "distinct-test")
 	  )))
   :description "Test system for cl-reex"
 
