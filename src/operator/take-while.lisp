@@ -60,8 +60,11 @@
 
 
 (defmethod subscribe ((op operator-take-while) observer)
-  (setf (completed op) nil)
-  (call-next-method) )
+  (handler-bind
+      ((error #'(lambda (condition)
+                  (funcall (get-on-error observer) condition) )))
+    (setf (completed op) nil)
+    (call-next-method) ))
 
 (set-function-operator 'take-while 'make-operator-take-while)
 

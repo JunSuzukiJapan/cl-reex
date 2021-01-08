@@ -3,6 +3,7 @@
   (:use :cl)
   (:import-from :cl-reex.observable
         :observable
+        :get-on-error
         :dispose
         :subscribe)
   (:import-from :cl-reex.observer
@@ -24,7 +25,10 @@
                  :accessor subscription) ))
 
 (defmethod subscribe ((op operator) observer)
-  (setf (observer op) observer)
-  (when (slot-boundp op 'subscription)
-    (dispose (subscription op)) )
-  (setf (subscription op) (subscribe (observable op) op)) )
+  (handler-bind
+      ((error #'(lambda (condition)
+                  (funcall (get-on-error observer) condition) )))
+    (setf (observer op) observer)
+    (when (slot-boundp op 'subscription)
+      (dispose (subscription op)) )
+    (setf (subscription op) (subscribe (observable op) op)) ))

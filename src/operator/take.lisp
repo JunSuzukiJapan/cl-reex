@@ -59,8 +59,11 @@
 
 
 (defmethod subscribe ((op operator-take) observer)
-  (setf (current-count op) 0)
-  (call-next-method) )
+  (handler-bind
+      ((error #'(lambda (condition)
+                  (funcall (get-on-error observer) condition) )))
+    (setf (current-count op) 0)
+    (call-next-method) ))
 
 (set-one-arg-operator 'take 'make-operator-take)
 

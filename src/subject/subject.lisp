@@ -78,10 +78,13 @@
 ;; Subscribe
 ;;
 (defmethod subscribe ((sub subject) observer)
-  (push observer (observers sub))
-  (make-instance 'disposable-subject
-         :subject sub
-         :observer observer ))
+  (handler-bind
+      ((error #'(lambda (condition)
+                  (funcall (get-on-error observer) condition) )))
+    (push observer (observers sub))
+    (make-instance 'disposable-subject
+                   :subject sub
+                   :observer observer )))
 
 ;;
 ;; on-next, on-error & on-completed

@@ -113,8 +113,11 @@
         op )))
   
 (defmethod subscribe ((op operator-last) observer)
-  (setf (has-last-item op) nil)
-  (call-next-method) )
+  (handler-bind
+      ((error #'(lambda (condition)
+                  (funcall (get-on-error observer) condition) )))
+    (setf (has-last-item op) nil)
+    (call-next-method) ))
 
 (set-zero-arg-or-function-operator 'last 'make-operator-last)
 
