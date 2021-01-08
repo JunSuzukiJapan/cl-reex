@@ -39,9 +39,6 @@
 (defclass operator-skip-last (operator)
   ((skip-count :initarg :skip-count
                :accessor skip-count )
-   (current-count :initarg :current-count
-                  :initform 0
-                  :accessor current-count )
    (stack :initarg :stack
           :initform nil
           :accessor stack ))
@@ -53,8 +50,7 @@
                             :skip-count count )))
     (set-on-next
       #'(lambda (x)
-          (push x (stack op))
-          (incf (current-count op)) )
+          (push x (stack op)) )
       op )
     (set-on-error
       #'(lambda (x)
