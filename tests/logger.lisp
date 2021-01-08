@@ -4,16 +4,16 @@
         :cl-reex
         :prove)
   (:export :logger
-	   :add
-	   :result
-	   :reset)
+        :add
+        :result
+        :reset)
   (:shadowing-import-from :cl-reex :skip))
 (in-package :cl-reex-test.logger)
 
 (defclass logger ()
   ((log :initarg :log
-	:initform nil
-	:accessor logger-log )))
+        :initform nil
+        :accessor logger-log )))
 
 (defgeneric add (logger item))
 

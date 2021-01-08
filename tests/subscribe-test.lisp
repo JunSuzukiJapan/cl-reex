@@ -1,8 +1,8 @@
 (defpackage subscribe-test
   (:use :cl
-	:cl-reex
-	:cl-reex-test.logger
-        :prove)
+    :cl-reex
+    :cl-reex-test.logger
+    :prove)
   (:shadowing-import-from :cl-reex :skip))
 (in-package :subscribe-test)
 
@@ -16,9 +16,9 @@
 (defparameter ol (observable-from '(1 2 3 4 5 6 7 8 9 10)))
 
 (defparameter observer (make-observer
-		#'(lambda (x) (add logger x))
-		#'(lambda (x) (add logger (format nil "error: ~S" x)))
-		#'(lambda () (add logger "completed")) ))
+    #'(lambda (x) (add logger x))
+    #'(lambda (x) (add logger (format nil "error: ~S" x)))
+    #'(lambda () (add logger "completed")) ))
 
 (subscribe ol observer)
 

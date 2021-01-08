@@ -1,8 +1,8 @@
 (defpackage subject-test
   (:use :cl
-	:cl-reex
-	:cl-reex-test.logger
-        :prove)
+    :cl-reex
+    :cl-reex-test.logger
+    :prove)
   (:shadowing-import-from :cl-reex :skip))
 (in-package :subject-test)
 
@@ -15,14 +15,14 @@
 (defparameter logger (make-instance 'logger))
 
 (defparameter observer1 (make-observer
-		#'(lambda (x) (add logger x))
-		#'(lambda (x) (add logger (format nil "error: ~S" x)))
-		#'(lambda () (add logger "completed 1")) ))
+    #'(lambda (x) (add logger x))
+    #'(lambda (x) (add logger (format nil "error: ~S" x)))
+    #'(lambda () (add logger "completed 1")) ))
 
 (defparameter observer2 (make-observer
-		#'(lambda (x) (add logger x))
-		#'(lambda (x) (add logger (format nil "error: ~S" x)))
-		#'(lambda () (add logger "completed 2")) ))
+    #'(lambda (x) (add logger x))
+    #'(lambda (x) (add logger (format nil "error: ~S" x)))
+    #'(lambda () (add logger "completed 2")) ))
 
 (defparameter sub (make-subject))
 

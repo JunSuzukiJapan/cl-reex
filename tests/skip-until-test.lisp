@@ -1,8 +1,8 @@
 (defpackage skip-until-test
   (:use :cl
-	:cl-reex
-	:cl-reex-test.logger
-        :prove)
+    :cl-reex
+    :cl-reex-test.logger
+    :prove)
   (:shadowing-import-from :cl-reex :skip))
 (in-package :skip-until-test)
 
@@ -15,9 +15,9 @@
 (defparameter logger (make-instance 'logger))
 
 (defparameter observer (make-observer
-		#'(lambda (x) (add logger x))
-		#'(lambda (x) (add logger (format nil "error: ~S" x)))
-		#'(lambda () (add logger "completed")) ))
+    #'(lambda (x) (add logger x))
+    #'(lambda (x) (add logger (format nil "error: ~S" x)))
+    #'(lambda () (add logger "completed")) ))
 
 (defparameter sub (make-subject))
 (defparameter start-trigger (make-subject))
@@ -27,12 +27,12 @@
   (subscribe observer) )
 
 (foreach (observable-range 1 5)
-	 #'(lambda (x) (on-next sub x)) )
+   #'(lambda (x) (on-next sub x)) )
 
 (on-next start-trigger 1)
 
 (foreach (observable-range 6 5)
-	 #'(lambda (x) (on-next sub x)) )
+   #'(lambda (x) (on-next sub x)) )
 
 (is (result logger)
     '(6 7 8 9 10) )
@@ -50,17 +50,17 @@
   (subscribe observer) )
 
 (foreach (observable-range 1 5)
-	 #'(lambda (x) (on-next sub x)) )
+  #'(lambda (x) (on-next sub x)) )
 
 (on-next start-trigger 1)
 
 (foreach (observable-range 6 5)
-	 #'(lambda (x) (on-next sub x)) )
+  #'(lambda (x) (on-next sub x)) )
 
 (on-next end-trigger 1)
 
 (foreach (observable-range 11 5)
-	 #'(lambda (x) (on-next sub x)) )
+  #'(lambda (x) (on-next sub x)) )
 
 (is (result logger)
     '(6 7 8 9 10 "completed") )

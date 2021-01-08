@@ -17,10 +17,18 @@
         :set-on-completed
         :subscribe)
   (:import-from :cl-reex.macro.operator-table
-        :set-function-operator)
+        :set-one-arg-operator)
   (:import-from :cl-reex.operator
         :operator
         :predicate)
+  (:import-from :cl-reex.fixed-size-queue
+        :queue
+        :make-queue
+        :enqueue
+        :dequeue
+        :is-empty
+        :elements-count
+        :size )
   (:export :operator-take-last
         :take-last
         :make-operator-take-last))
@@ -29,39 +37,34 @@
 
 
 (defclass operator-take-last (operator)
-  ((predicate :initarg :predicate
-          :accessor predicate )
-   (completed :initarg :completed
-          :initform nil
-          :accessor completed ))
+  ((queue :initarg :queue
+          :accessor queue ))
   (:documentation "Take-Last operator"))
 
-(defun make-operator-take-last (observable predicate)
-  (let ((op (make-instance 'operator-take-last
-         :observable observable
-         :predicate predicate )))
+(defun make-operator-take-last (observable count)
+  (let* ((queue (make-queue count))
+         (op (make-instance 'operator-take-last
+                            :observable observable
+                            :queue queue )))
     (set-on-next
       #'(lambda (x)
-          (when (not (completed op))
-            (if (funcall (predicate op) x)
-                (funcall (get-on-next (observer op)) x)
-                (progn
-                  (setf (completed op) t)
-                  (funcall (get-on-completed (observer op))) ))))
+          (enqueue (queue op) x) )
       op )
     (set-on-error
       #'(lambda (x)
           (funcall (get-on-error (observer op)) x) )
       op )
     (set-on-completed
-      #'(lambda () ) ;; do nothing
+      #'(lambda ()
+          (do ((queue (queue op))
+               (on-next (get-on-next (observer op))) )
+              ((is-empty queue)
+               (funcall (get-on-completed (observer op))) )
+            (let ((item (dequeue queue)))
+              (funcall on-next item) )))
       op )
     op ))
 
 
-(defmethod subscribe ((op operator-take-last) observer)
-  (setf (completed op) nil)
-  (call-next-method) )
-
-(set-function-operator 'take-last 'make-operator-take-last)
+(set-one-arg-operator 'take-last 'make-operator-take-last)
 

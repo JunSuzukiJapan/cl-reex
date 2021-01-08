@@ -1,8 +1,8 @@
 (defpackage first-test
   (:use :cl
-	:cl-reex
-	:cl-reex-test.logger
-        :prove)
+    :cl-reex
+    :cl-reex-test.logger
+    :prove)
   (:shadowing-import-from :cl-reex :skip))
 (in-package :first-test)
 
@@ -15,9 +15,9 @@
 (defparameter logger (make-instance 'logger))
 
 (defparameter observer (make-observer
-		#'(lambda (x) (add logger x))
-		#'(lambda (err) (add logger err))
-		#'(lambda () (add logger "completed")) ))
+    #'(lambda (x) (add logger x))
+    #'(lambda (err) (add logger err))
+    #'(lambda () (add logger "completed")) ))
 
 ;; plan 1
 

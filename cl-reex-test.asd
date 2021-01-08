@@ -29,6 +29,7 @@
        (:test-file "first-test")
        (:test-file "last-test")
        (:test-file "fixed-size-queue-test")
+       (:test-file "take-last-test")
 	  )))
   :description "Test system for cl-reex"
 

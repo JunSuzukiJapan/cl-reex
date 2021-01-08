@@ -1,8 +1,8 @@
 (defpackage observable-timer-test
   (:use :cl
-	:cl-reex
-	:cl-reex-test.logger
-        :prove)
+    :cl-reex
+    :cl-reex-test.logger
+    :prove)
   (:shadowing-import-from :cl-reex :skip))
 (in-package :observable-timer-test)
 
@@ -15,9 +15,9 @@
 (defparameter logger (make-instance 'logger))
 
 (defparameter observer (make-observer
-		#'(lambda (x) (add logger x))
-		#'(lambda (x) (add logger (format nil "error: ~S" x)))
-		#'(lambda () (add logger "completed")) ))
+    #'(lambda (x) (add logger x))
+    #'(lambda (x) (add logger (format nil "error: ~S" x)))
+    #'(lambda () (add logger "completed")) ))
 
 ;; plan 1
 (defparameter timer (observable-timer 0.1))

@@ -26,6 +26,7 @@
          (:file "operator/skip-until")
          (:file "operator/first")
          (:file "operator/last")
+         (:file "operator/take-last")
          (:file "subject/subject")
          (:file "macro/with-observable")
          (:file "macro/handmade-observable")

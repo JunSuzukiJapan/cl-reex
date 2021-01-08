@@ -49,6 +49,8 @@
         :take-while)
   (:import-from :cl-reex.operator.take-until
         :take-until)
+  (:import-from :cl-reex.operator.take-last
+        :take-last)
   (:import-from :cl-reex.operator.skip
         :skip)
   (:import-from :cl-reex.operator.skip-while
@@ -105,6 +107,7 @@
         :take
         :take-while
         :take-until
+        :take-last
         :skip
         :skip-while
         :skip-until

@@ -1,14 +1,14 @@
-(defpackage skip-test
+(defpackage take-last-test
   (:use :cl
     :cl-reex
     :cl-reex-test.logger
     :prove)
   (:shadowing-import-from :cl-reex :skip))
-(in-package :skip-test)
+(in-package :take-last-test)
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :cl-reex)' in your Lisp.
 
-(plan 1)
+(plan 2)
 
 ;; blah blah blah.
 
@@ -19,13 +19,25 @@
     #'(lambda (x) (add logger (format nil "error: ~S" x)))
     #'(lambda () (add logger "completed")) ))
 
+;; plan 1
 (with-observable (observable-from '(1 2 3 4 5 6 7 8 9 10))
-  (skip 2)
-  (take 5)
+  (where (x) (oddp x))
+  (take-last 3)
   (subscribe observer)
   (dispose) )
 
 (is (result logger)
-    '(3 4 5 6 7 "completed"))
+    '(5 7 9 "completed"))
+
+;; plan 2
+(reset logger)
+
+(with-observable (observable-empty)
+  (take-last 3)
+  (subscribe observer)
+  (dispose) )
+
+(is (result logger)
+    '("completed"))
 
 (finalize)
