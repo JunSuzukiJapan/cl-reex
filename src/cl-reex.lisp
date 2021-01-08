@@ -57,6 +57,8 @@
         :skip-while)
   (:import-from :cl-reex.operator.skip-until
         :skip-until)
+  (:import-from :cl-reex.operator.skip-last
+        :skip-last)
   (:import-from :cl-reex.operator.repeat
         :repeat)
   (:import-from :cl-reex.operator.first
@@ -111,6 +113,7 @@
         :skip
         :skip-while
         :skip-until
+        :skip-last
         :first
         :last
         :operator-where
