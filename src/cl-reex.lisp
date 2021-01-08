@@ -15,6 +15,7 @@
         :observable-of
         :observable-empty
         :observable-never
+        :observable-throw
         :make-observer
         :foreach)
   (:import-from :cl-reex.observer
@@ -94,6 +95,7 @@
         :observable-of
         :observable-empty
         :observable-never
+        :observable-throw
         :observer
         :make-observer
         :on-next

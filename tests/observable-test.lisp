@@ -8,7 +8,7 @@
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :cl-reex)' in your Lisp.
 
-(plan 7)
+(plan 8)
 
 ;; blah blah blah.
 
@@ -16,7 +16,7 @@
 
 (defparameter observer (make-observer
     #'(lambda (x) (add logger x))
-    #'(lambda (x) (add logger (format nil "error: ~S" x)))
+    #'(lambda (x) (add logger (format nil "error: ~A" x)))
     #'(lambda () (add logger "completed")) ))
 
 (with-observable (observable-from '(1 2 3 4 5 6 7 8 9 10))
@@ -94,5 +94,14 @@
 (is (result logger)
     '(#\H #\e #\l #\l #\o #\, #\Space #\W #\o #\r #\l #\d #\! "completed") )
 
+;; plan 8
+(reset logger)
+
+(with-observable (observable-throw "My-Error")
+  (subscribe observer)
+  (dispose) )
+
+(is (result logger)
+    '("error: My-Error") )
 
 (finalize)

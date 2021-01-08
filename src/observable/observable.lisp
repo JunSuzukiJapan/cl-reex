@@ -31,6 +31,7 @@
        :observable-of
        :observable-empty
        :observable-never
+       :observable-throw
        :foreach
        :observable-timer
        :observable-interval
@@ -188,6 +189,23 @@
 
 (defun observable-never ()
   (make-instance 'observable-never-object) )
+
+;;
+;; observable-throw
+;;
+(defclass observable-throw-object ()
+  ((error-obj :initarg :error-obj
+              :accessor error-obj )))
+
+(defun observable-throw (err-obj)
+  (make-instance 'observable-throw-object
+                 :error-obj err-obj ))
+
+(defmethod subscribe ((obj observable-throw-object) observer)
+  (funcall (get-on-error observer) (error-obj obj))
+  (make-instance 'disposable-do-nothing
+                 :observable obj
+                 :observer observer ))
 
 ;;
 ;; observable from list
