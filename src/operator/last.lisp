@@ -70,8 +70,8 @@
              (when (is-active op)
                (if (has-last-item op)
                    (progn
-                     (set-completed op)
                      (funcall (get-on-next (observer op)) (last-item op))
+                     (set-completed op)
                      (funcall (get-on-completed (observer op))) )
                    (progn
                      (set-error op)
@@ -102,8 +102,8 @@
              (when (is-active op)
                (if (has-last-item op)
                    (progn
-                     (set-completed op)
                      (funcall (get-on-next (observer op)) (last-item op))
+                     (set-completed op)
                      (funcall (get-on-completed (observer op))) )
                    (progn
                      (set-error op)
