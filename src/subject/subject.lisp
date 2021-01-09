@@ -80,7 +80,11 @@
 (defmethod subscribe ((sub subject) observer)
   (handler-bind
       ((error #'(lambda (condition)
-                  (funcall (get-on-error observer) condition) )))
+                  (funcall (get-on-error observer) condition)
+                  (return-from subscribe
+                    (make-instance 'disposable-do-nothing
+                                   :observable sub
+                                   :observer observer )))))
     (push observer (observers sub))
     (make-instance 'disposable-subject
                    :subject sub

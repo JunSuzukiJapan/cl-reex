@@ -35,7 +35,11 @@
 (defmethod subscribe ((observable handmade-observable-object) observer)
   (handler-bind
       ((error #'(lambda (condition)
-                  (funcall (get-on-error observer) condition) )))
+                  (funcall (get-on-error observer) condition)
+                  (return-from subscribe
+                    (make-instance 'disposable-do-nothing
+                                   :observable observable
+                                   :observer observer )))))
     (dolist (message (source observable))
       (let ((on-next (get-on-next observer))
             (on-error (get-on-error observer))

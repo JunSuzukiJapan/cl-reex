@@ -61,7 +61,11 @@
 (defmethod subscribe ((op operator-take) observer)
   (handler-bind
       ((error #'(lambda (condition)
-                  (funcall (get-on-error observer) condition) )))
+                  (funcall (get-on-error observer) condition)
+                  (return-from subscribe
+                    (make-instance 'disposable-do-nothing
+                                   :observable op
+                                   :observer observer )))))
     (setf (current-count op) 0)
     (call-next-method) ))
 
