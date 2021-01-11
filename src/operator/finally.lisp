@@ -43,19 +43,21 @@
       op )
     (set-on-error
       #'(lambda (x)
-          (funcall (get-on-error (observer op)) x)
-          (funcall action) )
+          (unwind-protect
+           (funcall (get-on-error (observer op)) x)
+           (funcall action) ))
       op )
     (set-on-completed
       #'(lambda ()
-          (funcall (get-on-completed (observer op)))
-          (funcall action) )
+          (unwind-protect
+           (funcall (get-on-completed (observer op)))
+           (funcall action) ))
       op )
     op ))
 
 (defmethod subscribe ((op operator-finally) observer)
   (handler-bind
-      ((error #'(lambda (condition)
+      ((condition #'(lambda (condition)
                   (funcall (action op))
                   (return-from subscribe
                     (make-instance 'disposable-do-nothing
