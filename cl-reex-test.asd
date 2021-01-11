@@ -34,6 +34,7 @@
        (:test-file "ignore-elements-test")
        (:test-file "distinct-test")
        (:test-file "error-handling-test")
+       (:test-file "finally-test")
 	  )))
   :description "Test system for cl-reex"
 

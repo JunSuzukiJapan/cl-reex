@@ -30,6 +30,7 @@
          (:file "operator/skip-last")
          (:file "operator/ignore-elements")
          (:file "operator/distinct")
+         (:file "operator/finally")
          (:file "subject/subject")
          (:file "macro/with-observable")
          (:file "macro/handmade-observable")

@@ -71,6 +71,8 @@
   (:import-from :cl-reex.operator.distinct
         :distinct
         :distinct-until-changed )
+  (:import-from :cl-reex.operator.finally
+        :finally )
   (:import-from :cl-reex.subject.subject
         :subject
         :make-subject)
@@ -127,6 +129,7 @@
         :ignore-elements
         :distinct
         :distinct-until-changed
+        :finally
         :subject
         :make-subject))
 

@@ -5,6 +5,7 @@
         :observable
         :get-on-error
         :dispose
+        :disposable-do-nothing
         :subscribe)
   (:import-from :cl-reex.observer
         :observer)
@@ -25,14 +26,7 @@
                  :accessor subscription) ))
 
 (defmethod subscribe ((op operator) observer)
-  (handler-bind
-      ((error #'(lambda (condition)
-                  (funcall (get-on-error observer) condition)
-                  (return-from subscribe
-                    (make-instance 'disposable-do-nothing
-                                   :observable op
-                                   :observer observer )))))
-    (setf (observer op) observer)
-    (when (slot-boundp op 'subscription)
-      (dispose (subscription op)) )
-    (setf (subscription op) (subscribe (observable op) op)) ))
+  (setf (observer op) observer)
+  (when (slot-boundp op 'subscription)
+    (dispose (subscription op)) )
+  (setf (subscription op) (subscribe (observable op) op)) )
