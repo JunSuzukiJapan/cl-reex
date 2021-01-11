@@ -58,11 +58,11 @@
 (defmethod subscribe ((op operator-finally) observer)
   (handler-bind
       ((condition #'(lambda (condition)
-                  (funcall (action op))
-                  (return-from subscribe
-                    (make-instance 'disposable-do-nothing
-                                   :observable op
-                                   :observer observer )))))
+                      (funcall (action op))
+                      (return-from subscribe
+                        (make-instance 'disposable-do-nothing
+                                       :observable op
+                                       :observer observer )))))
     (call-next-method) ))
 
 
