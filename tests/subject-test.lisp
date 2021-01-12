@@ -16,12 +16,12 @@
 
 (defparameter observer1 (make-observer
     #'(lambda (x) (add logger x))
-    #'(lambda (x) (add logger (format nil "error: ~S" x)))
+    #'(lambda (x) (add logger (format nil "error: ~A" x)))
     #'(lambda () (add logger "completed 1")) ))
 
 (defparameter observer2 (make-observer
     #'(lambda (x) (add logger x))
-    #'(lambda (x) (add logger (format nil "error: ~S" x)))
+    #'(lambda (x) (add logger (format nil "error: ~A" x)))
     #'(lambda () (add logger "completed 2")) ))
 
 (defparameter sub (make-subject))

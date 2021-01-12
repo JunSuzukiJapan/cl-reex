@@ -73,6 +73,8 @@
         :distinct-until-changed )
   (:import-from :cl-reex.operator.finally
         :finally )
+  (:import-from :cl-reex.operator.catch
+        :catch* )
   (:import-from :cl-reex.subject.subject
         :subject
         :make-subject)
@@ -130,6 +132,7 @@
         :distinct
         :distinct-until-changed
         :finally
+        :catch*
         :subject
         :make-subject))
 

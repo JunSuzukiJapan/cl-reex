@@ -7,7 +7,8 @@
        :get-operator-expander
        :set-zero-arg-operator
        :set-zero-or-one-arg-operator
-       :set-zero-arg-or-function-operator ))
+       :set-zero-arg-or-function-operator
+       :set-one-or-two-arg-operator-quote ))
 
 (in-package :cl-reex.macro.operator-table)
 
@@ -88,4 +89,18 @@
               (,function-name
                ,temp-observable
                ,(cadr x) ))))))
+
+(defun set-one-or-two-arg-operator-quote (name function-name)
+  (set-operator-expander name
+    #'(lambda (x var-name temp-observable)
+        (if (null (cddr x))
+            `(,var-name
+              (,function-name
+               ,temp-observable
+               ,(cadr x) ))
+            `(,var-name
+              (,function-name
+               ,temp-observable
+               ',(cadr x)
+               ,(caddr x) ))))))
 

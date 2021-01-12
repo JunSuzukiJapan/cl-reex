@@ -11,7 +11,8 @@
         :observer)
   (:export :operator
         :predicate
-        :func))
+        :func
+        :subscription ))
 
 (in-package :cl-reex.operator)
 

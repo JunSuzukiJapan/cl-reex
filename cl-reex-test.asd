@@ -35,6 +35,7 @@
        (:test-file "distinct-test")
        (:test-file "error-handling-test")
        (:test-file "finally-test")
+       (:test-file "catch-test")
 	  )))
   :description "Test system for cl-reex"
 

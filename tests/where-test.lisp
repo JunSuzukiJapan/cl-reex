@@ -16,7 +16,7 @@
 
 (defparameter observer (make-observer
     #'(lambda (x) (add logger x))
-    #'(lambda (x) (add logger (format nil "error: ~S" x)))
+    #'(lambda (x) (add logger (format nil "error: ~A" x)))
     #'(lambda () (add logger "completed")) ))
 
 (with-observable (observable-from '(1 2 3 4 5 6 7 8 9 10))

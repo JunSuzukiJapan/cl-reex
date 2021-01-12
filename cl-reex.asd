@@ -32,6 +32,7 @@
          (:file "operator/distinct")
          (:file "operator/finally")
          (:file "subject/subject")
+         (:file "operator/catch")
          (:file "macro/with-observable")
          (:file "macro/handmade-observable")
          (:file "cl-reex"))))
