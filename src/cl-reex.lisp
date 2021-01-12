@@ -73,7 +73,7 @@
         :distinct-until-changed )
   (:import-from :cl-reex.operator.finally
         :finally )
-  (:import-from :cl-reex.operator.catch
+  (:import-from :cl-reex.operator.catch-star
         :catch* )
   (:import-from :cl-reex.subject.subject
         :subject

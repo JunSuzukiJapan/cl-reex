@@ -8,7 +8,7 @@
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :cl-reex)' in your Lisp.
 
-(plan 2)
+(plan 3)
 
 ;; blah blah blah.
 
@@ -36,8 +36,6 @@
 ;; plan 2
 (reset logger)
 
-
-
 (with-observable (handmade-observable
                   (on-next 3)
                   (on-next 2)
@@ -51,6 +49,26 @@
 
 (is (result logger)
     '(2 3 6 20 21 22 "completed"))
+
+;; plan 3
+(reset logger)
+
+(handler-case
+    (with-observable (handmade-observable
+                      (on-next 3)
+                      (on-next 2)
+                      (on-next 1)
+                      (on-next 0)
+                      (on-completed) )
+      (select (x) (/ 6 x))
+      (catch* (condition not-existing-error) (observable-of 20 21 22))
+      (subscribe observer)
+      (dispose) )
+  (condition (c)
+    (add logger "error handled") ))
+
+(is (result logger)
+    '(2 3 6 "error handled"))
 
 ;; finalize
 (finalize)

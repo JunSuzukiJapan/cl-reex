@@ -1,5 +1,5 @@
 (in-package :cl-user)
-(defpackage cl-reex.operator.catch
+(defpackage cl-reex.operator.catch-star
   (:use :cl)
   (:import-from :cl-reex.observer
         :observer
@@ -9,6 +9,7 @@
   (:import-from :cl-reex.observable
         :observable
         :dispose
+        :disposable-do-nothing
         :get-on-next
         :set-on-next
         :get-on-error
@@ -28,7 +29,7 @@
         :catch*
         :make-operator-catch* ))
 
-(in-package :cl-reex.operator.catch)
+(in-package :cl-reex.operator.catch-star)
 
 
 (defclass operator-catch* (operator)
@@ -80,17 +81,23 @@
          op )
         (set-on-error
          #'(lambda (condition)
-             (if (slot-boundp op 'handle-condition)
-                 (let ((typ (handle-condition op)))
-                   (when (typep condition typ)
-                     (when (slot-boundp op 'subscription)
-                       (dispose (subscription op))
-                       (slot-unbound op subscription) )
+             (block exit
+               (if (slot-boundp op 'handle-condition)
+                   (let ((typ (handle-condition op)))
+                     (when (typep condition typ)
+                       (when (slot-boundp op 'subscription)
+                         (dispose (subscription op))
+                         (slot-unbound op subscription) )
 
-                     (let* ((sub (make-subject))
-                            (subscription (subscribe sub (observer op)))
-                            (subscription2 (subscribe (next-observable op) sub)) ))))))
-
+                       (let ((f
+                               (eval `(lambda (,(condition-name op))
+                                  ,(next-observable op) ))))
+                         (return-from exit
+                           (let* ((obs (funcall f condition))
+                                  (subsc (subscribe obs (observer op))) )
+                             (make-instance 'disposable-do-nothing
+                                            :observable obs
+                                            :observer observer )))))))))
          op )
         (set-on-completed
          #'(lambda ()
@@ -100,32 +107,35 @@
 
 (defmethod subscribe ((op operator-catch*) observer)
   (handler-bind
-      ((condition
+      ((serious-condition
          #'(lambda (condition)
-             (if (slot-boundp op 'handle-condition)
-                 (let ((typ (handle-condition op)))
-                   (when (slot-boundp op 'subscription)
-                     (dispose (subscription op))
-                     (slot-unbound op subscription) )
-                   (let* ((sub (make-subject))
-                          (subscription (subscribe sub (observer op)))
-                          (subscription2 (subscribe (next-observable op) sub)) )
-                      (return-from subscribe
-                        (make-instance 'disposable-do-nothing
-                                       :observable op
-                                       :observer observer ))))
-                 ;; not bound slot 'handle-condition
-                 (progn
-                   (funcall (get-on-error op) condition)
-                   (return-from subscribe
-                     (make-instance 'disposable-do-nothing
-                                    :observable op
-                                    :observer observer ))))
+             (block exit
+               (if (slot-boundp op 'handle-condition)
+                   (let ((typ (handle-condition op)))
+                     (when (slot-boundp op 'subscription)
+                       (dispose (subscription op))
+                       (slot-unbound op subscription) )
 
-             (return-from subscribe
-               (make-instance 'disposable-do-nothing
-                              :observable op
-                              :observer observer )))))
+                     (let ((f
+                             (eval `#'(lambda (,(condition-name op))
+                                  ,(next-observable op) ))))
+                       (return-from exit
+                         (let* ((obs (funcall f condition))
+                                (subsc (subscribe obs (observer op))) )
+                           (make-instance 'disposable-do-nothing
+                                          :observable obs
+                                          :observer observer )))))
+                   ;; not bound slot 'handle-condition
+                   (progn
+                     (funcall (get-on-error op) condition)
+                     (return-from subscribe
+                       (make-instance 'disposable-do-nothing
+                                      :observable op
+                                      :observer observer ))))
+               (return-from exit
+                 (make-instance 'disposable-do-nothing
+                                :observable op
+                                :observer observer ))))))
     (call-next-method) ))
 
 
