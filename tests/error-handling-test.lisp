@@ -16,7 +16,7 @@
 
 (defparameter observer (make-observer
     #'(lambda (x) (add logger x))
-    #'(lambda (x) (add logger (format nil "caught error.")))
+    #'(lambda (x) (declare (ignore x)) (add logger (format nil "caught error.")))
     #'(lambda () (add logger "completed")) ))
 
 ;; plan 1

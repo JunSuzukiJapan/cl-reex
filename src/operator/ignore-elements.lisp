@@ -36,7 +36,7 @@
   (let ((op (make-instance 'operator-ignore-elements
                            :observable observable )))
     (set-on-next
-      #'(lambda (x) ) ;; do nothing
+      #'(lambda (x) (declare (ignore x)) ) ;; do nothing
       op )
     (set-on-error
       #'(lambda (x)

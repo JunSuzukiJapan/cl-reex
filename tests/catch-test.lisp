@@ -65,6 +65,7 @@
       (subscribe observer)
       (dispose) )
   (condition (c)
+    (declare (ignore c))
     (add logger "error handled") ))
 
 (is (result logger)

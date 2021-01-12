@@ -59,7 +59,7 @@
 
 (defparameter sub (make-subject))
 
-(setq subscription (with-observable sub
+(defparameter subscription (with-observable sub
   (first)
   (subscribe observer) ))
 
