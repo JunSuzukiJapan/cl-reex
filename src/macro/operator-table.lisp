@@ -49,7 +49,7 @@
         `(,var-name
           (,function-name
            ,temp-observable
-           #'(lambda ,(cadr x) ,(caddr x) ))))))
+           #'(lambda ,(cadr x) ,@(cddr x) ))))))
 
 (defun set-zero-arg-operator (name function-name)
   (set-operator-expander name

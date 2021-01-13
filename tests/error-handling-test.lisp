@@ -21,7 +21,9 @@
 
 ;; plan 1
 (with-observable (observable-from '(1 2 3 4 5 6 7 8 9 10))
-  (where (x) (error "test"))
+  (where (x)
+         (declare (ignore x))
+         (error "test") )
   (subscribe observer)
   (dispose) )
 
@@ -32,7 +34,9 @@
 (reset logger)
 
 (with-observable (observable-from #(1 2 3 4 5 6 7 8 9 10))
-  (where (x) (error "test"))
+  (where (x)
+         (declare (ignore x))
+         (error "test") )
   (subscribe observer)
   (dispose) )
 
@@ -43,7 +47,9 @@
 (reset logger)
 
 (with-observable (observable-of 1 2 3)
-  (where (x) (error "test"))
+  (where (x)
+         (declare (ignore x))
+         (error "test") )
   (subscribe observer)
   (dispose) )
 
@@ -54,7 +60,9 @@
 (reset logger)
 
 (with-observable (observable-empty)
-  (where (x) (error "test"))
+  (where (x)
+         (declare (ignore x))
+         (error "test") )
   (subscribe observer)
   (dispose) )
 
@@ -65,7 +73,9 @@
 (reset logger)
 
 (with-observable (observable-never)
-  (where (x) (error "test"))
+  (where (x)
+         (declare (ignore x))
+         (error "test") )
   (subscribe observer)
   (dispose) )
 
@@ -76,7 +86,9 @@
 (reset logger)
 
 (with-observable (observable-from "Hello, World!")
-  (where (x) (error "test"))
+  (where (x)
+         (declare (ignore x))
+         (error "test") )
   (subscribe observer)
   (dispose) )
 
@@ -88,7 +100,9 @@
 
 (defvar str-stream (make-string-input-stream "Hello, World!"))
 (with-observable (observable-from str-stream)
-  (where (x) (error "test"))
+  (where (x)
+         (declare (ignore x))
+         (error "test") )
   (subscribe observer)
   (dispose) )
 
@@ -99,7 +113,9 @@
 (reset logger)
 
 (with-observable (observable-throw "My-Error")
-  (where (x) (error "test"))
+  (where (x)
+         (declare (ignore x))
+         (error "test") )
   (subscribe observer)
   (dispose) )
 
@@ -114,7 +130,9 @@
     (on-next 2)
     (on-next 3)
     (on-completed) )
-  (where (x) (error "test"))
+  (where (x)
+         (declare (ignore x))
+         (error "test") )
   (subscribe observer)
   (dispose) )
 
@@ -127,7 +145,9 @@
 
 (with-observable (observable-from '(1 2 3 4 5 6 7 8 9 10 1 2 3 4 5))
   (skip-while (x) (< x 5))
-  (where (x) (error "test"))
+  (where (x)
+         (declare (ignore x))
+         (error "test") )
   (subscribe observer)
   (dispose) )
 
@@ -140,7 +160,9 @@
 (with-observable (observable-from '(1 2 3 4 5 6 7 8 9 10))
   (skip 2)
   (take 5)
-  (where (x) (error "test"))
+  (where (x)
+         (declare (ignore x))
+         (error "test") )
   (subscribe observer)
   (dispose) )
 
@@ -152,7 +174,9 @@
 
 (with-observable (observable-from '(1 2 3 4 5 6 7 8 9 10 1 2 3 4 5))
   (take-while (x) (< x 9))
-  (where (x) (error "test"))
+  (where (x)
+         (declare (ignore x))
+         (error "test") )
   (subscribe observer)
   (dispose) )
 
@@ -165,7 +189,9 @@
 (with-observable (observable-from '(1 2 3 4 5 6 7 8 9 10))
   (where (x) (oddp x))
   (take 3)
-  (where (x) (error "test"))
+  (where (x)
+         (declare (ignore x))
+         (error "test") )
   (subscribe observer)
   (dispose) )
 
@@ -209,7 +235,9 @@
   (select (x) (* x x))
   (take 2)
   (repeat 3)
-  (where (x) (error "test"))
+  (where (x)
+         (declare (ignore x))
+         (error "test") )
   (subscribe observer)
   (dispose) )
 
@@ -221,7 +249,9 @@
 
 (with-observable (observable-from '(1 2 3 4 5 6 7 8 9 10))
   (last)
-  (where (x) (error "test"))
+  (where (x)
+         (declare (ignore x))
+         (error "test") )
   (subscribe observer)
   (dispose) )
 

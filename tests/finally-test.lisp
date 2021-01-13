@@ -48,7 +48,9 @@
 (reset logger)
 
 (with-observable (observable-of 1 2 3)
-  (where (x) (error "some error"))
+  (where (x)
+         (declare (ignore x))
+         (error "some error") )
   (finally #'(lambda () (add logger "finally")))
   (subscribe observer)
   (dispose) )
@@ -61,7 +63,9 @@
 
 (with-observable (observable-of 1 2 3)
   (finally #'(lambda () (add logger "finally")))
-  (where (x) (error "some error"))
+  (where (x)
+         (declare (ignore x))
+         (error "some error") )
   (subscribe observer)
   (dispose) )
 
