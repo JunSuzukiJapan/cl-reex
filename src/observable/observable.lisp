@@ -150,8 +150,8 @@
                   (return-from subscribe
                     (make-instance 'disposable-timer
                               :observer observer
-                              :start start
-                              :interval interval
+                              :start (start timer)
+                              :interval (interval timer)
                               :count 0 )))))
     (let* ((start (start timer))
            (interval (interval timer))

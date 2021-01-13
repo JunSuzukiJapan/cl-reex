@@ -56,7 +56,7 @@
          #'(lambda (x)
              (when (slot-boundp op 'subscription)
                (dispose (subscription op))
-               (slot-unbound op subscription) )
+               (slot-unbound op 'subscription) )
 
              (let* ((sub (make-subject))
                     (subscription (subscribe sub (observer op)))
@@ -87,7 +87,7 @@
                      (when (typep condition typ)
                        (when (slot-boundp op 'subscription)
                          (dispose (subscription op))
-                         (slot-unbound op subscription) )
+                         (slot-unbound op 'subscription) )
 
                        (let ((f
                                (eval `(lambda (,(condition-name op))
@@ -97,7 +97,7 @@
                                   (subsc (subscribe obs (observer op))) )
                              (make-instance 'disposable-do-nothing
                                             :observable obs
-                                            :observer observer )))))))))
+                                            :observer (observer op) )))))))))
          op )
         (set-on-completed
          #'(lambda ()
@@ -114,7 +114,7 @@
                    (let ((typ (handle-condition op)))
                      (when (slot-boundp op 'subscription)
                        (dispose (subscription op))
-                       (slot-unbound op subscription) )
+                       (slot-unbound op 'subscription) )
 
                      (let ((f
                              (eval `#'(lambda (,(condition-name op))
