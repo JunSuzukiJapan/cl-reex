@@ -17,7 +17,7 @@
         :set-on-completed
         :subscribe)
   (:import-from :cl-reex.macro.operator-table
-        :set-function-operator)
+        :set-function-like-operator)
   (:import-from :cl-reex.operator
         :operator
         :predicate)
@@ -52,5 +52,5 @@
       op )
     op ))
 
-(set-function-operator 'where 'make-operator-where)
+(set-function-like-operator 'where 'make-operator-where)
 

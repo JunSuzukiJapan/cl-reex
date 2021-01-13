@@ -2,7 +2,7 @@
 (defpackage cl-reex.macro.operator-table
   (:use :cl)
   (:export :set-one-arg-operator
-       :set-function-operator
+       :set-function-like-operator
        :set-operator-expander
        :get-operator-expander
        :set-zero-arg-operator
@@ -43,7 +43,7 @@
 ;; set-one-arg-operator
 ;;   use when expr like (repeat 3)  ;; arg length is 1.
 ;;
-(defun set-function-operator (name function-name)
+(defun set-function-like-operator (name function-name)
   (set-operator-expander name
     #'(lambda (x var-name temp-observable)
         `(,var-name

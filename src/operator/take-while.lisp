@@ -17,7 +17,7 @@
         :set-on-completed
         :subscribe)
   (:import-from :cl-reex.macro.operator-table
-        :set-function-operator)
+        :set-function-like-operator)
   (:import-from :cl-reex.operator
         :operator
         :predicate)
@@ -70,5 +70,5 @@
     (setf (completed op) nil)
     (call-next-method) ))
 
-(set-function-operator 'take-while 'make-operator-take-while)
+(set-function-like-operator 'take-while 'make-operator-take-while)
 
