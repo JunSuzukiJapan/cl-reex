@@ -18,7 +18,7 @@
         :set-on-completed
         :subscribe)
   (:import-from :cl-reex.macro.operator-table
-        :set-one-or-two-arg-operator-quote )
+        :set-one-or-rest-arg-operator-quote )
   (:import-from :cl-reex.operator
         :operator
         :subscription )
@@ -42,8 +42,8 @@
                     :accessor next-observable ))
   (:documentation "Catch* operator"))
 
-(defun make-operator-catch* (observable arg1 &optional arg2)
-  (if (null arg2)
+(defun make-operator-catch* (observable arg1 &rest args)
+  (if (null args)
       ;; one arg
       (let ((op (make-instance 'operator-catch*
                                :observable observable
@@ -69,12 +69,12 @@
         op )
 
 
-      ;; two arg
+      ;; two(rest) arg
       (let ((op (make-instance 'operator-catch*
                                :observable observable
                                :condition-name (car arg1)
                                :handle-condition (cadr arg1)
-                               :next-observable arg2 )))
+                               :next-observable (car args) )))
         (set-on-next
          #'(lambda (x)
              (funcall (get-on-next (observer op)) x) )
@@ -91,7 +91,7 @@
 
                        (let ((f
                                (eval `(lambda (,(condition-name op))
-                                  ,(next-observable op) ))))
+                                        ,@(next-observable op) ))))
                          (return-from exit
                            (let* ((obs (funcall f condition))
                                   (subsc (subscribe obs (observer op))) )
@@ -118,7 +118,7 @@
 
                      (let ((f
                              (eval `#'(lambda (,(condition-name op))
-                                  ,(next-observable op) ))))
+                                  ,@(next-observable op) ))))
                        (return-from exit
                          (let* ((obs (funcall f condition))
                                 (subsc (subscribe obs (observer op))) )
@@ -139,5 +139,5 @@
     (call-next-method) ))
 
 
-(set-one-or-two-arg-operator-quote 'catch* 'make-operator-catch*)
+(set-one-or-rest-arg-operator-quote 'catch* 'make-operator-catch*)
 
