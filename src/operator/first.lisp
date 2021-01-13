@@ -8,7 +8,6 @@
         :on-completed)
   (:import-from :cl-reex.observable
         :observable
-        :observable-object
         :is-active
         :set-error
         :set-completed
@@ -35,7 +34,7 @@
 (in-package :cl-reex.operator.first)
 
 
-(defclass operator-first (operator observable-object)
+(defclass operator-first (operator)
   ((predicate :initarg :predicate
               :initform nil
               :accessor predicate ))
@@ -76,8 +75,8 @@
         (set-on-next
          #'(lambda (x)
              (when (is-active op)
-               (set-completed op)
                (funcall (get-on-next (observer op)) x)
+               (set-completed op)
                (funcall (get-on-completed (observer op))) ))
          op )
         (set-on-error

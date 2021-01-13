@@ -24,7 +24,8 @@
         :on-error
         :on-completed)
   (:import-from :cl-reex.error-conditions
-        :sequence-contains-no-elements-error )
+                :sequence-contains-no-elements-error
+                :argument-out-of-range-exception )
   (:import-from :cl-reex.fixed-size-queue
         :queue
         :make-queue
@@ -75,6 +76,8 @@
         :finally )
   (:import-from :cl-reex.operator.catch-star
         :catch* )
+  (:import-from :cl-reex.operator.element-at
+        :element-at )
   (:import-from :cl-reex.subject.subject
         :subject
         :make-subject)
@@ -91,6 +94,7 @@
         :size
         :dispose
         :sequence-contains-no-elements-error
+        :argument-out-of-range-exception
         :foreach
         :observable
         :observable-range
@@ -133,6 +137,7 @@
         :distinct-until-changed
         :finally
         :catch*
+        :element-at
         :subject
         :make-subject))
 

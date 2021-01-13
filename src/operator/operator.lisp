@@ -3,7 +3,9 @@
   (:use :cl)
   (:import-from :cl-reex.observable
         :observable
+        :observable-object
         :get-on-error
+        :set-active
         :dispose
         :disposable-do-nothing
         :subscribe)
@@ -18,7 +20,7 @@
 
 ;; body
 
-(defclass operator (observer)
+(defclass operator (observer observable-object)
   ((observable :initarg :observable
                :accessor observable)
    (observer :initarg :observer
@@ -30,4 +32,5 @@
   (setf (observer op) observer)
   (when (slot-boundp op 'subscription)
     (dispose (subscription op)) )
+  (set-active op)
   (setf (subscription op) (subscribe (observable op) op)) )

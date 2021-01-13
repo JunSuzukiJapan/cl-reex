@@ -8,7 +8,6 @@
         :on-completed)
   (:import-from :cl-reex.observable
         :observable
-        :observable-object
         :is-active
         :set-error
         :set-completed
@@ -33,7 +32,7 @@
 (in-package :cl-reex.operator.take-until)
 
 
-(defclass operator-take-until (operator observable-object)
+(defclass operator-take-until (operator)
   ((trigger-observable :initarg :trigger-observable
                        :accessor trigger-observable )
    (triggered :initarg :triggered
@@ -64,6 +63,7 @@
 
     (set-on-next
       #'(lambda (x)
+          (declare (ignore x))
           (setf (triggered op) t)
           (funcall (get-on-completed (observer op))) )
       trigger-observable )

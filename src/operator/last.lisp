@@ -8,7 +8,6 @@
         :on-completed)
   (:import-from :cl-reex.observable
         :observable
-        :observable-object
         :is-active
         :set-error
         :set-completed
@@ -35,7 +34,7 @@
 (in-package :cl-reex.operator.last)
 
 
-(defclass operator-last (operator observable-object)
+(defclass operator-last (operator)
   ((predicate :initarg :predicate
               :initform nil
               :accessor predicate )

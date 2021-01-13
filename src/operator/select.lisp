@@ -9,6 +9,10 @@
   (:import-from :cl-reex.observable
         :observable
         :dispose
+        :is-active
+        :set-error
+        :set-completed
+        :set-disposed
         :get-on-next
         :set-on-next
         :get-on-error
@@ -40,16 +44,21 @@
                            :func func )))
     (set-on-next
       #'(lambda (x)
-          (let((temp (funcall (func op) x)))
-            (funcall (get-on-next (observer op)) temp) ))
+          (when (is-active op)
+            (let((temp (funcall (func op) x)))
+              (funcall (get-on-next (observer op)) temp) )))
       op )
     (set-on-error
       #'(lambda (x)
-          (funcall (get-on-error (observer op)) x) )
+          (when (is-active op)
+            (set-error op)
+            (funcall (get-on-error (observer op)) x) ))
       op )
     (set-on-completed
       #'(lambda ()
-          (funcall (get-on-completed (observer op))) )
+          (when (is-active op)
+            (set-completed op)
+            (funcall (get-on-completed (observer op))) ))
       op )
     op ))
 

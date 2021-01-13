@@ -10,6 +10,7 @@
        :active
        :error
        :completed
+       :set-active
        :set-error
        :set-completed
        :set-disposed
@@ -85,6 +86,9 @@
 
 (defmethod is-active ((obj observable-object))
   (eq (state obj) 'active) )
+
+(defmethod set-active ((obj observable-object))
+  (setf (state obj) 'active) )
 
 (defmethod set-error ((obj observable-object))
   (setf (state obj) 'error) )

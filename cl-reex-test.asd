@@ -36,6 +36,7 @@
        (:test-file "error-handling-test")
        (:test-file "finally-test")
        (:test-file "catch-test")
+       (:test-file "element-at-test")
 	  )))
   :description "Test system for cl-reex"
 
