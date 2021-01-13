@@ -22,7 +22,7 @@
         :set-on-completed
         :subscribe)
   (:import-from :cl-reex.macro.operator-table
-        :set-zero-arg-or-function-operator )
+        :set-zero-arg-or-function-like-operator )
   (:import-from :cl-reex.operator
         :operator
         :predicate)
@@ -96,5 +96,5 @@
         op )))
   
 
-(set-zero-arg-or-function-operator 'first 'make-operator-first)
+(set-zero-arg-or-function-like-operator 'first 'make-operator-first)
 

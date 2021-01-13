@@ -22,7 +22,7 @@
         :set-on-completed
         :subscribe)
   (:import-from :cl-reex.macro.operator-table
-        :set-zero-arg-or-function-operator )
+        :set-zero-arg-or-function-like-operator )
   (:import-from :cl-reex.operator
         :operator
         :predicate)
@@ -123,5 +123,5 @@
     (setf (has-last-item op) nil)
     (call-next-method) ))
 
-(set-zero-arg-or-function-operator 'last 'make-operator-last)
+(set-zero-arg-or-function-like-operator 'last 'make-operator-last)
 
