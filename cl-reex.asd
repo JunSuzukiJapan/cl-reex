@@ -15,6 +15,7 @@
          (:file "util/fixed-size-queue")
          (:file "macro/operator-table")
          (:file "subject/subject")
+         (:file "subject/behavior-subject")
          (:file "operator/operator")
          (:file "operator/where")
          (:file "operator/select")

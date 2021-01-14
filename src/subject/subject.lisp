@@ -28,7 +28,9 @@
   (:import-from :cl-reex.observer
         :observer)
   (:export :subject
-        :make-subject))
+           :make-subject
+           :observers
+           :disposable-subject ))
 
 (in-package :cl-reex.subject.subject)
 
