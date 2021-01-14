@@ -84,6 +84,9 @@
   (:import-from :cl-reex.subject.behavior-subject
         :behavior-subject
         :make-behavior-subject)
+  (:import-from :cl-reex.subject.async-subject
+        :async-subject
+        :make-async-subject)
   (:import-from :cl-reex.macro
         :with-observable)
   (:import-from :cl-reex.macro.handmade-observable
@@ -144,7 +147,9 @@
         :subject
         :make-subject
         :behavior-subject
-        :make-behavior-subject ))
+        :make-behavior-subject
+        :async-subject
+        :make-async-subject ))
 
 (in-package :cl-reex)
 

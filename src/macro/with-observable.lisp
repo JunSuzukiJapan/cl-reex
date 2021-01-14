@@ -31,7 +31,7 @@
         (case (car x)
           ;;
           ;; Subscribe
-          ('subscribe
+          ((subscribe)
            (setq var-name (gensym))
            (push `(,var-name
                    (subscribe ,temp-observable ,(cadr x)) )
@@ -40,7 +40,7 @@
           ;;
           ;; Dispose
           ;;
-          ('dispose
+          ((dispose)
            (setq var-name (gensym))
            (push `(,var-name
                    (dispose ,temp-observable) )

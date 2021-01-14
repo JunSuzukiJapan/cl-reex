@@ -1,5 +1,5 @@
 (in-package :cl-user)
-(defpackage cl-reex.subject.behavior-subject
+(defpackage cl-reex.subject.async-subject
   (:use :cl)
   (:import-from :cl-reex.observable
         :observable
@@ -32,26 +32,23 @@
         :make-subject
         :observers
         :disposable-subject )
-  (:export :behavior-subject
-        :make-behavior-subject ))
+  (:export :async-subject
+        :make-async-subject ))
 
-(in-package :cl-reex.subject.behavior-subject)
+(in-package :cl-reex.subject.async-subject)
 
-(defclass behavior-subject (subject)
+(defclass async-subject (subject)
   ((current-item :initarg :current-item
                  :accessor current-item )
    (error-item :initarg :error-item
                :accessor error-item )))
 
-(defun make-behavior-subject (item)
-  (let ((sub (make-instance 'behavior-subject
-                            :current-item item )))
+(defun make-async-subject ()
+  (let ((sub (make-instance 'async-subject)))
     (set-on-next
       #'(lambda (x)
           (when (is-active sub)
-            (setf (current-item sub) x)
-            (dolist (observer (observers sub))
-              (funcall (get-on-next observer) x) )))
+            (setf (current-item sub) x) ))
       sub )
     (set-on-error
       #'(lambda (x)
@@ -65,6 +62,10 @@
       #'(lambda ()
           (when (is-active sub)
             (set-completed sub)
+            (when (slot-boundp sub 'current-item)
+              (let ((item (current-item sub)))
+                (dolist (observer (observers sub))
+                  (funcall (get-on-next observer) item) )))
             (dolist (observer (observers sub))
               (funcall (get-on-completed observer)) )))
       sub )
@@ -73,11 +74,12 @@
 ;;
 ;; Subscribe
 ;;
-(defmethod subscribe ((sub behavior-subject) observer)
+(defmethod subscribe ((sub async-subject) observer)
   (case (state sub)
-    ((active) (funcall (get-on-next observer) (current-item sub)))
-    ((error)  (funcall (get-on-next observer) (current-item sub))
-              (funcall (get-on-error observer) (error-item sub)) )
-    ((completed) (funcall (get-on-completed observer))) )
-  (call-next-method) )
+    ((error)  (funcall (get-on-error observer) (error-item sub)) )
+    ((completed)
+     (when (slot-boundp sub 'current-item)
+       (funcall (get-on-next observer) (current-item sub)) )
+     (funcall (get-on-completed observer)) )
+    (t (call-next-method) )))
 
