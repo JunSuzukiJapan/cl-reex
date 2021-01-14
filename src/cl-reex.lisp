@@ -87,6 +87,9 @@
   (:import-from :cl-reex.subject.async-subject
         :async-subject
         :make-async-subject)
+  (:import-from :cl-reex.subject.replay-subject
+        :replay-subject
+        :make-replay-subject)
   (:import-from :cl-reex.macro
         :with-observable)
   (:import-from :cl-reex.macro.handmade-observable
@@ -149,7 +152,9 @@
         :behavior-subject
         :make-behavior-subject
         :async-subject
-        :make-async-subject ))
+        :make-async-subject
+        :replay-subject
+        :make-replay-subject ))
 
 (in-package :cl-reex)
 

@@ -17,6 +17,7 @@
          (:file "subject/subject")
          (:file "subject/behavior-subject")
          (:file "subject/async-subject")
+         (:file "subject/replay-subject")
          (:file "operator/operator")
          (:file "operator/where")
          (:file "operator/select")

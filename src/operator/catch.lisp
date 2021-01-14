@@ -54,13 +54,16 @@
          op )
         (set-on-error
          #'(lambda (x)
+             (declare (ignore x))
              (when (slot-boundp op 'subscription)
                (dispose (subscription op))
-               (slot-unbound op 'subscription) )
+               (slot-unbound 'operator-catch* op 'subscription) )
 
              (let* ((sub (make-subject))
                     (subscription (subscribe sub (observer op)))
-                    (subscription2 (subscribe (next-observable op) sub)) )))
+                    (subscription2 (subscribe (next-observable op) sub)) )
+                    (declare (ignore subscription))
+                    subscription2 ))
          op )
         (set-on-completed
          #'(lambda ()
@@ -87,7 +90,7 @@
                      (when (typep condition typ)
                        (when (slot-boundp op 'subscription)
                          (dispose (subscription op))
-                         (slot-unbound op 'subscription) )
+                         (slot-unbound 'operator-catch* op 'subscription) )
 
                        (let ((f
                                (eval `(lambda (,(condition-name op))
@@ -95,6 +98,7 @@
                          (return-from exit
                            (let* ((obs (funcall f condition))
                                   (subsc (subscribe obs (observer op))) )
+                             (declare (ignore subsc))
                              (make-instance 'disposable-do-nothing
                                             :observable obs
                                             :observer (observer op) )))))))))
@@ -111,10 +115,10 @@
          #'(lambda (condition)
              (block exit
                (if (slot-boundp op 'handle-condition)
-                   (let ((typ (handle-condition op)))
+                   (progn
                      (when (slot-boundp op 'subscription)
                        (dispose (subscription op))
-                       (slot-unbound op 'subscription) )
+                       (slot-unbound 'operator-catch* op 'subscription) )
 
                      (let ((f
                              (eval `#'(lambda (,(condition-name op))
@@ -122,6 +126,7 @@
                        (return-from exit
                          (let* ((obs (funcall f condition))
                                 (subsc (subscribe obs (observer op))) )
+                           (declare (ignore subsc))
                            (make-instance 'disposable-do-nothing
                                           :observable obs
                                           :observer observer )))))
@@ -131,11 +136,7 @@
                      (return-from subscribe
                        (make-instance 'disposable-do-nothing
                                       :observable op
-                                      :observer observer ))))
-               (return-from exit
-                 (make-instance 'disposable-do-nothing
-                                :observable op
-                                :observer observer ))))))
+                                      :observer observer ))))))))
     (call-next-method) ))
 
 

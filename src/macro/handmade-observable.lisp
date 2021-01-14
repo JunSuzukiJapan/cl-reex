@@ -46,16 +46,16 @@
             (on-completed (get-on-completed observer)) )
         (case (car message)
           ;; on-next
-          ('on-next
+          ((on-next)
            (when (is-active observable)
              (funcall on-next (cadr message)) ))
           ;; on-error
-          ('on-error
+          ((on-error)
            (when (is-active observable)
              (setf (state observable) 'error)
              (funcall on-error (cadr message)) ))
           ;; on-completed
-          ('on-completed
+          ((on-completed)
            (when (is-active observable)
              (setf (state observable) 'completed)
              (funcall on-completed) )))))
