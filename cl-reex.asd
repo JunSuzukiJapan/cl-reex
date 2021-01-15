@@ -37,6 +37,7 @@
          (:file "operator/finally")
          (:file "operator/catch")
          (:file "operator/element-at")
+         (:file "operator/do")
          (:file "macro/with-observable")
          (:file "macro/handmade-observable")
          (:file "cl-reex"))))

@@ -40,6 +40,7 @@
        (:test-file "behavior-subject-test")
        (:test-file "async-subject-test")
        (:test-file "replay-subject-test")
+       (:test-file "do-test")
 	  )))
   :description "Test system for cl-reex"
 

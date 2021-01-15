@@ -8,7 +8,8 @@
        :set-zero-arg-operator
        :set-zero-or-one-arg-operator
        :set-zero-arg-or-function-like-operator
-       :set-one-or-rest-arg-operator-quote ))
+       :set-one-or-rest-arg-operator-quote
+       :set-on-next-error-completed-operator ))
 
 (in-package :cl-reex.macro.operator-table)
 
@@ -105,3 +106,11 @@
                ',(cadr x)
                ',(cddr x) ))))))
 
+(defun set-on-next-error-completed-operator (name function-name)
+  (set-operator-expander name
+    #'(lambda (x var-name temp-observable)
+        `(,var-name
+          (,function-name
+           ,temp-observable
+           ,@(cdr x) )))))
+ 
