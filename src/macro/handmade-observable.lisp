@@ -13,9 +13,6 @@
         :completed
         :disposed
         :dispose
-        :get-on-next
-        :get-on-error
-        :get-on-completed
         :observable-from
         :on-next
         :on-error
@@ -35,30 +32,27 @@
 (defmethod subscribe ((observable handmade-observable-object) observer)
   (handler-bind
       ((error #'(lambda (condition)
-                  (funcall (get-on-error observer) condition)
+                  (on-error observer condition)
                   (return-from subscribe
                     (make-instance 'disposable-do-nothing
                                    :observable observable
                                    :observer observer )))))
     (dolist (message (source observable))
-      (let ((on-next (get-on-next observer))
-            (on-error (get-on-error observer))
-            (on-completed (get-on-completed observer)) )
-        (case (car message)
-          ;; on-next
-          ((on-next)
-           (when (is-active observable)
-             (funcall on-next (cadr message)) ))
-          ;; on-error
-          ((on-error)
-           (when (is-active observable)
-             (setf (state observable) 'error)
-             (funcall on-error (cadr message)) ))
-          ;; on-completed
-          ((on-completed)
-           (when (is-active observable)
-             (setf (state observable) 'completed)
-             (funcall on-completed) )))))
+      (case (car message)
+        ;; on-next
+        ((on-next)
+         (when (is-active observable)
+           (on-next observer (cadr message)) ))
+        ;; on-error
+        ((on-error)
+         (when (is-active observable)
+           (setf (state observable) 'error)
+           (on-error observer (cadr message)) ))
+        ;; on-completed
+        ((on-completed)
+         (when (is-active observable)
+           (setf (state observable) 'completed)
+           (on-completed observer) ))))
     (make-instance 'disposable-do-nothing
                    :observable observable
                    :observer observer ) ))

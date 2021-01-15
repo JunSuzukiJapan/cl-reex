@@ -8,13 +8,11 @@
         :on-completed)
   (:import-from :cl-reex.observable
         :observable
+        :is-active
+        :set-error
+        :set-completed
+        :set-disposed
         :dispose
-        :get-on-next
-        :set-on-next
-        :get-on-error
-        :set-on-error
-        :get-on-completed
-        :set-on-completed
         :subscribe)
   (:import-from :cl-reex.macro.operator-table
         :set-one-arg-operator)
@@ -37,30 +35,33 @@
   (:documentation "Repeat operator"))
 
 (defun make-operator-repeat (observable count)
-  (let ((op (make-instance 'operator-repeat
-                           :observable observable
-                           :count count )))
-    (set-on-next
-      #'(lambda (x)
-          (funcall (get-on-next (observer op)) x) )
-      op )
-    (set-on-error
-      #'(lambda (x)
-          (funcall (get-on-error (observer op)) x) )
-      op )
-    (set-on-completed
-      #'(lambda ()
-          (incf (current-count op))
-          (if (>= (current-count op) (count-num op))
-              (funcall (get-on-completed (observer op)))
-              (subscribe (observable op) op) ))
-      op )
-    op ))
+  (make-instance 'operator-repeat
+                 :observable observable
+                 :count count ))
+
+
+(defmethod on-next ((op operator-repeat) x)
+  (when (is-active op)
+    (on-next (observer op) x) ))
+
+(defmethod on-error ((op operator-repeat) x)
+  (when (is-active op)
+    (set-error op)
+    (on-error (observer op) x) ))
+
+(defmethod on-completed ((op operator-repeat))
+  (when (is-active op)
+    (incf (current-count op))
+    (if (>= (current-count op) (count-num op))
+        (progn
+          (set-completed op)
+          (on-completed (observer op)))
+        (subscribe (observable op) op) )))
 
 (defmethod subscribe ((op operator-repeat) observer)
   (handler-bind
       ((error #'(lambda (condition)
-                  (funcall (get-on-error observer) condition)
+                  (on-error observer condition)
                   (return-from subscribe
                     (make-instance 'disposable-do-nothing
                                    :observable op

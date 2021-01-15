@@ -13,12 +13,6 @@
         :set-error
         :set-completed
         :set-disposed
-        :get-on-next
-        :set-on-next
-        :get-on-error
-        :set-on-error
-        :get-on-completed
-        :set-on-completed
         :subscribe)
   (:import-from :cl-reex.macro.operator-table
         :set-function-like-operator)
@@ -39,28 +33,25 @@
   (:documentation "Select operator"))
 
 (defun make-operator-select (observable func)
-  (let ((op (make-instance 'operator-select
-                           :observable observable
-                           :func func )))
-    (set-on-next
-      #'(lambda (x)
-          (when (is-active op)
-            (let((temp (funcall (func op) x)))
-              (funcall (get-on-next (observer op)) temp) )))
-      op )
-    (set-on-error
-      #'(lambda (x)
-          (when (is-active op)
-            (set-error op)
-            (funcall (get-on-error (observer op)) x) ))
-      op )
-    (set-on-completed
-      #'(lambda ()
-          (when (is-active op)
-            (set-completed op)
-            (funcall (get-on-completed (observer op))) ))
-      op )
-    op ))
+  (make-instance 'operator-select
+                 :observable observable
+                 :func func ))
+
+
+(defmethod on-next ((op operator-select) x)
+  (when (is-active op)
+    (let((temp (funcall (func op) x)))
+      (on-next (observer op) temp) )))
+
+(defmethod on-error((op operator-select) x)
+  (when (is-active op)
+    (set-error op)
+    (on-error (observer op) x) ))
+
+(defmethod on-completed ((op operator-select))
+  (when (is-active op)
+    (set-completed op)
+    (on-completed (observer op)) ))
 
 (set-function-like-operator 'select 'make-operator-select)
 

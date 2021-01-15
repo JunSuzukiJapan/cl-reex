@@ -13,12 +13,6 @@
         :set-error
         :set-completed
         :set-disposed
-        :get-on-next
-        :set-on-next
-        :get-on-error
-        :set-on-error
-        :get-on-completed
-        :set-on-completed
         :subscribe)
   (:import-from :cl-reex.macro.operator-table
         :set-function-like-operator)
@@ -38,28 +32,25 @@
   (:documentation "Where operator"))
 
 (defun make-operator-where (observable predicate)
-  (let ((op (make-instance 'operator-where
-                           :observable observable
-                           :predicate predicate )))
-    (set-on-next
-      #'(lambda (x)
-          (when (and (is-active op)
-                     (funcall (predicate op) x) )
-            (funcall (get-on-next (observer op)) x) ))
-      op )
-    (set-on-error
-      #'(lambda (x)
-          (when (is-active op)
-            (set-error op)
-            (funcall (get-on-error (observer op)) x) ))
-      op )
-    (set-on-completed
-      #'(lambda ()
-          (when (is-active op)
-            (set-completed op)
-            (funcall (get-on-completed (observer op))) ))
-      op )
-    op ))
+  (make-instance 'operator-where
+                 :observable observable
+                 :predicate predicate ))
+
+
+(defmethod on-next ((op operator-where) x)
+  (when (and (is-active op)
+             (funcall (predicate op) x) )
+    (on-next (observer op) x) ))
+
+(defmethod on-error ((op operator-where) x)
+  (when (is-active op)
+    (set-error op)
+    (on-error (observer op) x) ))
+
+(defmethod on-completed ((op operator-where))
+  (when (is-active op)
+    (set-completed op)
+    (on-completed (observer op)) ))
 
 (set-function-like-operator 'where 'make-operator-where)
 

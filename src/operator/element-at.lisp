@@ -13,12 +13,6 @@
         :set-error
         :set-completed
         :set-disposed
-        :get-on-next
-        :set-on-next
-        :get-on-error
-        :set-on-error
-        :get-on-completed
-        :set-on-completed
         :subscribe)
   (:import-from :cl-reex.macro.operator-table
         :set-one-arg-operator)
@@ -43,32 +37,28 @@
   (:documentation "Element-At operator"))
 
 (defun make-operator-element-at (observable count)
-  (let ((op (make-instance 'operator-element-at
-                           :observable observable
-                           :count count )))
-    (set-on-next
-      #'(lambda (x)
-          (when (is-active op)
-            (incf (current-count op))
-            (when (> (current-count op) (count-num op))
-              (funcall (get-on-next (observer op)) x)
-              (set-completed op)
-              (funcall (get-on-completed (observer op))) )))
-      op )
-    (set-on-error
-      #'(lambda (x)
-          (when (is-active op)
-            (set-error op)
-            (funcall (get-on-error (observer op)) x) ))
-      op )
-    (set-on-completed
-      #'(lambda ()
-          (when (is-active op)
-            (set-error op)
-            (let ((err (make-condition 'argument-out-of-range-exception)))
-              (funcall (get-on-error (observer op)) err) )))
-      op )
-    op ))
+  (make-instance 'operator-element-at
+                 :observable observable
+                 :count count ))
+
+(defmethod on-next ((op operator-element-at) x)
+  (when (is-active op)
+    (incf (current-count op))
+    (when (> (current-count op) (count-num op))
+      (on-next (observer op) x)
+      (set-completed op)
+      (on-completed (observer op)) )))
+
+(defmethod on-error ((op operator-element-at) x)
+  (when (is-active op)
+    (set-error op)
+    (on-error (observer op) x) ))
+
+(defmethod on-completed ((op operator-element-at))
+  (when (is-active op)
+    (set-error op)
+    (let ((err (make-condition 'argument-out-of-range-exception)))
+      (on-error (observer op) err) )))
 
 
 (defmethod subscribe ((op operator-element-at) observer)

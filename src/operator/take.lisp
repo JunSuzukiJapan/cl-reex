@@ -8,13 +8,11 @@
         :on-completed)
   (:import-from :cl-reex.observable
         :observable
+        :is-active
+        :set-error
+        :set-completed
+        :set-disposed
         :dispose
-        :get-on-next
-        :set-on-next
-        :get-on-error
-        :set-on-error
-        :get-on-completed
-        :set-on-completed
         :subscribe)
   (:import-from :cl-reex.macro.operator-table
         :set-one-arg-operator)
@@ -37,31 +35,34 @@
   (:documentation "Take operator"))
 
 (defun make-operator-take (observable count)
-  (let ((op (make-instance 'operator-take
-                           :observable observable
-                           :count count )))
-    (set-on-next
-      #'(lambda (x)
-          (when (< (current-count op) (count-num op))
-            (incf (current-count op))
-            (funcall (get-on-next (observer op)) x)
-            (when (>= (current-count op) (count-num op))
-              (funcall (get-on-completed (observer op))) )))
-      op )
-    (set-on-error
-      #'(lambda (x)
-          (funcall (get-on-error (observer op)) x) )
-      op )
-    (set-on-completed
-      #'(lambda () ) ;; do nothing
-      op )
-    op ))
+  (make-instance 'operator-take
+                 :observable observable
+                 :count count ))
 
+
+(defmethod on-next ((op operator-take) x)
+  (when (is-active op)
+    (when (< (current-count op) (count-num op))
+      (incf (current-count op))
+      (on-next (observer op) x)
+      (when (>= (current-count op) (count-num op))
+        (on-completed (observer op)) ))))
+
+(defmethod on-error ((op operator-take) x)
+  (when (is-active op)
+    (set-error op)
+    (on-error (observer op) x) ))
+
+(defmethod on-completed ((op operator-take))
+  (when (is-active op)
+    (set-completed op)
+    ;; do nothing
+    ))
 
 (defmethod subscribe ((op operator-take) observer)
   (handler-bind
       ((error #'(lambda (condition)
-                  (funcall (get-on-error observer) condition)
+                  (on-error observer condition)
                   (return-from subscribe
                     (make-instance 'disposable-do-nothing
                                    :observable op

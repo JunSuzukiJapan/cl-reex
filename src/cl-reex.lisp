@@ -2,6 +2,12 @@
 (defpackage cl-reex
   (:nicknames :rx)
   (:use :cl)
+  (:import-from :cl-reex.observer
+        :observer
+        :make-observer
+        :on-next
+        :on-error
+        :on-completed)
   (:import-from :cl-reex.observable
         :observable
         :subscribe
@@ -16,13 +22,7 @@
         :observable-empty
         :observable-never
         :observable-throw
-        :make-observer
         :foreach)
-  (:import-from :cl-reex.observer
-        :observer
-        :on-next
-        :on-error
-        :on-completed)
   (:import-from :cl-reex.error-conditions
                 :sequence-contains-no-elements-error
                 :argument-out-of-range-exception )

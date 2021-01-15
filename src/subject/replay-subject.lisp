@@ -1,6 +1,11 @@
 (in-package :cl-user)
 (defpackage cl-reex.subject.replay-subject
   (:use :cl)
+  (:import-from :cl-reex.observer
+        :on-next
+        :on-error
+        :on-completed
+        :observer)
   (:import-from :cl-reex.observable
         :observable
         :observable-object
@@ -10,23 +15,12 @@
         :active
         :error
         :completed
-        :disposed
         :set-error
         :set-completed
         :set-disposed
-        :on-next
-        :on-error
-        :on-completed
-        :get-on-next
-        :set-on-next
-        :get-on-error
-        :set-on-error
-        :get-on-completed
-        :set-on-completed
+        :disposed
         :subscribe
         :dispose)
-  (:import-from :cl-reex.observer
-        :observer)
   (:import-from :cl-reex.subject.subject
         :subject
         :make-subject
@@ -43,6 +37,9 @@
            :accessor events )))
 
 (defun make-replay-subject ()
+  (make-instance 'replay-subject))
+
+#|
   (let ((sub (make-instance 'replay-subject)))
     (set-on-next
       #'(lambda (x)
@@ -68,20 +65,41 @@
               (funcall (get-on-completed observer)) )))
       sub )
     sub ))
+|#
+
+(defmethod on-next ((sub replay-subject) x)
+  (when (is-active sub)
+    (push `(on-next ,x) (events sub))
+    (dolist (observer (observers sub))
+      (on-next observer x) )))
+
+(defmethod on-error ((sub replay-subject) x)
+  (when (is-active sub)
+    (set-error sub)
+    (push `(on-error ,x) (events sub))
+    (dolist (observer (observers sub))
+      (on-error observer x) )))
+
+(defmethod on-completed ((sub replay-subject))
+  (when (is-active sub)
+    (set-completed sub)
+    (push `(on-completed) (events sub))
+    (dolist (observer (observers sub))
+      (on-completed observer) )))
+
 
 ;;
 ;; Subscribe
 ;;
 (defmethod subscribe ((sub replay-subject) observer)
-  (let ((lst (reverse (events sub)))
-        (on-next (get-on-next observer)) )
+  (let ((lst (reverse (events sub))))
     (dolist (item lst)
       (case (car item)
         ((on-next)
-         (funcall on-next (cadr item)) )
+         (on-next observer (cadr item)) )
         ((on-error)
-         (funcall (get-on-error observer) (cadr item)) )
+         (on-error observer (cadr item)) )
         ((on-completed)
-         (funcall (get-on-completed observer)) ))))
+         (on-completed observer) ))))
   (call-next-method) )
 

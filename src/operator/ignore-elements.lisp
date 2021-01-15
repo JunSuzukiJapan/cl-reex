@@ -8,13 +8,11 @@
         :on-completed)
   (:import-from :cl-reex.observable
         :observable
+        :is-active
+        :set-error
+        :set-completed
+        :set-disposed
         :dispose
-        :get-on-next
-        :set-on-next
-        :get-on-error
-        :set-on-error
-        :get-on-completed
-        :set-on-completed
         :subscribe)
   (:import-from :cl-reex.macro.operator-table
         :set-zero-arg-operator)
@@ -33,20 +31,25 @@
   (:documentation "Ignore-Elements operator"))
 
 (defun make-operator-ignore-elements (observable)
-  (let ((op (make-instance 'operator-ignore-elements
-                           :observable observable )))
-    (set-on-next
-      #'(lambda (x) (declare (ignore x)) ) ;; do nothing
-      op )
-    (set-on-error
-      #'(lambda (x)
-          (funcall (get-on-error (observer op)) x) )
-      op )
-    (set-on-completed
-      #'(lambda ()
-          (funcall (get-on-completed (observer op))) )
-      op )
-    op ))
+  (make-instance 'operator-ignore-elements
+                 :observable observable ))
+
+
+(defmethod on-next ((op operator-ignore-elements) x )
+  (declare (ignore x))
+  ;; do nothing
+  )
+
+(defmethod on-error ((op operator-ignore-elements) x)
+  (when (is-active op)
+    (set-error op)
+    (on-error (observer op) x) ))
+
+(defmethod on-completed ((op operator-ignore-elements))
+  (when (is-active op)
+    (set-completed op)
+    (on-completed (observer op)) ))
+
 
 (set-zero-arg-operator 'ignore-elements 'make-operator-ignore-elements)
 

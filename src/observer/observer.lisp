@@ -1,18 +1,14 @@
 (in-package :cl-user)
 (defpackage cl-reex.observer
   (:use :cl)
-  (:import-from :cl-reex.observable
-        :on-next
-        :on-error
-        :on-completed
-        :get-on-next
-        :set-on-next
-        :get-on-error
-        :set-on-error
-        :get-on-completed
-        :set-on-completed
-        :make-observer)
-  (:export :observer))
+  (:export :observer
+           :make-observer
+           :on-next
+           :on-error
+           :on-completed
+           :set-on-next
+           :set-on-error
+           :set-on-completed ))
 (in-package :cl-reex.observer)
 
 ;; body
@@ -33,10 +29,22 @@
                  :writer set-on-completed ))
   (:documentation "Observer"))
 
+(defgeneric on-next (obj value))
+(defgeneric on-error (obj err))
+(defgeneric on-completed (obj))
+
+(defmethod on-next ((obs observer) value)
+  (funcall (get-on-next obs) value) )
+
+
+(defmethod on-error ((obs observer) value)
+  (funcall (get-on-error obs) value) )
+
+(defmethod on-completed ((obs observer))
+  (funcall (get-on-completed obs)) )
 
 (defun make-observer (on-next on-error on-completed)
   (make-instance 'observer
                  :on-next on-next
                  :on-error on-error
                  :on-completed on-completed))
-

@@ -8,13 +8,11 @@
         :on-completed)
   (:import-from :cl-reex.observable
         :observable
+        :is-active
+        :set-error
+        :set-completed
+        :set-disposed
         :dispose
-        :get-on-next
-        :set-on-next
-        :get-on-error
-        :set-on-error
-        :get-on-completed
-        :set-on-completed
         :subscribe)
   (:import-from :cl-reex.macro.operator-table
         :set-function-like-operator)
@@ -37,32 +35,32 @@
   (:documentation "Skip-While operator"))
 
 (defun make-operator-skip-while (observable predicate)
-  (let ((op (make-instance 'operator-skip-while
-                           :observable observable
-                           :predicate predicate )))
-    (set-on-next
-      #'(lambda (x)
-          (if (completed op)
-              (funcall (get-on-next (observer op)) x)
-              (when (not (funcall (predicate op) x))
-                (setf (completed op) t)
-                (funcall (get-on-next (observer op)) x) )))
-      op )
-    (set-on-error
-      #'(lambda (x)
-          (funcall (get-on-error (observer op)) x) )
-      op )
-    (set-on-completed
-      #'(lambda ()
-          (funcall (get-on-completed (observer op))) )
-      op )
-    op ))
+  (make-instance 'operator-skip-while
+                 :observable observable
+                 :predicate predicate ))
 
+
+(defmethod on-next ((op operator-skip-while) x)
+  (if (completed op)
+      (on-next (observer op) x)
+      (when (not (funcall (predicate op) x))
+        (setf (completed op) t)
+        (on-next (observer op) x) )))
+
+(defmethod on-error ((op operator-skip-while) x)
+  (when (is-active op)
+    (set-error op)
+    (on-error (observer op) x) ))
+
+(defmethod on-completed ((op operator-skip-while))
+  (when (is-active op)
+    (set-completed op)
+    (on-completed (observer op)) ))
 
 (defmethod subscribe ((op operator-skip-while) observer)
   (handler-bind
       ((error #'(lambda (condition)
-                  (funcall (get-on-error observer) condition)
+                  (on-error observer condition)
                   (return-from subscribe
                     (make-instance 'disposable-do-nothing
                                    :observable op

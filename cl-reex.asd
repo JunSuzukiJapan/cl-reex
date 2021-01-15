@@ -9,8 +9,8 @@
   :depends-on ("bordeaux-threads")
   :components ((:module "src"
       :components
-        ((:file "observable/observable")
-         (:file "observer/observer")
+        ((:file "observer/observer")
+         (:file "observable/observable")
          (:file "util/error-conditions")
          (:file "util/fixed-size-queue")
          (:file "macro/operator-table")

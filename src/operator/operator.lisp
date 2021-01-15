@@ -1,16 +1,15 @@
 (in-package :cl-user)
 (defpackage cl-reex.operator
   (:use :cl)
+  (:import-from :cl-reex.observer
+        :observer )
   (:import-from :cl-reex.observable
         :observable
         :observable-object
-        :get-on-error
         :set-active
         :dispose
         :disposable-do-nothing
         :subscribe)
-  (:import-from :cl-reex.observer
-        :observer)
   (:export :operator
         :predicate
         :func
@@ -20,7 +19,7 @@
 
 ;; body
 
-(defclass operator (observer observable-object)
+(defclass operator (observable-object)
   ((observable :initarg :observable
                :accessor observable)
    (observer :initarg :observer

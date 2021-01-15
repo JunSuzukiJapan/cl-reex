@@ -1,56 +1,46 @@
 (in-package :cl-user)
 (defpackage cl-reex.observable
   (:use :cl)
+  (:import-from :cl-reex.observer
+        :make-observer
+        :on-next
+        :on-error
+        :on-completed )
   (:export :subscribe
-       :observable
-       :observable-object
-       :is-active
-       :observable-state
-       :state
-       :active
-       :error
-       :completed
-       :set-active
-       :set-error
-       :set-completed
-       :set-disposed
-       :disposed
-       :on-next
-       :on-error
-       :on-completed
-       :get-on-next
-       :set-on-next
-       :get-on-error
-       :set-on-error
-       :get-on-completed
-       :set-on-completed
-       :observable-from
-       :observable-state
-       :observable-range
-       :observable-just
-       :observable-repeat
-       :observable-of
-       :observable-empty
-       :observable-never
-       :observable-throw
-       :foreach
-       :observable-timer
-       :observable-interval
-       :make-observer
-       :disposable-do-nothing
-       :dispose ))
+        :observable
+        :observable-object
+        :is-active
+        :observable-state
+        :state
+        :active
+        :error
+        :completed
+        :set-active
+        :set-error
+        :set-completed
+        :set-disposed
+        :disposed
+        :observable-from
+        :observable-state
+        :observable-range
+        :observable-just
+        :observable-repeat
+        :observable-of
+        :observable-empty
+        :observable-never
+        :observable-throw
+        :foreach
+        :observable-timer
+        :observable-interval
+        :disposable-do-nothing
+        :dispose ))
 
 (in-package :cl-reex.observable)
 
-;; body
-
-(defgeneric on-next (observable item))
-(defgeneric on-error (obj item))
-(defgeneric on-completed (obj))
+;; Generic methods
 
 (defgeneric subscribe (observable observer))
 (defgeneric observable-from (source))
-
 (defgeneric dispose (obj))
 
 (deftype observable-state ()
@@ -123,7 +113,7 @@
           :accessor count-num )))
 
 (defmethod call-on-next ((dt disposable-timer))
-  (funcall (get-on-next (observer dt)) (count-num dt))
+  (on-next (observer dt) (count-num dt))
   (incf (count-num dt)) )
 
 (defmethod dispose ((dt disposable-timer))
@@ -150,7 +140,7 @@
 (defmethod subscribe ((timer observable-timer-object) observer)
   (handler-bind
       ((error #'(lambda (condition)
-                  (funcall (get-on-error observer) condition)
+                  (on-error observer condition)
                   (return-from subscribe
                     (make-instance 'disposable-timer
                               :observer observer
@@ -182,7 +172,7 @@
 (defclass observable-empty-object () nil)
 
 (defmethod subscribe ((empty observable-empty-object) observer)
-  (funcall (get-on-completed observer))
+  (on-completed observer)
   (make-instance 'disposable-do-nothing
          :observable empty
          :observer observer ))
@@ -215,7 +205,7 @@
                  :error-obj err-obj ))
 
 (defmethod subscribe ((obj observable-throw-object) observer)
-  (funcall (get-on-error observer) (error-obj obj))
+  (on-error observer (error-obj obj))
   (make-instance 'disposable-do-nothing
                  :observable obj
                  :observer observer ))
@@ -232,14 +222,14 @@
 (defmethod subscribe ((lst observable-list) observer)
   (handler-bind
       ((error #'(lambda (condition)
-                  (funcall (get-on-error observer) condition)
+                  (on-error observer condition)
                   (return-from subscribe
                     (make-instance 'disposable-do-nothing
                                    :observable lst
                                    :observer observer )))))
     (dolist (x (src-list lst))
-      (funcall (get-on-next observer) x) )
-    (funcall (get-on-completed observer))
+      (on-next observer x) )
+    (on-completed observer)
     (make-instance 'disposable-do-nothing
                    :observable lst
                    :observer observer )))
@@ -260,7 +250,7 @@
 (defmethod subscribe ((stream observable-string) observer)
   (handler-bind
       ((error #'(lambda (condition)
-                  (funcall (get-on-error observer) condition)
+                  (on-error observer condition)
                   (return-from subscribe
                     (make-instance 'disposable-do-nothing
                                    :observable stream
@@ -268,8 +258,8 @@
     (let ((s (make-string-input-stream (source stream))))
       (do ((ch (read-char s nil) (read-char s nil)))
           ((null ch))
-        (funcall (get-on-next observer) ch) ))
-    (funcall (get-on-completed observer))
+        (on-next observer ch) ))
+    (on-completed observer)
     (make-instance 'disposable-do-nothing
                    :observable stream
                    :observer observer )))
@@ -289,14 +279,14 @@
 (defmethod subscribe ((ary observable-array) observer)
   (handler-bind
       ((error #'(lambda (condition)
-                  (funcall (get-on-error observer) condition)
+                  (on-error observer condition)
                   (return-from subscribe
                     (make-instance 'disposable-do-nothing
                                    :observable ary
                                    :observer observer )))))
     (loop for item across (source ary)
-          do (funcall (get-on-next observer) item) )
-    (funcall (get-on-completed observer))
+          do (on-next observer item) )
+    (on-completed observer)
     (make-instance 'disposable-do-nothing
                    :observable ary
                    :observer observer )))
@@ -314,7 +304,7 @@
 (defmethod subscribe ((stream observable-stream) observer)
   (handler-bind
          ((error (lambda (condition)
-              (funcall (get-on-error observer) condition)
+              (on-error observer condition)
               (return-from subscribe
                 (make-instance 'disposable-do-nothing
                                :observable stream
@@ -322,8 +312,8 @@
     (let ((strm (source stream)))
       (do ((ch (read-char strm nil) (read-char strm nil)))
       ((null ch))
-    (funcall (get-on-next observer) ch)))
-    (funcall (get-on-completed observer))
+    (on-next observer ch)))
+    (on-completed observer)
     (make-instance 'disposable-do-nothing
            :observable stream
            :observer observer )))
@@ -343,7 +333,7 @@
 (defmethod subscribe ((obj observable-range-object) observer)
   (handler-bind
       ((error #'(lambda (condition)
-                  (funcall (get-on-error observer) condition)
+                  (on-error observer condition)
                   (return-from subscribe
                     (make-instance 'disposable-do-nothing
                                    :observable obj
@@ -352,8 +342,8 @@
          (from (from obj))
          (count (count-num obj)) )
         ((>= i count))
-      (funcall (get-on-next observer) (+ from i)) )
-    (funcall (get-on-completed observer))
+      (on-next observer (+ from i)) )
+    (on-completed observer)
     (make-instance 'disposable-do-nothing
                    :observable obj
                    :observer observer )))
@@ -373,13 +363,13 @@
 (defmethod subscribe ((obj observable-just-object) observer)
   (handler-bind
       ((error #'(lambda (condition)
-                  (funcall (get-on-error observer) condition)
+                  (on-error observer condition)
                   (return-from subscribe
                     (make-instance 'disposable-do-nothing
                                    :observable obj
                                    :observer observer )))))
-    (funcall (get-on-next observer) (item obj))
-    (funcall (get-on-completed observer))
+    (on-next observer (item obj))
+    (on-completed observer)
     (make-instance 'disposable-do-nothing
                    :observable obj
                    :observer observer )))
@@ -401,7 +391,7 @@
 (defmethod subscribe ((obj observable-repeat-object) observer)
   (handler-bind
       ((error #'(lambda (condition)
-                  (funcall (get-on-error observer) condition)
+                  (on-error observer condition)
                   (return-from subscribe
                     (make-instance 'disposable-do-nothing
                                    :observable obj
@@ -410,8 +400,8 @@
           (item (item obj)) )
       (do ((i 0 (1+ i)))
           ((>= i count))
-        (funcall (get-on-next observer) item) )
-      (funcall (get-on-completed observer))
+        (on-next observer item) )
+      (on-completed observer)
       (make-instance 'disposable-do-nothing
                      :observable obj
                      :observer observer ))))

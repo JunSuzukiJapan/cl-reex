@@ -8,13 +8,11 @@
         :on-completed)
   (:import-from :cl-reex.observable
         :observable
+        :is-active
+        :set-error
+        :set-completed
+        :set-disposed
         :dispose
-        :get-on-next
-        :set-on-next
-        :get-on-error
-        :set-on-error
-        :get-on-completed
-        :set-on-completed
         :subscribe)
   (:import-from :cl-reex.macro.operator-table
         :set-zero-arg-operator)
@@ -38,24 +36,26 @@
   (:documentation "Distinct operator"))
 
 (defun make-operator-distinct (observable)
-  (let ((op (make-instance 'operator-distinct
-                           :observable observable )))
-    (set-on-next
-      #'(lambda (x)
-          (let ((table (table op)))
-            (when (not (nth-value 1 (gethash x table)))
-              (setf (gethash x table) x)
-              (funcall (get-on-next (observer op)) x) )))
-      op )
-    (set-on-error
-      #'(lambda (x)
-          (funcall (get-on-error (observer op)) x) )
-      op )
-    (set-on-completed
-      #'(lambda ()
-          (funcall (get-on-completed (observer op))) )
-      op )
-    op ))
+  (make-instance 'operator-distinct
+                 :observable observable ))
+
+(defmethod on-next ((op operator-distinct) x)
+  (when (is-active op)
+    (let ((table (table op)))
+      (when (not (nth-value 1 (gethash x table)))
+        (setf (gethash x table) x)
+        (on-next (observer op) x) ))))
+
+(defmethod on-error ((op operator-distinct) x)
+  (when (is-active op)
+    (set-error op)
+    (on-error (observer op) x) ))
+
+(defmethod on-completed ((op operator-distinct))
+  (when (is-active op)
+    (set-completed op)
+    (on-completed (observer op)) ))
+
 
 (set-zero-arg-operator 'distinct 'make-operator-distinct)
 (set-zero-arg-operator 'distinct-until-changed 'make-operator-distinct)

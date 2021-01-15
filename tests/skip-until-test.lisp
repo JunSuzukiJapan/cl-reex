@@ -10,14 +10,14 @@
 
 (plan 2)
 
-;; plan 1
-
 (defparameter logger (make-instance 'logger))
 
 (defparameter observer (make-observer
     #'(lambda (x) (add logger x))
     #'(lambda (x) (add logger (format nil "error: ~S" x)))
     #'(lambda () (add logger "completed")) ))
+
+;; plan 1
 
 (defparameter sub (make-subject))
 (defparameter start-trigger (make-subject))

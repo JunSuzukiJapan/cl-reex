@@ -13,12 +13,6 @@
         :set-completed
         :set-disposed
         :dispose
-        :get-on-next
-        :set-on-next
-        :get-on-error
-        :set-on-error
-        :get-on-completed
-        :set-on-completed
         :subscribe)
   (:import-from :cl-reex.macro.operator-table
         :set-zero-arg-or-function-like-operator )
@@ -36,64 +30,41 @@
 
 (defclass operator-first (operator)
   ((predicate :initarg :predicate
-              :initform nil
               :accessor predicate ))
   (:documentation "First operator"))
 
 (defun make-operator-first (observable &optional predicate)
-  (if (not (null predicate))
-      ;; has predicate
-      (let ((op (make-instance 'operator-first
-                               :observable observable
-                               :predicate predicate )))
-        (set-on-next
-         #'(lambda (x)
-             (when (and (is-active op)
-                        (funcall (predicate op) x) )
-               (set-completed op)
-               (funcall (get-on-next (observer op)) x)
-               (funcall (get-on-completed (observer op))) ))
-         op )
-        (set-on-error
-         #'(lambda (x)
-             (when (is-active op)
-               (set-error op)
-               (funcall (get-on-error (observer op)) x) ))
-         op )
-        (set-on-completed
-         #'(lambda ()
-             (when (is-active op)
-               (set-error op)
-               (let ((err (make-instance 'sequence-contains-no-elements-error)))
-                 (funcall (get-on-error (observer op)) err) )))
-         op )
-        op )
+  (if (null predicate)
+      (make-instance 'operator-first
+                     :observable observable )
+      (make-instance 'operator-first
+                     :observable observable
+                     :predicate predicate )))
 
-      ;; no predicate
-      (let ((op (make-instance 'operator-first
-                               :observable observable )))
-        (set-on-next
-         #'(lambda (x)
-             (when (is-active op)
-               (funcall (get-on-next (observer op)) x)
-               (set-completed op)
-               (funcall (get-on-completed (observer op))) ))
-         op )
-        (set-on-error
-         #'(lambda (x)
-             (when (is-active op)
-               (set-error op)
-               (funcall (get-on-error (observer op)) x) ))
-         op )
-        (set-on-completed
-         #'(lambda ()
-             (when (is-active op)
-               (set-error op)
-               (let ((err (make-condition 'sequence-contains-no-elements-error)))
-                 (funcall (get-on-error (observer op)) err) )))
-         op )
-        op )))
-  
+
+(defmethod on-next ((op operator-first) x)
+  (when (is-active op)
+    (if (slot-boundp op 'predicate)
+      (when (funcall (predicate op) x)
+        (set-completed op)
+        (on-next (observer op) x)
+        (on-completed (observer op)) )
+      (progn
+        (on-next (observer op) x)
+        (set-completed op)
+        (on-completed (observer op)) ))))
+
+(defmethod on-error ((op operator-first) x)
+  (when (is-active op)
+    (set-error op)
+    (on-error (observer op) x) ))
+
+(defmethod on-completed ((op operator-first))
+  (when (is-active op)
+    (set-error op)
+    (let ((err (make-condition 'sequence-contains-no-elements-error)))
+      (on-error (observer op) err) )))
+
 
 (set-zero-arg-or-function-like-operator 'first 'make-operator-first)
 

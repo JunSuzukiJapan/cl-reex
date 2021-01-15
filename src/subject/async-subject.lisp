@@ -1,6 +1,11 @@
 (in-package :cl-user)
 (defpackage cl-reex.subject.async-subject
   (:use :cl)
+  (:import-from :cl-reex.observer
+        :on-next
+        :on-error
+        :on-completed
+        :observer)
   (:import-from :cl-reex.observable
         :observable
         :observable-object
@@ -10,23 +15,12 @@
         :active
         :error
         :completed
-        :disposed
         :set-error
         :set-completed
         :set-disposed
-        :on-next
-        :on-error
-        :on-completed
-        :get-on-next
-        :set-on-next
-        :get-on-error
-        :set-on-error
-        :get-on-completed
-        :set-on-completed
+        :disposed
         :subscribe
         :dispose)
-  (:import-from :cl-reex.observer
-        :observer)
   (:import-from :cl-reex.subject.subject
         :subject
         :make-subject
@@ -44,6 +38,9 @@
                :accessor error-item )))
 
 (defun make-async-subject ()
+  (make-instance 'async-subject))
+
+#|
   (let ((sub (make-instance 'async-subject)))
     (set-on-next
       #'(lambda (x)
@@ -70,16 +67,39 @@
               (funcall (get-on-completed observer)) )))
       sub )
     sub ))
+|#
+
+(defmethod on-next ((sub async-subject) x )
+  (when (is-active sub)
+    (setf (current-item sub) x) ))
+
+(defmethod on-error ((sub async-subject) x)
+  (when (is-active sub)
+    (set-error sub)
+    (setf (error-item sub) x)
+    (dolist (observer (observers sub))
+      (on-error observer x) )))
+
+(defmethod on-completed ((sub async-subject))
+  (when (is-active sub)
+    (set-completed sub)
+    (when (slot-boundp sub 'current-item)
+      (let ((item (current-item sub)))
+        (dolist (observer (observers sub))
+          (on-next observer item) )))
+    (dolist (observer (observers sub))
+      (on-completed observer) )))
+
 
 ;;
 ;; Subscribe
 ;;
 (defmethod subscribe ((sub async-subject) observer)
   (case (state sub)
-    ((error)  (funcall (get-on-error observer) (error-item sub)) )
+    ((error)  (on-error observer (error-item sub)) )
     ((completed)
      (when (slot-boundp sub 'current-item)
-       (funcall (get-on-next observer) (current-item sub)) )
-     (funcall (get-on-completed observer)) )
+       (on-next observer (current-item sub)) )
+     (on-completed observer) )
     (t (call-next-method) )))
 

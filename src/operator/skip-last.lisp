@@ -8,13 +8,11 @@
         :on-completed)
   (:import-from :cl-reex.observable
         :observable
+        :is-active
+        :set-error
+        :set-completed
+        :set-disposed
         :dispose
-        :get-on-next
-        :set-on-next
-        :get-on-error
-        :set-on-error
-        :get-on-completed
-        :set-on-completed
         :subscribe)
   (:import-from :cl-reex.macro.operator-table
         :set-one-arg-operator)
@@ -45,30 +43,31 @@
   (:documentation "Skip-Last operator"))
 
 (defun make-operator-skip-last (observable count)
-  (let* ((op (make-instance 'operator-skip-last
-                            :observable observable
-                            :skip-count count )))
-    (set-on-next
-      #'(lambda (x)
-          (push x (stack op)) )
-      op )
-    (set-on-error
-      #'(lambda (x)
-          (funcall (get-on-error (observer op)) x) )
-      op )
-    (set-on-completed
-      #'(lambda ()
-          (let ((on-next (get-on-next (observer op)))
-                (observer (observer op))
-                (lst (stack op)) )
-            ;; skip
-            (dotimes (i (skip-count op))
-              (pop lst) )
-            (dolist (item (nreverse lst))
-              (funcall on-next item) ))
-          (funcall (get-on-completed (observer op))) )
-      op )
-    op ))
+  (make-instance 'operator-skip-last
+                 :observable observable
+                 :skip-count count ))
+
+
+(defmethod on-next ((op operator-skip-last) x)
+  (when (is-active op)
+    (push x (stack op)) ))
+
+(defmethod on-error ((op operator-skip-last) x)
+  (when (is-active op)
+    (set-error op)
+    (on-error (observer op) x) ))
+
+(defmethod on-completed ((op operator-skip-last))
+  (when (is-active op)
+    (let ((observer (observer op))
+          (lst (stack op)) )
+      ;; skip
+      (dotimes (i (skip-count op))
+        (pop lst) )
+      (dolist (item (nreverse lst))
+        (on-next observer item) ))
+    (set-completed op)
+    (on-completed (observer op)) ))
 
 
 (set-one-arg-operator 'skip-last 'make-operator-skip-last)

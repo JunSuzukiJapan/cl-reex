@@ -8,13 +8,12 @@
         :on-completed)
   (:import-from :cl-reex.observable
         :observable
+        :is-active
+        :set-error
+        :set-completed
+        :set-disposed
         :dispose
-        :get-on-next
-        :set-on-next
-        :get-on-error
-        :set-on-error
-        :get-on-completed
-        :set-on-completed
+        :disposable-do-nothing
         :subscribe)
   (:import-from :cl-reex.macro.operator-table
         :set-one-arg-operator)
@@ -34,26 +33,27 @@
   (:documentation "Finally operator"))
 
 (defun make-operator-finally (observable action)
-  (let ((op (make-instance 'operator-finally
-                           :observable observable
-                           :action action )))
-    (set-on-next
-      #'(lambda (x)
-          (funcall (get-on-next (observer op)) x) )
-      op )
-    (set-on-error
-      #'(lambda (x)
-          (unwind-protect
-           (funcall (get-on-error (observer op)) x)
-           (funcall action) ))
-      op )
-    (set-on-completed
-      #'(lambda ()
-          (unwind-protect
-           (funcall (get-on-completed (observer op)))
-           (funcall action) ))
-      op )
-    op ))
+  (make-instance 'operator-finally
+                 :observable observable
+                 :action action ))
+
+(defmethod on-next ((op operator-finally) x)
+  (when (is-active op)
+    (on-next (observer op) x) ))
+
+(defmethod on-error ((op operator-finally) x)
+  (when (is-active op)
+    (set-error op)
+    (unwind-protect
+         (on-error (observer op) x)
+      (funcall (action op)) )))
+
+(defmethod on-completed ((op operator-finally))
+  (when (is-active op)
+    (set-completed op)
+    (unwind-protect
+         (on-completed (observer op))
+      (funcall (action op)) )))
 
 (defmethod subscribe ((op operator-finally) observer)
   (handler-bind

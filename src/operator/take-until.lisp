@@ -3,9 +3,13 @@
   (:use :cl)
   (:import-from :cl-reex.observer
         :observer
+        :make-observer
         :on-next
         :on-error
-        :on-completed)
+        :on-completed
+        :set-on-next
+        :set-on-error
+        :set-on-completed )
   (:import-from :cl-reex.observable
         :observable
         :is-active
@@ -13,12 +17,6 @@
         :set-completed
         :set-disposed
         :dispose
-        :get-on-next
-        :set-on-next
-        :get-on-error
-        :set-on-error
-        :get-on-completed
-        :set-on-completed
         :subscribe)
   (:import-from :cl-reex.macro.operator-table
         :set-one-arg-operator)
@@ -41,42 +39,36 @@
   (:documentation "Take-Until operator"))
 
 (defun make-operator-take-until (observable trigger-observable)
-  (let ((op (make-instance 'operator-take-until
-               :observable observable
-               :trigger-observable trigger-observable )))
-    (set-on-next
-      #'(lambda (x)
-          (when (and (not (triggered op))
-                     (is-active op) )
-            (funcall (get-on-next (observer op)) x) ))
-      op )
-    (set-on-error
-      #'(lambda (x)
-          (set-error op)
-          (funcall (get-on-error (observer op)) x) )
-      op )
-    (set-on-completed
-      #'(lambda ()
-          (set-completed op)
-          (funcall (get-on-completed (observer op))) )
-      op )
-
-    (set-on-next
-      #'(lambda (x)
-          (declare (ignore x))
-          (setf (triggered op) t)
-          (funcall (get-on-completed (observer op))) )
-      trigger-observable )
-    (set-on-error
-      #'(lambda (x)
-          (set-error op)
-          (funcall (get-on-error (observer op)) x) )
-      trigger-observable )
-    (set-on-completed
-      #'(lambda () )
-      trigger-observable )
-    
+  (let* ((op (make-instance 'operator-take-until
+                            :observable observable
+                            :trigger-observable trigger-observable ))
+         (observer
+           (make-observer
+            #'(lambda (x)
+                (declare (ignore x))
+                (setf (triggered op) t)
+                (on-completed (observer op)) )
+            #'(lambda (x)
+                (set-error op)
+                (on-error (observer op) x) )
+            #'(lambda () ) )))
+    (subscribe trigger-observable observer)
     op ))
+
+(defmethod on-next ((op operator-take-until) x)
+  (when (and (not (triggered op))
+             (is-active op) )
+    (on-next (observer op) x) ))
+
+(defmethod on-error ((op operator-take-until) x)
+  (when (is-active op)
+    (set-error op)
+    (on-error (observer op) x) ))
+
+(defmethod on-completed ((op operator-take-until))
+  (when (is-active op)
+    (set-completed op)
+    (on-completed (observer op)) ))
 
 (set-one-arg-operator 'take-until 'make-operator-take-until)
 

@@ -1,32 +1,20 @@
 (in-package :cl-user)
 (defpackage cl-reex.subject.subject
   (:use :cl)
+  (:import-from :cl-reex.observer
+        :on-next
+        :on-error
+        :on-completed
+        :observer)
   (:import-from :cl-reex.observable
         :observable
         :observable-object
         :is-active
-        :observable-state
-        :state
-        :active
-        :error
-        :completed
-        :disposed
         :set-error
         :set-completed
         :set-disposed
-        :on-next
-        :on-error
-        :on-completed
-        :get-on-next
-        :set-on-next
-        :get-on-error
-        :set-on-error
-        :get-on-completed
-        :set-on-completed
         :subscribe
         :dispose)
-  (:import-from :cl-reex.observer
-        :observer)
   (:export :subject
            :make-subject
            :observers
@@ -40,28 +28,50 @@
               :accessor observers )))
 
 (defun make-subject ()
+  (make-instance 'subject) )
+
+#|
   (let ((sub (make-instance 'subject)))
     (set-on-next
       #'(lambda (x)
           (when (is-active sub)
             (dolist (observer (observers sub))
-              (funcall (get-on-next observer) x) )))
+              (on-next observer x) )))
       sub )
     (set-on-error
       #'(lambda (x)
           (when (is-active sub)
             (set-error sub)
             (dolist (observer (observers sub))
-              (funcall (get-on-error observer) x) )))
+              (on-error observer x) )))
       sub )
     (set-on-completed
       #'(lambda ()
           (when (is-active sub)
             (set-completed sub)
             (dolist (observer (observers sub))
-              (funcall (get-on-completed observer)) )))
+              (on-completed observer) )))
       sub )
     sub ))
+|#
+
+
+(defmethod on-next ((sub subject) x)
+  (when (is-active sub)
+    (dolist (observer (observers sub))
+      (on-next observer x) )))
+
+(defmethod on-error ((sub subject) x)
+  (when (is-active sub)
+    (set-error sub)
+    (dolist (observer (observers sub))
+      (on-error observer x) )))
+
+(defmethod on-completed ((sub subject))
+  (when (is-active sub)
+    (set-completed sub)
+    (dolist (observer (observers sub))
+      (on-completed observer) )))
 
 ;;
 ;; Dispose
@@ -82,7 +92,7 @@
 (defmethod subscribe ((sub subject) observer)
   (handler-bind
       ((error #'(lambda (condition)
-                  (funcall (get-on-error observer) condition)
+                  (on-error observer condition)
                   (return-from subscribe
                     (make-instance 'disposable-do-nothing
                                    :observable sub
@@ -91,16 +101,4 @@
     (make-instance 'disposable-subject
                    :subject sub
                    :observer observer )))
-
-;;
-;; on-next, on-error & on-completed
-;;
-(defmethod on-next ((sub subject) item)
-  (funcall (get-on-next sub) item) )
-
-(defmethod on-error ((sub subject) condition)
-  (funcall (get-on-error sub) condition) )
-
-(defmethod on-completed ((sub subject))
-  (funcall (get-on-completed sub)) )
 

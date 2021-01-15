@@ -3,6 +3,10 @@
   (:use :cl)
   (:import-from :cl-reex.observer
         :observer
+        :make-observer
+        :set-on-next
+        :set-on-error
+        :set-on-completed
         :on-next
         :on-error
         :on-completed)
@@ -13,12 +17,6 @@
         :set-completed
         :set-disposed
         :dispose
-        :get-on-next
-        :set-on-next
-        :get-on-error
-        :set-on-error
-        :get-on-completed
-        :set-on-completed
         :subscribe)
   (:import-from :cl-reex.macro.operator-table
         :set-one-arg-operator)
@@ -41,41 +39,33 @@
   (:documentation "Skip-Until operator"))
 
 (defun make-operator-skip-until (observable trigger-observable)
-  (let ((op (make-instance 'operator-skip-until
-               :observable observable
-               :trigger-observable trigger-observable )))
-    (set-on-next
-      #'(lambda (x)
-          (when (and (triggered op)
-                     (is-active op) )
-            (funcall (get-on-next (observer op)) x) ))
-      op )
-    (set-on-error
-      #'(lambda (x)
-          (set-error op)
-          (funcall (get-on-error (observer op)) x) )
-      op )
-    (set-on-completed
-      #'(lambda ()
-          (set-completed op)
-          (funcall (get-on-completed (observer op))) )
-      op )
-
-    (set-on-next
-      #'(lambda (x)
-          (declare (ignore x))
-          (setf (triggered op) t) )
-      trigger-observable )
-    (set-on-error
-      #'(lambda (x)
-          (set-error op)
-          (funcall (get-on-error (observer op)) x) )
-      trigger-observable )
-    (set-on-completed
-      #'(lambda () )
-      trigger-observable )
-    
+  (let* ((op (make-instance 'operator-skip-until
+                            :observable observable
+                            :trigger-observable trigger-observable ))
+         (observer
+           (make-observer
+            #'(lambda (x)
+                (declare (ignore x))
+                (setf (triggered op) t) )
+            #'(lambda (x)
+                (set-error op)
+                (on-error (observer op) x) )
+            #'(lambda () ) )))
+    (subscribe trigger-observable observer)
     op ))
+
+(defmethod on-next ((op operator-skip-until) x)
+  (when (and (triggered op)
+             (is-active op) )
+    (on-next (observer op) x) ))
+
+(defmethod on-error ((op operator-skip-until) x)
+  (set-error op)
+  (on-error (observer op) x) )
+
+(defmethod on-completed ((op operator-skip-until))
+  (set-completed op)
+  (on-completed (observer op)) )
 
 (set-one-arg-operator 'skip-until 'make-operator-skip-until)
 

@@ -13,12 +13,6 @@
         :set-completed
         :set-disposed
         :dispose
-        :get-on-next
-        :set-on-next
-        :get-on-error
-        :set-on-error
-        :get-on-completed
-        :set-on-completed
         :subscribe)
   (:import-from :cl-reex.macro.operator-table
         :set-zero-arg-or-function-like-operator )
@@ -36,7 +30,6 @@
 
 (defclass operator-last (operator)
   ((predicate :initarg :predicate
-              :initform nil
               :accessor predicate )
    (last-item :initarg :last-item
               :accessor last-item )
@@ -46,75 +39,45 @@
   (:documentation "Last operator"))
 
 (defun make-operator-last (observable &optional predicate)
-  (if (not (null predicate))
-      ;; has predicate
-      (let ((op (make-instance 'operator-last
-                               :observable observable
-                               :predicate predicate )))
-        (set-on-next
-         #'(lambda (x)
-             (when (and (is-active op)
-                        (funcall (predicate op) x) )
-               (setf (last-item op) x)
-               (setf (has-last-item op) t) ))
-         op )
-        (set-on-error
-         #'(lambda (x)
-             (when (is-active op)
-               (set-error op)
-               (funcall (get-on-error (observer op)) x) ))
-         op )
-        (set-on-completed
-         #'(lambda ()
-             (when (is-active op)
-               (if (has-last-item op)
-                   (progn
-                     (funcall (get-on-next (observer op)) (last-item op))
-                     (set-completed op)
-                     (funcall (get-on-completed (observer op))) )
-                   (progn
-                     (set-error op)
-                     (let ((err (make-condition 'sequence-contains-no-elements-error)))
-                       (funcall (get-on-error (observer op)) err) )))))
+  (if (null predicate)
+      (make-instance 'operator-last
+                     :observable observable )
+      (make-instance 'operator-last
+                     :observable observable
+                     :predicate predicate )))
 
 
-         op )
-        op )
+(defmethod on-next ((op operator-last) x)
+  (when (is-active op)
+    (if (slot-boundp op 'predicate)
+        (when (funcall (predicate op) x)
+          (setf (last-item op) x)
+          (setf (has-last-item op) t) )
+        (progn
+          (setf (last-item op) x)
+          (setf (has-last-item op) t)))))
 
-      ;; no predicate
-      (let ((op (make-instance 'operator-last
-                               :observable observable )))
-        (set-on-next
-         #'(lambda (x)
-             (when (is-active op)
-               (setf (last-item op) x)
-               (setf (has-last-item op) t)))
-         op )
-        (set-on-error
-         #'(lambda (x)
-             (when (is-active op)
-               (set-error op)
-               (funcall (get-on-error (observer op)) x) ))
-         op )
-        (set-on-completed
-         #'(lambda ()
-             (when (is-active op)
-               (if (has-last-item op)
-                   (progn
-                     (funcall (get-on-next (observer op)) (last-item op))
-                     (set-completed op)
-                     (funcall (get-on-completed (observer op))) )
-                   (progn
-                     (set-error op)
-                     (let ((err (make-condition 'sequence-contains-no-elements-error)))
-                       (funcall (get-on-error (observer op)) err) )))))
-         op )
-        op )))
+(defmethod on-error ((op operator-last) x)
+  (when (is-active op)
+    (set-error op)
+    (on-error (observer op) x) ))
+
+(defmethod on-completed ((op operator-last))
+  (when (is-active op)
+    (if (has-last-item op)
+        (progn
+          (on-next (observer op) (last-item op))
+          (set-completed op)
+          (on-completed (observer op)) )
+        (progn
+          (set-error op)
+          (let ((err (make-condition 'sequence-contains-no-elements-error)))
+            (on-error (observer op) err) )))))
   
 (defmethod subscribe ((op operator-last) observer)
   (handler-bind
       ((error #'(lambda (condition)
-                  (funcall (get-on-error observer) condition)
+                  (on-error observer condition)
                   (return-from subscribe
                     (make-instance 'disposable-do-nothing
                                    :observable op

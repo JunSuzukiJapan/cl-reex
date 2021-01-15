@@ -8,13 +8,11 @@
         :on-completed)
   (:import-from :cl-reex.observable
         :observable
+        :is-active
+        :set-error
+        :set-completed
+        :set-disposed
         :dispose
-        :get-on-next
-        :set-on-next
-        :get-on-error
-        :set-on-error
-        :get-on-completed
-        :set-on-completed
         :subscribe)
   (:import-from :cl-reex.macro.operator-table
         :set-one-arg-operator)
@@ -42,29 +40,28 @@
   (:documentation "Take-Last operator"))
 
 (defun make-operator-take-last (observable count)
-  (let* ((queue (make-queue count))
-         (op (make-instance 'operator-take-last
-                            :observable observable
-                            :queue queue )))
-    (set-on-next
-      #'(lambda (x)
-          (enqueue (queue op) x) )
-      op )
-    (set-on-error
-      #'(lambda (x)
-          (funcall (get-on-error (observer op)) x) )
-      op )
-    (set-on-completed
-      #'(lambda ()
-          (do ((queue (queue op))
-               (on-next (get-on-next (observer op))) )
-              ((is-empty queue)
-               (funcall (get-on-completed (observer op))) )
-            (let ((item (dequeue queue)))
-              (funcall on-next item) )))
-      op )
-    op ))
+  (make-instance 'operator-take-last
+                 :observable observable
+                 :queue (make-queue count) ))
 
+
+(defmethod on-next ((op operator-take-last) x)
+  (when (is-active op)
+    (enqueue (queue op) x) ))
+
+(defmethod on-error ((op operator-take-last) x)
+  (when (is-active op)
+    (set-error op)
+    (on-error (observer op) x) ))
+
+(defmethod on-completed ((op operator-take-last))
+  (when (is-active op)
+    (do ((queue (queue op))
+         (observer (observer op)) )
+        ((is-empty queue)
+         (on-completed observer) )
+      (let ((item (dequeue queue)))
+        (on-next observer item) ))))
 
 (set-one-arg-operator 'take-last 'make-operator-take-last)
 
