@@ -41,7 +41,7 @@
   (do
    :on-next #'(lambda (x) (add logger (format nil "do: ~A" x)))
    :on-error #'(lambda (x) (add logger (format nil "do error: ~A" x)))
-   :on-completed #'(lambda (x) (add logger (format nil "do completed"))) )
+   :on-completed #'(lambda () (add logger (format nil "do completed"))) )
   (subscribe observer)
   (dispose) )
 
