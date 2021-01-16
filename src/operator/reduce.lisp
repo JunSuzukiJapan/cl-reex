@@ -16,9 +16,10 @@
         :subscribe)
   (:import-from :cl-reex.macro.operator-table
         :set-function-like-operator)
+  (:import-from :cl-reex.error-conditions
+        :sequence-contains-no-elements-error )
   (:import-from :cl-reex.operator
-        :operator
-        :predicate)
+        :operator )
   (:export :operator-reduce
         :reduce
         :make-operator-reduce))
@@ -53,9 +54,14 @@
 
 (defmethod on-completed ((op operator-reduce))
   (when (is-active op)
-    (on-next (observer op) (acc op))
-    (set-completed op)
-    (on-completed (observer op)) ))
+    (if (slot-boundp op 'acc)
+        (progn
+          (on-next (observer op) (acc op))
+          (set-completed op)
+          (on-completed (observer op)) )
+        (let ((err (make-condition 'sequence-contains-no-elements-error)))
+          (set-error op)
+          (on-error (observer op) err) ))))
 
 (set-function-like-operator 'reduce 'make-operator-reduce)
 

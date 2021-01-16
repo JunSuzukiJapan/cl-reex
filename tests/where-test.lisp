@@ -25,6 +25,6 @@
   (dispose) )
 
 (is (result logger)
-    '(2 4 6 8 10 "completed"))
+    '(2 4 6 8 10 "completed") )
 
 (finalize)

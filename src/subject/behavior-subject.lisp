@@ -40,34 +40,6 @@
   (make-instance 'behavior-subject
                  :current-item item ))
 
-#|
-  (let ((sub (make-instance 'behavior-subject
-                            :current-item item )))
-    (set-on-next
-      #'(lambda (x)
-          (when (is-active sub)
-            (setf (current-item sub) x)
-            (dolist (observer (observers sub))
-              (funcall (get-on-next observer) x) )))
-      sub )
-    (set-on-error
-      #'(lambda (x)
-          (when (is-active sub)
-            (set-error sub)
-            (setf (error-item sub) x)
-            (dolist (observer (observers sub))
-              (funcall (get-on-error observer) x) )))
-      sub )
-    (set-on-completed
-      #'(lambda ()
-          (when (is-active sub)
-            (set-completed sub)
-            (dolist (observer (observers sub))
-              (funcall (get-on-completed observer)) )))
-      sub )
-    sub ))
-|#
-
 
 (defmethod on-next ((sub behavior-subject) x)
   (when (is-active sub)

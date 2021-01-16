@@ -1,14 +1,14 @@
-(defpackage reduce-test
+(defpackage concat-test
   (:use :cl
     :cl-reex
     :cl-reex-test.logger
     :prove)
   (:shadowing-import-from :cl-reex :skip))
-(in-package :reduce-test)
+(in-package :concat-test)
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :cl-reex)' in your Lisp.
 
-(plan 4)
+(plan 3)
 
 ;; blah blah blah.
 
@@ -16,42 +16,46 @@
 
 (defparameter observer (make-observer
     #'(lambda (x) (add logger x))
-    #'(lambda (err) (add logger err))
+    #'(lambda (x) (add logger (format nil "error: ~A" x)))
     #'(lambda () (add logger "completed")) ))
 
 ;; plan 1
 
-(with-observable (observable-from '(1 2 3 4 5 6 7 8 9 10))
-  (reduce (x y) (+ x y))
+(with-observable (observable-range 1 3)
+  (concat (observable-range 5 5))
   (subscribe observer)
   (dispose) )
 
 (is (result logger)
-    '(55 "completed") )
+    '(1 2 3 5 6 7 8 9 "completed") )
 
 ;; plan 2
 (reset logger)
 
-(with-observable (observable-just 1)
-  (reduce (x y) (+ x y))
+(with-observable (observable-range 1 3)
+  (concat)
   (subscribe observer)
   (dispose) )
 
 (is (result logger)
-    '(1 "completed") )
+    '(1 2 3 "completed") )
 
-;; plan 3 & 4
+;; plan 3
 (reset logger)
 
-(with-observable (observable-empty)
-  (reduce (x y) (+ x y))
+(with-observable (observable-range 1 3)
+  (concat (observable-range 5 5)
+          (observable-of 20 22 24)
+          (observable-empty)
+          (observable-from '(50 100 200)) )
   (subscribe observer)
   (dispose) )
 
-(let ((result (result logger)))
-  (is (length result)
-      1 )
-  (is (type-of (car result))
-      'sequence-contains-no-elements-error ))
+(is (result logger)
+    '(1 2 3
+      5 6 7 8 9
+      20 22 24
+      50 100 200
+      "completed" ))
 
 (finalize)

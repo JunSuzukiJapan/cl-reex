@@ -9,7 +9,8 @@
        :set-zero-or-one-arg-operator
        :set-zero-arg-or-function-like-operator
        :set-one-or-rest-arg-operator-quote
-       :set-on-next-error-completed-operator ))
+       :set-on-next-error-completed-operator
+       :set-rest-arg-operator ))
 
 (in-package :cl-reex.macro.operator-table)
 
@@ -114,3 +115,11 @@
            ,temp-observable
            ,@(cdr x) )))))
  
+(defun set-rest-arg-operator (name function-name)
+  (set-operator-expander name
+    #'(lambda (x var-name temp-observable)
+        `(,var-name
+          (,function-name
+           ,temp-observable
+           ,@(cdr x) )))))
+

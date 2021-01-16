@@ -39,33 +39,6 @@
 (defun make-replay-subject ()
   (make-instance 'replay-subject))
 
-#|
-  (let ((sub (make-instance 'replay-subject)))
-    (set-on-next
-      #'(lambda (x)
-          (when (is-active sub)
-            (push `(on-next ,x) (events sub))
-            (dolist (observer (observers sub))
-              (funcall (get-on-next observer) x) )))
-      sub )
-    (set-on-error
-      #'(lambda (x)
-          (when (is-active sub)
-            (set-error sub)
-            (push `(on-error ,x) (events sub))
-            (dolist (observer (observers sub))
-              (funcall (get-on-error observer) x) )))
-      sub )
-    (set-on-completed
-      #'(lambda ()
-          (when (is-active sub)
-            (set-completed sub)
-            (push `(on-completed) (events sub))
-            (dolist (observer (observers sub))
-              (funcall (get-on-completed observer)) )))
-      sub )
-    sub ))
-|#
 
 (defmethod on-next ((sub replay-subject) x)
   (when (is-active sub)

@@ -30,31 +30,6 @@
 (defun make-subject ()
   (make-instance 'subject) )
 
-#|
-  (let ((sub (make-instance 'subject)))
-    (set-on-next
-      #'(lambda (x)
-          (when (is-active sub)
-            (dolist (observer (observers sub))
-              (on-next observer x) )))
-      sub )
-    (set-on-error
-      #'(lambda (x)
-          (when (is-active sub)
-            (set-error sub)
-            (dolist (observer (observers sub))
-              (on-error observer x) )))
-      sub )
-    (set-on-completed
-      #'(lambda ()
-          (when (is-active sub)
-            (set-completed sub)
-            (dolist (observer (observers sub))
-              (on-completed observer) )))
-      sub )
-    sub ))
-|#
-
 
 (defmethod on-next ((sub subject) x)
   (when (is-active sub)
