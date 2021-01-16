@@ -43,6 +43,7 @@
          (:file "operator/max")
          (:file "operator/min")
          (:file "operator/count")
+         (:file "operator/reduce")
          (:file "macro/with-observable")
          (:file "macro/handmade-observable")
          (:file "cl-reex"))))

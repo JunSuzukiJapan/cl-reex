@@ -90,6 +90,8 @@
         :min )
   (:import-from :cl-reex.operator.count
         :count )
+  (:import-from :cl-reex.operator.reduce
+        :reduce )
   (:import-from :cl-reex.subject.subject
         :subject
         :make-subject )
@@ -165,6 +167,7 @@
         :max
         :min
         :count
+        :reduce
         :subject
         :make-subject
         :behavior-subject

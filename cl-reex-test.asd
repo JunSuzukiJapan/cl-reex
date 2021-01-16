@@ -46,6 +46,7 @@
        (:test-file "max-test")
        (:test-file "min-test")
        (:test-file "count-test")
+       (:test-file "reduce-test")
 	  )))
   :description "Test system for cl-reex"
 

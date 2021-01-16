@@ -62,8 +62,9 @@
 
 
 (defmethod subscribe ((op operator-element-at) observer)
-    (setf (current-count op) 0)
-    (call-next-method) )
+  (declare (ignore observer))
+  (setf (current-count op) 0)
+  (call-next-method) )
 
 (set-one-arg-operator 'element-at 'make-operator-element-at)
 
