@@ -46,8 +46,8 @@
   (when (is-active op)
     (if (slot-boundp op 'predicate)
       (when (funcall (predicate op) x)
-        (set-completed op)
         (on-next (observer op) x)
+        (set-completed op)
         (on-completed (observer op)) )
       (progn
         (on-next (observer op) x)
