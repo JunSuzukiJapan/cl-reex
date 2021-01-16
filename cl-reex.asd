@@ -44,6 +44,7 @@
          (:file "operator/min")
          (:file "operator/count")
          (:file "operator/reduce")
+         (:file "operator/scan")
          (:file "operator/concat")
          (:file "macro/with-observable")
          (:file "macro/handmade-observable")

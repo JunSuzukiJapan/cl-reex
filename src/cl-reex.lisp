@@ -92,6 +92,8 @@
         :count )
   (:import-from :cl-reex.operator.reduce
         :reduce )
+  (:import-from :cl-reex.operator.scan
+        :scan )
   (:import-from :cl-reex.operator.concat
         :concat )
   (:import-from :cl-reex.subject.subject
@@ -170,6 +172,7 @@
         :min
         :count
         :reduce
+        :scan
         :concat
         :subject
         :make-subject
