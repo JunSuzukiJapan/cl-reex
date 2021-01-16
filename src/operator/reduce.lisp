@@ -15,7 +15,7 @@
         :set-disposed
         :subscribe)
   (:import-from :cl-reex.macro.operator-table
-        :set-zero-or-one-arg-function-like-operator )
+        :set-function-like-operator-with-init-value )
   (:import-from :cl-reex.error-conditions
         :sequence-contains-no-elements-error )
   (:import-from :cl-reex.operator
@@ -68,5 +68,5 @@
           (set-error op)
           (on-error (observer op) err) ))))
 
-(set-zero-or-one-arg-function-like-operator 'reduce 'make-operator-reduce)
+(set-function-like-operator-with-init-value 'reduce 'make-operator-reduce)
 

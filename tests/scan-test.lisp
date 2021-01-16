@@ -58,7 +58,7 @@
 (reset logger)
 
 (with-observable (observable-from '(1 2 3 4 5 6 7 8 9 10))
-  (scan 100 (x y) (+ x y))
+  (scan :init 100 (x y) (+ x y))
   (subscribe observer)
   (dispose) )
 
