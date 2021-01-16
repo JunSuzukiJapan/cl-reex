@@ -10,6 +10,7 @@
        :set-zero-arg-or-function-like-operator
        :set-one-or-rest-arg-operator-quote
        :set-on-next-error-completed-operator
+       :set-zero-or-one-arg-function-like-operator
        :set-rest-arg-operator ))
 
 (in-package :cl-reex.macro.operator-table)
@@ -52,6 +53,20 @@
           (,function-name
            ,temp-observable
            #'(lambda ,(cadr x) ,@(cddr x) ))))))
+
+(defun set-zero-or-one-arg-function-like-operator (name function-name)
+  (set-operator-expander name
+    #'(lambda (x var-name temp-observable)
+        (if (consp (cadr x))
+            `(,var-name
+              (,function-name
+               ,temp-observable
+               #'(lambda ,(cadr x) ,@(cddr x) )))
+            `(,var-name
+              (,function-name
+               ,temp-observable
+               #'(lambda ,(caddr x) ,@(cdddr x) )
+               ,(cadr x) ))))))
 
 (defun set-zero-arg-operator (name function-name)
   (set-operator-expander name

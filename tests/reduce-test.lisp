@@ -8,7 +8,7 @@
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :cl-reex)' in your Lisp.
 
-(plan 4)
+(plan 5)
 
 ;; blah blah blah.
 
@@ -53,5 +53,16 @@
       1 )
   (is (type-of (car result))
       'sequence-contains-no-elements-error ))
+
+;; plan 5
+(reset logger)
+
+(with-observable (observable-from '(1 2 3 4 5 6 7 8 9 10))
+  (reduce 1 (x y) (+ x y))
+  (subscribe observer)
+  (dispose) )
+
+(is (result logger)
+    '(56 "completed") )
 
 (finalize)
