@@ -7,7 +7,7 @@
         :make-observer
         :on-next
         :on-error
-        :on-completed)
+        :on-completed )
   (:import-from :cl-reex.observable
         :observable
         :subscribe
@@ -22,7 +22,7 @@
         :observable-empty
         :observable-never
         :observable-throw
-        :foreach)
+        :foreach )
   (:import-from :cl-reex.error-conditions
                 :sequence-contains-no-elements-error
                 :argument-out-of-range-exception )
@@ -37,36 +37,36 @@
   (:import-from :cl-reex.operator
         :operator
         :predicate
-        :func)
+        :func )
   (:import-from :cl-reex.macro.operator-table
         :get-operator-expander
-        :set-operator-expander)
+        :set-operator-expander )
   (:import-from :cl-reex.operator.where
-        :where)
+        :where )
   (:import-from :cl-reex.operator.select
-        :select)
+        :select )
   (:import-from :cl-reex.operator.take
-        :take)
+        :take )
   (:import-from :cl-reex.operator.take-while
-        :take-while)
+        :take-while )
   (:import-from :cl-reex.operator.take-until
-        :take-until)
+        :take-until )
   (:import-from :cl-reex.operator.take-last
-        :take-last)
+        :take-last )
   (:import-from :cl-reex.operator.skip
-        :skip)
+        :skip )
   (:import-from :cl-reex.operator.skip-while
-        :skip-while)
+        :skip-while )
   (:import-from :cl-reex.operator.skip-until
-        :skip-until)
+        :skip-until )
   (:import-from :cl-reex.operator.skip-last
-        :skip-last)
+        :skip-last )
   (:import-from :cl-reex.operator.repeat
-        :repeat)
+        :repeat )
   (:import-from :cl-reex.operator.first
-        :first)
+        :first )
   (:import-from :cl-reex.operator.last
-        :last)
+        :last )
   (:import-from :cl-reex.operator.ignore-elements
         :ignore-elements)
   (:import-from :cl-reex.operator.distinct
@@ -78,22 +78,34 @@
         :catch* )
   (:import-from :cl-reex.operator.element-at
         :element-at )
+  (:import-from :cl-reex.operator.do
+        :do )
+  (:import-from :cl-reex.operator.sum
+        :sum )
+  (:import-from :cl-reex.operator.average
+        :average )
+  (:import-from :cl-reex.operator.max
+        :max )
+  (:import-from :cl-reex.operator.max
+        :max )
+  (:import-from :cl-reex.operator.max
+        :min )
   (:import-from :cl-reex.subject.subject
         :subject
-        :make-subject)
+        :make-subject )
   (:import-from :cl-reex.subject.behavior-subject
         :behavior-subject
-        :make-behavior-subject)
+        :make-behavior-subject )
   (:import-from :cl-reex.subject.async-subject
         :async-subject
-        :make-async-subject)
+        :make-async-subject )
   (:import-from :cl-reex.subject.replay-subject
         :replay-subject
-        :make-replay-subject)
+        :make-replay-subject )
   (:import-from :cl-reex.macro
-        :with-observable)
+        :with-observable )
   (:import-from :cl-reex.macro.handmade-observable
-        :handmade-observable)
+        :handmade-observable )
   (:export :subscribe
         :queue
         :make-queue
@@ -147,6 +159,11 @@
         :finally
         :catch*
         :element-at
+        :do
+        :sum
+        :average
+        :max
+        :min
         :subject
         :make-subject
         :behavior-subject

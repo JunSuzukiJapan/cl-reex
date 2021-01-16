@@ -16,11 +16,11 @@
 
 (defclass observer ()
   ((on-next :initarg :on-next
-            :initform (lambda (x) nil)
+            :initform (lambda (x) (declare (ignore x)) nil)
             :reader get-on-next
             :writer set-on-next )
    (on-error :initarg :on-error
-             :initform (lambda (x) nil)
+             :initform (lambda (x) (declare (ignore x)) nil)
              :reader get-on-error
              :writer set-on-error )
    (on-completed :initarg :on-completed

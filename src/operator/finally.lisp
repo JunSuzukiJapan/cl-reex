@@ -58,6 +58,7 @@
 (defmethod subscribe ((op operator-finally) observer)
   (handler-bind
       ((condition #'(lambda (condition)
+                      (declare (ignore condition))
                       (funcall (action op))
                       (return-from subscribe
                         (make-instance 'disposable-do-nothing

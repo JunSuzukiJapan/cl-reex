@@ -62,7 +62,7 @@
 (defmethod foreach (observable action)
   (let ((observer (make-observer
         #'(lambda (x) (funcall action x))
-        #'(lambda (x) ) ;; do nothing?
+        #'(lambda (x) (declare (ignore x))) ;; do nothing?
         #'(lambda () ) )))
     (subscribe observable observer) ))
 

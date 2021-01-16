@@ -41,6 +41,10 @@
        (:test-file "async-subject-test")
        (:test-file "replay-subject-test")
        (:test-file "do-test")
+       (:test-file "sum-test")
+       (:test-file "average-test")
+       (:test-file "max-test")
+       (:test-file "min-test")
 	  )))
   :description "Test system for cl-reex"
 
