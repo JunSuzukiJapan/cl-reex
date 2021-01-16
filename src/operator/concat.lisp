@@ -62,7 +62,13 @@
           (when (slot-boundp op 'subscription)
             (dispose (subscription op)) )
           (setf (subscription op) (subscribe obs op)) ))))
-          
+
+
+(defmethod subscribe ((op operator-concat) observer)
+  (declare (ignore observer))
+  (setf (next-observable op) (observable-list op))
+  (call-next-method) )
+
 
 (set-rest-arg-operator 'concat 'make-operator-concat)
 
