@@ -86,9 +86,7 @@
         :average )
   (:import-from :cl-reex.operator.max
         :max )
-  (:import-from :cl-reex.operator.max
-        :max )
-  (:import-from :cl-reex.operator.max
+  (:import-from :cl-reex.operator.min
         :min )
   (:import-from :cl-reex.operator.count
         :count )
