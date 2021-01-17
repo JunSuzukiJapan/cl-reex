@@ -49,6 +49,7 @@
        (:test-file "reduce-test")
        (:test-file "concat-test")
        (:test-file "scan-test")
+       (:test-file "amb-test")
 	  )))
   :description "Test system for cl-reex"
 

@@ -96,6 +96,8 @@
         :scan )
   (:import-from :cl-reex.operator.concat
         :concat )
+  (:import-from :cl-reex.operator.amb
+        :amb )
   (:import-from :cl-reex.subject.subject
         :subject
         :make-subject )
@@ -174,6 +176,7 @@
         :reduce
         :scan
         :concat
+        :amb
         :subject
         :make-subject
         :behavior-subject

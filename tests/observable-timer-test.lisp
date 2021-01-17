@@ -28,7 +28,7 @@
 (dispose subscription)
 
 (is (result logger)
-    '(0) )
+    '(0 "completed") )
 
 ;; plan 2
 (reset logger)

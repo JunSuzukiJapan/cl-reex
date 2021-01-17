@@ -46,6 +46,7 @@
          (:file "operator/reduce")
          (:file "operator/scan")
          (:file "operator/concat")
+         (:file "operator/amb")
          (:file "macro/with-observable")
          (:file "macro/handmade-observable")
          (:file "cl-reex"))))
