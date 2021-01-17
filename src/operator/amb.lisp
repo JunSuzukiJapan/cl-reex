@@ -19,6 +19,7 @@
         :set-rest-arg-operator )
   (:import-from :cl-reex.operator
         :operator
+        :cleanup-operator
         :subscription )
   (:export :operator-amb
         :amb
@@ -45,6 +46,9 @@
                  :sources sources ))
 
 (defmethod clear-pairs-without ((op operator-amb) source)
+  (when (and (slot-boundp op 'subscription)
+             (not (eq (observable op) source)))
+    (dispose (subscription op)) )
   (let ((fastest))
     (dolist (pair (pairs op))
       (if (eq (car pair) source)
@@ -52,7 +56,12 @@
         (dispose (cdr pair)) ))
     (setf (fastest op) fastest) )
   (setf (pairs op) nil) )
-  
+
+(defmethod cleanup-operator ((op operator-amb))
+  (clear-pairs-without op nil)
+  (when (not (slot-boundp op 'subscription))
+    (slot-unbound 'operator op 'subscription) )
+  (setf (fastest op) nil) )
 
 (defmethod on-next ((op operator-amb) x)
   (when (is-active op)

@@ -1,10 +1,10 @@
-(defpackage amb-test
+(defpackage observable-amb-test
   (:use :cl
     :cl-reex
     :cl-reex-test.logger
     :prove)
   (:shadowing-import-from :cl-reex :skip))
-(in-package :amb-test)
+(in-package :observable-amb-test)
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :cl-reex)' in your Lisp.
 
@@ -33,8 +33,9 @@
                    (add logger (format nil "call 0.05"))))
   (concat (observable-of "observable-of: 0.05")) ))
 
-(defvar subscription (with-observable observable1
-  (amb observable2)
+(defvar subscription (with-observable (observable-amb
+                                       observable1
+                                       observable2 )
   (subscribe observer) ))
 
 (sleep 0.12)

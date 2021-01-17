@@ -11,6 +11,7 @@
       :components
         ((:file "observer/observer")
          (:file "observable/observable")
+         (:file "observable/observable-amb")
          (:file "util/error-conditions")
          (:file "util/fixed-size-queue")
          (:file "macro/operator-table")
