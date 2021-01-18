@@ -71,16 +71,16 @@
   (dolist (source (sources amb))
     (let* ((observer (make-observer
                       ;; on-next
-                      #'(lambda (x)
+                      (on-next (x)
                           (when (not (null (pairs amb)))
                             (clear-pairs-without amb source) )
                           (on-next observer x) )
                       ;; on-error
-                      #'(lambda (x)
+                      (on-error (x)
                           (set-error amb)
                           (on-error observer x) )
                       ;; on-completed
-                      #'(lambda ()
+                      (on-completed ()
                           (set-completed amb)
                           (on-completed observer)) ))
            (sub (subscribe source observer)) )

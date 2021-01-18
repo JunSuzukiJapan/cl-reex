@@ -43,8 +43,26 @@
 (defmethod on-completed ((obs observer))
   (funcall (get-on-completed obs)) )
 
-(defun make-observer (on-next on-error on-completed)
-  (make-instance 'observer
-                 :on-next on-next
-                 :on-error on-error
-                 :on-completed on-completed))
+(defun do-nothing-no-arg ())
+(defun do-nothing-one-arg (x)
+  (declare (ignore x)) )
+
+(defmacro make-observer (&rest args)
+  (let ((on-next '(on-next (x) (do-nothing-one-arg x)))
+        (on-error '(on-error (x) (do-nothing-one-arg x)))
+        (on-completed '(on-completed () (do-nothing-no-arg))) )
+    (dolist (arg args)
+      (case (car arg)
+        ((on-next)
+         (setf on-next arg) )
+        ((on-error)
+         (setf on-error arg) )
+        ((on-completed)
+         (setf on-completed arg) )
+        (t
+         (error (format nil "illegal identifier '~A'. need 'on-next', 'on-error' or 'on-completed'" (car arg)))) ))
+
+  `(make-instance 'observer
+                  :on-next #'(lambda ,(cadr on-next) ,@(cddr on-next))
+                  :on-error #'(lambda ,(cadr on-error) ,@(cddr on-error))
+                  :on-completed #'(lambda ,(cadr on-completed) ,@(cddr on-completed)) )))

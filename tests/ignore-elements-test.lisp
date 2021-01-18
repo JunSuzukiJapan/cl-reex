@@ -15,9 +15,9 @@
 (defparameter logger (make-instance 'logger))
 
 (defparameter observer (make-observer
-    #'(lambda (x) (add logger x))
-    #'(lambda (x) (declare (ignore x)) (add logger (format nil "error")))
-    #'(lambda () (add logger "completed")) ))
+    (on-next (x) (add logger x))
+    (on-error (x) (declare (ignore x)) (add logger (format nil "error")))
+    (on-completed () (add logger "completed")) ))
 
 ;; plan 1
 (with-observable (observable-from '(1 2 3 4 5 6 7 8 9 10))

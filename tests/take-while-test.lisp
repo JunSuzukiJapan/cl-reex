@@ -15,9 +15,9 @@
 (defparameter logger (make-instance 'logger))
 
 (defparameter observer (make-observer
-    #'(lambda (x) (add logger x))
-    #'(lambda (x) (add logger (format nil "error: ~S" x)))
-    #'(lambda () (add logger "completed")) ))
+    (on-next (x) (add logger x))
+    (on-error (x) (add logger (format nil "error: ~S" x)))
+    (on-completed () (add logger "completed")) ))
 
 (with-observable (observable-from '(1 2 3 4 5 6 7 8 9 10 1 2 3 4 5))
   (take-while (x) (< x 9))

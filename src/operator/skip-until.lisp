@@ -44,13 +44,13 @@
                             :trigger-observable trigger-observable ))
          (observer
            (make-observer
-            #'(lambda (x)
+            (on-next (x)
                 (declare (ignore x))
                 (setf (triggered op) t) )
-            #'(lambda (x)
+            (on-error (x)
                 (set-error op)
                 (on-error (observer op) x) )
-            #'(lambda () ) )))
+            (on-completed () ) )))
     (subscribe trigger-observable observer)
     op ))
 

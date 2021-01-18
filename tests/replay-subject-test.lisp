@@ -15,14 +15,14 @@
 (defparameter logger (make-instance 'logger))
 
 (defparameter observer1 (make-observer
-    #'(lambda (x) (add logger x))
-    #'(lambda (x) (add logger (format nil "error-1: ~A" x)))
-    #'(lambda () (add logger "completed 1")) ))
+    (on-next (x) (add logger x))
+    (on-error (x) (add logger (format nil "error-1: ~A" x)))
+    (on-completed () (add logger "completed 1")) ))
 
 (defparameter observer2 (make-observer
-    #'(lambda (x) (add logger x))
-    #'(lambda (x) (add logger (format nil "error-2: ~A" x)))
-    #'(lambda () (add logger "completed 2")) ))
+    (on-next (x) (add logger x))
+    (on-error (x) (add logger (format nil "error-2: ~A" x)))
+    (on-completed () (add logger "completed 2")) ))
 
 ;; plan 1
 

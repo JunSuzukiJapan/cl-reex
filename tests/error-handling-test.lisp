@@ -15,9 +15,9 @@
 (defparameter logger (make-instance 'logger))
 
 (defparameter observer (make-observer
-    #'(lambda (x) (add logger x))
-    #'(lambda (x) (declare (ignore x)) (add logger (format nil "caught error.")))
-    #'(lambda () (add logger "completed")) ))
+    (on-next (x) (add logger x))
+    (on-error (x) (declare (ignore x)) (add logger (format nil "caught error.")))
+    (on-completed () (add logger "completed")) ))
 
 ;; plan 1
 (with-observable (observable-from '(1 2 3 4 5 6 7 8 9 10))
@@ -202,14 +202,14 @@
 (reset logger)
 
 (defparameter observer1 (make-observer
-    #'(lambda (x) (add logger x))
-    #'(lambda (x) (add logger (format nil "error: ~A" x)))
-    #'(lambda () (add logger "completed 1")) ))
+    (on-next (x) (add logger x))
+    (on-error (x) (add logger (format nil "error: ~A" x)))
+    (on-completed () (add logger "completed 1")) ))
 
 (defparameter observer2 (make-observer
-    #'(lambda (x) (add logger x))
-    #'(lambda (x) (add logger (format nil "error: ~A" x)))
-    #'(lambda () (add logger "completed 2")) ))
+    (on-next (x) (add logger x))
+    (on-error (x) (add logger (format nil "error: ~A" x)))
+    (on-completed () (add logger "completed 2")) ))
 
 (defparameter sub (make-subject))
 

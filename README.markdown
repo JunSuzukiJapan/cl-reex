@@ -28,9 +28,9 @@ subscribe example:
 
 ```lisp
 (defvar observer (rx:make-observer
-	#'(lambda (x) (print x))
-	#'(lambda (x) (format t "error: ~S" x))
-	#'(lambda () (print "completed")) ))
+	(rx:on-next (x) (print x))
+	(rx:on-error (x) (format t "error: ~S" x))
+	(rx:on-completed () (print "completed")) ))
 
 (rx:subscribe (rx:observable-from '(1 2 3 4 5)) observer)
 ```
@@ -40,9 +40,9 @@ operator example:
 
 ```lisp
 (defvar observer (rx:make-observer
-	#'(lambda (x) (print x))
-	#'(lambda (x) (format t "error: ~S" x))
-	#'(lambda () (print "completed")) ))
+	(rx:on-next (x) (print x))
+	(rx:on-error (x) (format t "error: ~S" x))
+	(rx:on-completed () (print "completed")) ))
 
 (rx:with-observable (rx:observable-from '(1 2 3 4 5 6 7 8 9 10))
    (rx:where (x) (evenp x))
@@ -101,9 +101,9 @@ operator example:
 
 ```lisp
 (defvar observer (rx:make-observer
-	#'(lambda (x) (print x))
-	#'(lambda (x) (format t "error: ~S" x))
-	#'(lambda () (print "completed")) ))
+	(rx:on-next (x) (print x))
+	(rx:on-error (x) (format t "error: ~S" x))
+	(rx:on-completed () (print "completed")) ))
 ```
 
 ## Operators
