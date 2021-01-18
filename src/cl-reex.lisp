@@ -25,6 +25,8 @@
         :foreach )
   (:import-from :cl-reex.observable.amb
         :observable-amb )
+  (:import-from :cl-reex.observable.start
+        :observable-start )
   (:import-from :cl-reex.error-conditions
                 :sequence-contains-no-elements-error
                 :argument-out-of-range-exception )
@@ -139,6 +141,7 @@
         :observable-never
         :observable-throw
         :observable-amb
+        :observable-start
         :observer
         :make-observer
         :on-next

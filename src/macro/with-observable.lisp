@@ -23,7 +23,10 @@
 (in-package :cl-reex.macro)
 
 (defmacro with-observable (observable &rest body)
-  (when (not (null body))
+  (if (null body)
+      ;; (null body)
+      observable
+    ;; not (null body)
     (let* ((temp-observable (gensym))
            (lst `((,temp-observable ,observable)))
            (var-name (gensym)) )

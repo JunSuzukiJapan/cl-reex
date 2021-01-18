@@ -31,8 +31,7 @@
             :accessor fastest )
    (source-subscription-pairs :initarg :pairs
                               :initform nil
-                              :accessor pairs ))
-  (:documentation "Amb operator") )
+                              :accessor pairs )))
 
 (defun make-observable-amb-object (sources)
   (make-instance 'observable-amb-object
