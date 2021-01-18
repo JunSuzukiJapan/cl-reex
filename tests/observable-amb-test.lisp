@@ -22,15 +22,15 @@
 ;; plan 1
 
 (defvar observable1 (with-observable (observable-timer 0.1)
-  (do :on-next #'(lambda (x)
-                   (declare (ignore x))
-                   (add logger (format nil "call 0.1"))))
+  (do (on-next (x)
+               (declare (ignore x))
+               (add logger (format nil "call 0.1"))))
   (concat (observable-of "observable-of: 0.1")) ))
 
 (defvar observable2 (with-observable (observable-timer 0.05)
-  (do :on-next #'(lambda (x)
-                   (declare (ignore x))
-                   (add logger (format nil "call 0.05"))))
+  (do (on-next (x)
+               (declare (ignore x))
+               (add logger (format nil "call 0.05"))))
   (concat (observable-of "observable-of: 0.05")) ))
 
 (defvar subscription (with-observable (observable-amb

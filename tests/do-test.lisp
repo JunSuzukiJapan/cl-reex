@@ -22,7 +22,7 @@
 ;; plan 1
 
 (with-observable (observable-of 1 2 3)
-  (do :on-next #'(lambda (x) (add logger (format nil "do: ~A" x))))
+  (do (on-next (x) (add logger (format nil "do: ~A" x))))
   (subscribe observer)
   (dispose) )
 
@@ -39,9 +39,9 @@
                   (on-next 3)
                   (on-completed) )
   (do
-   :on-next #'(lambda (x) (add logger (format nil "do: ~A" x)))
-   :on-error #'(lambda (x) (add logger (format nil "do error: ~A" x)))
-   :on-completed #'(lambda () (add logger (format nil "do completed"))) )
+   (on-next (x) (add logger (format nil "do: ~A" x)))
+   (on-error (x) (add logger (format nil "do error: ~A" x)))
+   (on-completed () (add logger (format nil "do completed"))) )
   (subscribe observer)
   (dispose) )
 
@@ -57,9 +57,9 @@
                   (on-next 3)
                   (on-completed) )
   (do
-   :on-next #'(lambda (x) (add logger (format nil "do: ~A" x)))
-   :on-error #'(lambda (x) (add logger (format nil "do error: ~A" x)))
-   :on-completed #'(lambda () (add logger (format nil "do completed"))) )
+   (on-next (x) (add logger (format nil "do: ~A" x)))
+   (on-error (x) (add logger (format nil "do error: ~A" x)))
+   (on-completed () (add logger (format nil "do completed"))) )
   (subscribe observer)
   (dispose) )
 

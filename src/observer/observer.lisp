@@ -3,6 +3,8 @@
   (:use :cl)
   (:export :observer
            :make-observer
+           :do-nothing-no-arg
+           :do-nothing-one-arg
            :on-next
            :on-error
            :on-completed
