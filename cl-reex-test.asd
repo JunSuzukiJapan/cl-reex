@@ -52,6 +52,7 @@
        (:test-file "amb-test")
        (:test-file "observable-amb-test")
        (:test-file "observable-start-test")
+       (:test-file "all-test")
 	  )))
   :description "Test system for cl-reex"
 
