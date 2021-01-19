@@ -51,6 +51,7 @@
          (:file "operator/amb")
          (:file "operator/all")
          (:file "operator/contains")
+         (:file "operator/default-if-empty")
          (:file "macro/with-observable")
          (:file "macro/handmade-observable")
          (:file "cl-reex"))))

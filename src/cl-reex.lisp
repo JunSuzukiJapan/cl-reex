@@ -106,6 +106,8 @@
         :all )
   (:import-from :cl-reex.operator.contains
         :contains )
+  (:import-from :cl-reex.operator.default-if-empty
+        :default-if-empty )
   (:import-from :cl-reex.subject.subject
         :subject
         :make-subject )
@@ -189,6 +191,7 @@
         :amb
         :all
         :contains
+        :default-if-empty
         :subject
         :make-subject
         :behavior-subject

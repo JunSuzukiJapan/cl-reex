@@ -54,6 +54,7 @@
        (:test-file "observable-start-test")
        (:test-file "all-test")
        (:test-file "contains-test")
+       (:test-file "default-if-empty-test")
 	  )))
   :description "Test system for cl-reex"
 
