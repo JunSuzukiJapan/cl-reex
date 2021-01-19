@@ -50,6 +50,7 @@
          (:file "operator/concat")
          (:file "operator/amb")
          (:file "operator/all")
+         (:file "operator/contains")
          (:file "macro/with-observable")
          (:file "macro/handmade-observable")
          (:file "cl-reex"))))

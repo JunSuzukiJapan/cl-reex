@@ -104,6 +104,8 @@
         :amb )
   (:import-from :cl-reex.operator.all
         :all )
+  (:import-from :cl-reex.operator.contains
+        :contains )
   (:import-from :cl-reex.subject.subject
         :subject
         :make-subject )
@@ -186,6 +188,7 @@
         :concat
         :amb
         :all
+        :contains
         :subject
         :make-subject
         :behavior-subject

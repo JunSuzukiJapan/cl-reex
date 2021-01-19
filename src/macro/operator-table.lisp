@@ -6,6 +6,7 @@
        :set-operator-expander
        :get-operator-expander
        :set-zero-arg-operator
+       :set-one-arg-operator
        :set-zero-or-one-arg-operator
        :set-function-like-operator-with-init-value
        :set-one-or-rest-arg-operator-quote
