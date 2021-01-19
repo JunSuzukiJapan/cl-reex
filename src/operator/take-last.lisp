@@ -20,8 +20,8 @@
         :operator
         :predicate)
   (:import-from :cl-reex.fixed-size-queue
-        :queue
-        :make-queue
+        :fixed-size-queue
+        :make-fixed-size-queue
         :enqueue
         :dequeue
         :is-empty
@@ -42,7 +42,7 @@
 (defun make-operator-take-last (observable count)
   (make-instance 'operator-take-last
                  :observable observable
-                 :queue (make-queue count) ))
+                 :queue (make-fixed-size-queue count) ))
 
 
 (defmethod on-next ((op operator-take-last) x)

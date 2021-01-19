@@ -31,13 +31,15 @@
                 :sequence-contains-no-elements-error
                 :argument-out-of-range-exception )
   (:import-from :cl-reex.fixed-size-queue
-        :queue
-        :make-queue
+        :fixed-size-queue
+        :make-fixed-size-queue
         :enqueue
         :dequeue
         :is-empty
         :elements-count
         :size )
+  (:import-from :cl-reex.queue
+        :make-queue )
   (:import-from :cl-reex.operator
         :operator
         :predicate
@@ -110,6 +112,8 @@
         :contains )
   (:import-from :cl-reex.operator.default-if-empty
         :default-if-empty )
+  (:import-from :cl-reex.operator.zip
+        :zip )
   (:import-from :cl-reex.subject.subject
         :subject
         :make-subject )
@@ -128,6 +132,7 @@
         :handmade-observable )
   (:export :subscribe
         :queue
+        :make-fixed-size-queue
         :make-queue
         :enqueue
         :dequeue
@@ -195,6 +200,7 @@
         :any
         :contains
         :default-if-empty
+        :zip
         :subject
         :make-subject
         :behavior-subject

@@ -1,13 +1,13 @@
-(defpackage fixed-size-queue-test
+(defpackage queue-test
   (:use :cl
     :cl-reex
     :prove)
   (:shadowing-import-from :cl-reex :skip))
-(in-package :fixed-size-queue-test)
+(in-package :queue-test)
 
 (plan nil)
 
-(defparameter q (make-fixed-size-queue 3))
+(defparameter q (make-queue))
 
 ;; plan 1
 (is (is-empty q)
@@ -46,14 +46,23 @@
 
 ;; plan 8
 (is (dequeue q)
-    5 )
+    3 )
 ;; plan 9
 (is (dequeue q)
-    6 )
+    4 )
 ;; plan 10
 (is (dequeue q)
-    7 )
+    5 )
 ;; plan 11
+(is (is-empty q)
+    nil )
+;; plan 12
+(is (dequeue q)
+    6 )
+;; plan 13
+(is (dequeue q)
+    7 )
+;; plan 14
 (is (is-empty q)
     t )
 

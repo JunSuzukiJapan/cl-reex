@@ -56,6 +56,8 @@
        (:test-file "any-test")
        (:test-file "contains-test")
        (:test-file "default-if-empty-test")
+       (:test-file "queue-test")
+       (:test-file "zip-test")
 	  )))
   :description "Test system for cl-reex"
 

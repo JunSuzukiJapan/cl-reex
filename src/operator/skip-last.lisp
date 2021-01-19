@@ -19,14 +19,6 @@
   (:import-from :cl-reex.operator
         :operator
         :predicate)
-  (:import-from :cl-reex.fixed-size-queue
-        :queue
-        :make-queue
-        :enqueue
-        :dequeue
-        :is-empty
-        :elements-count
-        :size )
   (:export :operator-skip-last
         :skip-last
         :make-operator-skip-last))
