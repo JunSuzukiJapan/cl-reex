@@ -50,6 +50,7 @@
          (:file "operator/concat")
          (:file "operator/amb")
          (:file "operator/all")
+         (:file "operator/any")
          (:file "operator/contains")
          (:file "operator/default-if-empty")
          (:file "macro/with-observable")

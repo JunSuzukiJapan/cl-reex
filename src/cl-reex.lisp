@@ -102,6 +102,8 @@
         :concat )
   (:import-from :cl-reex.operator.amb
         :amb )
+  (:import-from :cl-reex.operator.any
+        :any )
   (:import-from :cl-reex.operator.all
         :all )
   (:import-from :cl-reex.operator.contains
@@ -190,6 +192,7 @@
         :concat
         :amb
         :all
+        :any
         :contains
         :default-if-empty
         :subject
