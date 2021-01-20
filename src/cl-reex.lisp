@@ -116,6 +116,9 @@
         :zip )
   (:import-from :cl-reex.operator.merge
         :merge )
+  (:import-from :cl-reex.operator.group-by
+        :group-by
+        :get-key )
   (:import-from :cl-reex.subject.subject
         :subject
         :make-subject )
@@ -204,6 +207,8 @@
         :default-if-empty
         :zip
         :merge
+        :group-by
+        :get-key
         :subject
         :make-subject
         :behavior-subject

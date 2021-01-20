@@ -56,6 +56,7 @@
          (:file "operator/default-if-empty")
          (:file "operator/zip")
          (:file "operator/merge")
+         (:file "operator/group-by")
          (:file "macro/with-observable")
          (:file "macro/handmade-observable")
          (:file "cl-reex"))))
