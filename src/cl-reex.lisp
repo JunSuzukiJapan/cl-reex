@@ -114,6 +114,8 @@
         :default-if-empty )
   (:import-from :cl-reex.operator.zip
         :zip )
+  (:import-from :cl-reex.operator.merge
+        :merge )
   (:import-from :cl-reex.subject.subject
         :subject
         :make-subject )
@@ -201,6 +203,7 @@
         :contains
         :default-if-empty
         :zip
+        :merge
         :subject
         :make-subject
         :behavior-subject

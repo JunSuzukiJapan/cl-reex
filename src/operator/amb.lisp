@@ -97,15 +97,18 @@
                       (on-next (x)
                           (when (not (null (pairs op)))
                             (clear-pairs-without op source) )
-                          (on-next (observer op) x) )
+                          (when (is-active op)
+                            (on-next (observer op) x) ))
                       ;; on-error
                       (on-error (x)
-                          (set-error op)
-                          (on-error (observer op) x) )
+                          (when (is-active op)
+                            (set-error op)
+                            (on-error (observer op) x) ))
                       ;; on-completed
                       (on-completed ()
-                          (set-completed op)
-                          (on-completed (observer op))) ))
+                          (when (is-active op)
+                            (set-completed op)
+                            (on-completed (observer op))) )))
            (sub (subscribe source observer)) )
       (push (cons source sub) (pairs op)) ))
 

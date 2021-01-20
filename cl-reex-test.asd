@@ -58,6 +58,7 @@
        (:test-file "default-if-empty-test")
        (:test-file "queue-test")
        (:test-file "zip-test")
+       (:test-file "merge-test")
 	  )))
   :description "Test system for cl-reex"
 
