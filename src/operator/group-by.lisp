@@ -15,8 +15,13 @@
         :set-completed
         :set-disposed
         :subscribe )
+  (:import-from :cl-reex.subject.subject
+        :subject
+        :subject-as-observable-wrapper
+        :disposable-subject-as-observable-wrapper
+        :as-observable )
   (:import-from :cl-reex.subject.replay-subject
-        :replay-subject 
+        :replay-subject
         :make-replay-subject )
   (:import-from :cl-reex.macro.operator-table
         :set-function-like-operator )
@@ -57,8 +62,23 @@
     (set-active sub)
     sub ))
 
+(defgeneric get-key (obj))
+
 (defmethod get-key ((sub key-subject))
   (key sub) )
+
+;;
+;; as-observable
+;;
+(defclass subject-as-observable-wrapper-with-key (subject-as-observable-wrapper)
+  nil )
+
+(defmethod as-observable ((sub key-subject))
+  (make-instance 'subject-as-observable-wrapper-with-key
+                 :subject sub ))
+
+(defmethod get-key ((wrapper subject-as-observable-wrapper-with-key))
+  (key (subject wrapper)) )
 
 ;;
 ;; on-next, on-error, on-completed
@@ -71,7 +91,7 @@
       (when (null subject)
         (setf subject (make-key-subject key))
         (setf (gethash key tbl) subject)
-        (on-next (observer op) subject) )
+        (on-next (observer op) (as-observable subject)) )
       (on-next subject x) )))
 
 (defmethod on-error ((op operator-group-by) x)

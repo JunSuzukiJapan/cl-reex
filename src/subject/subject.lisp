@@ -5,6 +5,7 @@
         :on-next
         :on-error
         :on-completed
+        :make-observer
         :observer)
   (:import-from :cl-reex.observable
         :observable
@@ -18,6 +19,7 @@
   (:export :subject
            :make-subject
            :observers
+           :as-observable
            :disposable-subject ))
 
 (in-package :cl-reex.subject.subject)
@@ -77,3 +79,38 @@
                    :subject sub
                    :observer observer )))
 
+;;
+;; as-observable
+;;
+(defgeneric as-observable (obj))
+
+(defclass subject-as-observable-wrapper (observable-object)
+  ((subject :initarg :subject
+            :accessor subject )))
+
+(defclass disposable-subject-as-observable-wrapper ()
+  ((wrapper :initarg :wrapper
+            :accessor wrapper )
+   (subscription :initarg :subscription
+                 :accessor subscription )))
+
+(defmethod dispose ((disp disposable-subject-as-observable-wrapper))
+  (when (slot-boundp disp 'subscription)
+    (dispose (subscription disp))
+    (slot-unbound 'disposable-subject-as-observable-wrapper disp 'subscription) )
+  (set-disposed disp) )
+
+
+(defmethod as-observable ((sub subject))
+  (make-instance 'subject-as-observable-wrapper
+                 :subject sub ))
+
+(defmethod subscribe ((wrapper subject-as-observable-wrapper) observer)
+  (let* ((temp-observer (make-observer
+                         (on-next (x) (on-next observer x))
+                         (on-error (x) (on-error observer x))
+                         (on-completed () (on-completed observer)) ))
+         (subscription (subscribe (subject wrapper) temp-observer)) )
+    (make-instance 'disposable-subject-as-observable-wrapper
+                   :wrapper wrapper
+                   :subscription subscription )))

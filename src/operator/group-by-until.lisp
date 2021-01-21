@@ -16,6 +16,8 @@
         :set-completed
         :set-disposed
         :subscribe )
+  (:import-from :cl-reex.subject.subject
+        :as-observable )
   (:import-from :cl-reex.subject.replay-subject
         :replay-subject 
         :make-replay-subject )
@@ -80,7 +82,7 @@
                             (on-completed ()
                                           (on-completed subject) ))) )
         (setf (gethash key tbl) subject)
-        (on-next (observer op) subject) )
+        (on-next (observer op) (as-observable subject)) )
       (on-next subject x) )))
 
 (defmethod on-error ((op operator-group-by-until) x)
