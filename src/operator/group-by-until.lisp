@@ -78,7 +78,7 @@
                                      (declare (ignore x))
                                      (on-completed subject) )
                             (on-error (x)
-                                      (on-error op subject) )
+                                      (on-error subject x) )
                             (on-completed ()
                                           (on-completed subject) ))) )
         (setf (gethash key tbl) subject)
