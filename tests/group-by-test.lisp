@@ -24,7 +24,7 @@
                          (on-error (x)
                           (add logger (format nil "group-by(~A) on-error ~A" (get-key g) x)))
                          (on-completed ()
-                          (add logger (format nil "group-by(~A) on-completed" (get-key g))) ))))
+                          (add logger (format nil "group-by on-completed" )) ))))
 
               (on-error (err) (add logger (format nil "on-error ~A" err)))
               (on-completed () (add logger (format nil "on-completed"))) ))
@@ -35,9 +35,9 @@
       "group-by(0) on-next 3" "group-by(1) on-next 4" "group-by(2) on-next 5"
       "group-by(0) on-next 6" "group-by(1) on-next 7" "group-by(2) on-next 8"
 
-      "group-by(0) on-completed"
-      "group-by(1) on-completed"
-      "group-by(2) on-completed"
+      "group-by on-completed"
+      "group-by on-completed"
+      "group-by on-completed"
       "on-completed" ))
 
 ;; finalize

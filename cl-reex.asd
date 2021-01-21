@@ -57,6 +57,7 @@
          (:file "operator/zip")
          (:file "operator/merge")
          (:file "operator/group-by")
+         (:file "operator/group-by-until")
          (:file "macro/with-observable")
          (:file "macro/handmade-observable")
          (:file "cl-reex"))))

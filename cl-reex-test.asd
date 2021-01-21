@@ -60,6 +60,7 @@
        (:test-file "zip-test")
        (:test-file "merge-test")
        (:test-file "group-by-test")
+       (:test-file "group-by-until-test")
 	  )))
   :description "Test system for cl-reex"
 

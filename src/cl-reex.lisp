@@ -119,6 +119,8 @@
   (:import-from :cl-reex.operator.group-by
         :group-by
         :get-key )
+  (:import-from :cl-reex.operator.group-by-until
+        :group-by-until )
   (:import-from :cl-reex.subject.subject
         :subject
         :make-subject )
@@ -208,6 +210,7 @@
         :zip
         :merge
         :group-by
+        :group-by-until
         :get-key
         :subject
         :make-subject

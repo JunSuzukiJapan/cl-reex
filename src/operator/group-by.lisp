@@ -25,6 +25,9 @@
   (:export :operator-group-by
         :group-by
         :get-key
+        :key-generator
+        :table
+        :make-key-subject
         :make-operator-group-by ))
 
 (in-package :cl-reex.operator.group-by)
@@ -56,9 +59,10 @@
 
 (defmethod get-key ((sub key-subject))
   (key sub) )
-                 
-                 
+
+;;
 ;; on-next, on-error, on-completed
+;;
 (defmethod on-next ((op operator-group-by) x)
   (when (is-active op)
     (let* ((key (funcall (key-generator op) x))
@@ -100,5 +104,6 @@
     (set-completed op)
     (on-completed (observer op)) ))
 
+;; set to operator-table
 (set-function-like-operator 'group-by 'make-operator-group-by)
 

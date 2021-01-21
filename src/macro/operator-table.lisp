@@ -3,15 +3,16 @@
   (:use :cl)
   (:export :set-one-arg-operator
        :set-function-like-operator
+       :set-function-like-operator-with-init-value
+       :set-zero-or-one-arg-function-like-operator
+       :set-one-arg-two-body-function-like-operator
        :set-operator-expander
        :get-operator-expander
        :set-zero-arg-operator
        :set-one-arg-operator
        :set-zero-or-one-arg-operator
-       :set-function-like-operator-with-init-value
        :set-one-or-rest-arg-operator-quote
        :set-on-next-error-completed-operator
-       :set-zero-or-one-arg-function-like-operator
        :set-rest-arg-operator ))
 
 (in-package :cl-reex.macro.operator-table)
@@ -54,6 +55,15 @@
           (,function-name
            ,temp-observable
            #'(lambda ,(cadr x) ,@(cddr x) ))))))
+
+(defun set-one-arg-two-body-function-like-operator (name function-name)
+  (set-operator-expander name
+    #'(lambda (x var-name temp-observable)
+        `(,var-name
+          (,function-name
+           ,temp-observable
+           #'(lambda ,(cadr x) ,(caddr x))
+           #'(lambda ,(cadr x) ,(cadddr x)) )))))
 
 (defun set-function-like-operator-with-init-value (name function-name)
   (set-operator-expander name
