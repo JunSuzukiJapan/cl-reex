@@ -74,6 +74,8 @@
           :initform 'active
           :accessor state )))
 
+(defgeneric is-active (obj))
+
 (defmethod is-active ((obj observable-object))
   (eq (state obj) 'active) )
 

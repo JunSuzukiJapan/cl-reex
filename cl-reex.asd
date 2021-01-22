@@ -56,6 +56,7 @@
          (:file "operator/default-if-empty")
          (:file "operator/zip")
          (:file "operator/merge")
+         (:file "operator/combine-latest")
          (:file "operator/group-by")
          (:file "operator/group-by-until")
          (:file "operator/to-list")

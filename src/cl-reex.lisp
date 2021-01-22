@@ -116,6 +116,8 @@
         :zip )
   (:import-from :cl-reex.operator.merge
         :merge )
+  (:import-from :cl-reex.operator.combine-latest
+        :combine-latest )
   (:import-from :cl-reex.operator.group-by
         :group-by
         :get-key )
@@ -213,6 +215,7 @@
         :default-if-empty
         :zip
         :merge
+        :combine-latest
         :group-by
         :group-by-until
         :get-key

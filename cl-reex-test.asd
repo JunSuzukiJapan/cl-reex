@@ -63,6 +63,7 @@
        (:test-file "group-by-until-test")
        (:test-file "to-list-test")
        (:test-file "to-array-test")
+       (:test-file "combine-latest-test")
 	  )))
   :description "Test system for cl-reex"
 

@@ -40,15 +40,15 @@
 
 (defmethod on-error ((sub subject) x)
   (when (is-active sub)
-    (set-error sub)
     (dolist (observer (observers sub))
-      (on-error observer x) )))
+      (on-error observer x) )
+    (set-error sub) ))
 
 (defmethod on-completed ((sub subject))
   (when (is-active sub)
-    (set-completed sub)
     (dolist (observer (observers sub))
-      (on-completed observer) )))
+      (on-completed observer) )
+    (set-completed sub) ))
 
 ;;
 ;; Dispose
