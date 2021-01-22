@@ -127,6 +127,8 @@
         :to-list )
   (:import-from :cl-reex.operator.to-array
         :to-array )
+  (:import-from :cl-reex.operator.sequence-equalp
+        :sequence-equalp )
   (:import-from :cl-reex.subject.subject
         :subject
         :make-subject )
@@ -221,6 +223,7 @@
         :get-key
         :to-list
         :to-array
+        :sequence-equalp
         :subject
         :make-subject
         :behavior-subject

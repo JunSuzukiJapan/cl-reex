@@ -64,6 +64,7 @@
        (:test-file "to-list-test")
        (:test-file "to-array-test")
        (:test-file "combine-latest-test")
+       (:test-file "sequence-equalp-test")
 	  )))
   :description "Test system for cl-reex"
 
