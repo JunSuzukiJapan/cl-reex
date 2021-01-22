@@ -76,8 +76,8 @@
                           (on-next observer x) )
                       ;; on-error
                       (on-error (x)
-                          (set-error amb)
-                          (on-error observer x) )
+                          (on-error observer x)
+                          (set-error amb) )
                       ;; on-completed
                       (on-completed ()
                           (on-completed observer)

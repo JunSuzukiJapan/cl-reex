@@ -68,11 +68,11 @@
 
 (defmethod on-error ((op operator-do) x)
   (when (is-active op)
-    (set-error op)
     (let ((f (get-on-error op)))
       (when (not (null f))
         (funcall (get-on-error op) x) ))
-    (on-error (observer op) x) ))
+    (on-error (observer op) x)
+    (set-error op) ))
 
 (defmethod on-completed ((op operator-do))
   (when (is-active op)

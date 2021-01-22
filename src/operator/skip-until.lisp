@@ -48,8 +48,8 @@
                 (declare (ignore x))
                 (setf (triggered op) t) )
             (on-error (x)
-                (set-error op)
-                (on-error (observer op) x) )
+                (on-error (observer op) x)
+                (set-error op) )
             (on-completed () ) )))
     (subscribe trigger-observable observer)
     op ))
@@ -60,8 +60,8 @@
     (on-next (observer op) x) ))
 
 (defmethod on-error ((op operator-skip-until) x)
-  (set-error op)
-  (on-error (observer op) x) )
+  (on-error (observer op) x)
+  (set-error op) )
 
 (defmethod on-completed ((op operator-skip-until))
   (on-completed (observer op))

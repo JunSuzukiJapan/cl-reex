@@ -44,8 +44,8 @@
 
 (defmethod on-error ((op operator-where) x)
   (when (is-active op)
-    (set-error op)
-    (on-error (observer op) x) ))
+    (on-error (observer op) x)
+    (set-error op) ))
 
 (defmethod on-completed ((op operator-where))
   (when (is-active op)

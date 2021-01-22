@@ -46,8 +46,8 @@
 
 (defmethod on-error ((op operator-repeat) x)
   (when (is-active op)
-    (set-error op)
-    (on-error (observer op) x) ))
+    (on-error (observer op) x)
+    (set-error op) ))
 
 (defmethod on-completed ((op operator-repeat))
   (when (is-active op)

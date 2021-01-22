@@ -45,8 +45,8 @@
 
 (defmethod on-error ((op operator-to-array) x)
   (when (is-active op)
-    (set-error op)
-    (on-error (observer op) x) ))
+    (on-error (observer op) x)
+    (set-error op) ))
 
 (defmethod on-completed ((op operator-to-array))
   (when (is-active op)

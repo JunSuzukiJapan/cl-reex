@@ -51,8 +51,8 @@
 
 (defmethod on-error ((op operator-take-last) x)
   (when (is-active op)
-    (set-error op)
-    (on-error (observer op) x) ))
+    (on-error (observer op) x)
+    (set-error op) ))
 
 (defmethod on-completed ((op operator-take-last))
   (when (is-active op)

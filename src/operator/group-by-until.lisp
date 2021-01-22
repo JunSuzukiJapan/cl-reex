@@ -97,8 +97,8 @@
                 (on-error value x)
                 (set-error value) )
               (return)))))
-    (set-error op)
-    (on-error (observer op) x) ))
+    (on-error (observer op) x)
+    (set-error op) ))
 
 (defmethod on-completed ((op operator-group-by-until))
   (when (is-active op)

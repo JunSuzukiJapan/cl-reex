@@ -56,14 +56,14 @@
 
 (defmethod on-error ((op operator-first) x)
   (when (is-active op)
-    (set-error op)
-    (on-error (observer op) x) ))
+    (on-error (observer op) x)
+    (set-error op) ))
 
 (defmethod on-completed ((op operator-first))
   (when (is-active op)
-    (set-error op)
     (let ((err (make-condition 'sequence-contains-no-elements-error)))
-      (on-error (observer op) err) )))
+      (on-error (observer op) err) )
+    (set-error op) ))
 
 
 (set-zero-arg-or-function-like-operator 'first 'make-operator-first)

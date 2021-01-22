@@ -49,8 +49,8 @@
                 (setf (triggered op) t)
                 (on-completed (observer op)) )
             (on-error (x)
-                (set-error op)
-                (on-error (observer op) x) )
+                (on-error (observer op) x)
+                (set-error op) )
             (on-completed () ) )))
     (subscribe trigger-observable observer)
     op ))
@@ -62,8 +62,8 @@
 
 (defmethod on-error ((op operator-take-until) x)
   (when (is-active op)
-    (set-error op)
-    (on-error (observer op) x) ))
+    (on-error (observer op) x)
+    (set-error op) ))
 
 (defmethod on-completed ((op operator-take-until))
   (when (is-active op)

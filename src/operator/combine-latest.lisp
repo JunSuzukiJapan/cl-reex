@@ -58,8 +58,8 @@
 
 (defmethod on-error ((op operator-combine-latest) x)
   (when (is-active op)
-    (set-error op)
-    (on-error (observer op) x) ))
+    (on-error (observer op) x)
+    (set-error op) ))
 
 (defmethod on-completed ((op operator-combine-latest))
   (when (is-active (observable op))
@@ -76,8 +76,8 @@
                                       (on-next (observer op) (list (source-item op) x)) )))
                          (on-error (x)
                                    (when (is-active (other op))
-                                     (set-error op)
-                                     (on-error (observer op) x) ))
+                                     (on-error (observer op) x)
+                                     (set-error op) ))
                          (on-completed ()
                                        (when (is-active (other op))
                                          (set-completed (other op))

@@ -49,8 +49,8 @@
 
 (defmethod on-error ((op operator-skip-while) x)
   (when (is-active op)
-    (set-error op)
-    (on-error (observer op) x) ))
+    (on-error (observer op) x)
+    (set-error op) ))
 
 (defmethod on-completed ((op operator-skip-while))
   (when (is-active op)

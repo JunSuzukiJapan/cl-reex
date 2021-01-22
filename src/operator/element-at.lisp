@@ -51,14 +51,14 @@
 
 (defmethod on-error ((op operator-element-at) x)
   (when (is-active op)
-    (set-error op)
-    (on-error (observer op) x) ))
+    (on-error (observer op) x)
+    (set-error op) ))
 
 (defmethod on-completed ((op operator-element-at))
   (when (is-active op)
-    (set-error op)
     (let ((err (make-condition 'argument-out-of-range-exception)))
-      (on-error (observer op) err) )))
+      (on-error (observer op) err) )
+    (set-error op) ))
 
 
 (defmethod subscribe ((op operator-element-at) observer)

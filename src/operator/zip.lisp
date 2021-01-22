@@ -60,8 +60,8 @@
 
 (defmethod on-error ((op operator-zip) x)
   (when (is-active op)
-    (set-error op)
-    (on-error (observer op) x) ))
+    (on-error (observer op) x)
+    (set-error op) ))
 
 (defmethod on-completed ((op operator-zip))
   (when (is-active op)
@@ -77,8 +77,8 @@
                                         (on-next (observer op) (list (dequeue (source-item-queue op)) x)) )))
                          (on-error (x)
                                    (when (is-active op)
-                                     (set-error op)
-                                     (on-error (observer op) x) ))
+                                     (on-error (observer op) x)
+                                     (set-error op) ))
                          (on-completed ()
                                        (when (is-active op)
                                          (set-completed op)

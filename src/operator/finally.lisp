@@ -43,10 +43,10 @@
 
 (defmethod on-error ((op operator-finally) x)
   (when (is-active op)
-    (set-error op)
     (unwind-protect
          (on-error (observer op) x)
-      (funcall (action op)) )))
+      (funcall (action op)) )
+    (set-error op) ))
 
 (defmethod on-completed ((op operator-finally))
   (when (is-active op)
