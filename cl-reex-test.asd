@@ -61,6 +61,7 @@
        (:test-file "merge-test")
        (:test-file "group-by-test")
        (:test-file "group-by-until-test")
+       (:test-file "to-list-test")
 	  )))
   :description "Test system for cl-reex"
 

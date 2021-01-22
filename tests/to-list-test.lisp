@@ -1,10 +1,10 @@
-(defpackage where-test
+(defpackage to-list-test
   (:use :cl
     :cl-reex
     :cl-reex-test.logger
     :prove)
   (:shadowing-import-from :cl-reex :skip) )
-(in-package :where-test)
+(in-package :to-list-test)
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :cl-reex)' in your Lisp.
 
@@ -20,11 +20,11 @@
     (on-completed () (add logger "completed")) ))
 
 (with-observable (observable-from '(1 2 3 4 5 6 7 8 9 10))
-  (where (x) (evenp x))
+  (to-list)
   (subscribe observer)
   (dispose) )
 
 (is (result logger)
-    '(2 4 6 8 10 "completed") )
+    '((1 2 3 4 5 6 7 8 9 10) "completed") )
 
 (finalize)

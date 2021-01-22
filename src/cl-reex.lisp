@@ -121,6 +121,8 @@
         :get-key )
   (:import-from :cl-reex.operator.group-by-until
         :group-by-until )
+  (:import-from :cl-reex.operator.to-list
+        :to-list )
   (:import-from :cl-reex.subject.subject
         :subject
         :make-subject )
@@ -212,6 +214,7 @@
         :group-by
         :group-by-until
         :get-key
+        :to-list
         :subject
         :make-subject
         :behavior-subject

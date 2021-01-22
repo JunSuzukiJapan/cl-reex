@@ -5,7 +5,7 @@
         :observer
         :on-next
         :on-error
-        :on-completed)
+        :on-completed )
   (:import-from :cl-reex.observable
         :observable
         :dispose
@@ -13,15 +13,15 @@
         :set-error
         :set-completed
         :set-disposed
-        :subscribe)
+        :subscribe )
   (:import-from :cl-reex.macro.operator-table
-        :set-function-like-operator)
+        :set-function-like-operator )
   (:import-from :cl-reex.operator
         :operator
-        :predicate)
+        :predicate )
   (:export :operator-where
         :where
-        :make-operator-where))
+        :make-operator-where ))
 
 (in-package :cl-reex.operator.where)
 
@@ -29,7 +29,7 @@
 (defclass operator-where (operator)
   ((predicate :initarg :predicate
               :accessor predicate ))
-  (:documentation "Where operator"))
+  (:documentation "Where operator") )
 
 (defun make-operator-where (observable predicate)
   (make-instance 'operator-where
