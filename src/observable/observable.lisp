@@ -115,8 +115,9 @@
           :accessor count-num )))
 
 (defmethod call-on-next ((dt disposable-timer))
-  (bt:make-thread (lambda ()
-                    (on-next (observer dt) (count-num dt)) ))
+  (let ((num (count-num dt)))
+    (bt:make-thread (lambda ()
+                    (on-next (observer dt) num) )))
   (incf (count-num dt)) )
 
 (defmethod dispose ((dt disposable-timer))

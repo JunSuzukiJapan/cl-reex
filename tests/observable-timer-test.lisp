@@ -35,7 +35,7 @@
 (setq timer (observable-timer 0.1 0.1))
 (setq subscription (subscribe timer observer))
 
-(sleep 0.35)
+(sleep 0.38)
 
 (dispose subscription)
 
@@ -47,7 +47,7 @@
 (setq timer (observable-interval 0.1))
 (setq subscription (subscribe timer observer))
 
-(sleep 0.35)
+(sleep 0.38)
 
 (dispose subscription)
 
