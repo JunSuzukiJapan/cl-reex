@@ -59,6 +59,7 @@
          (:file "operator/group-by")
          (:file "operator/group-by-until")
          (:file "operator/to-list")
+         (:file "operator/to-array")
          (:file "macro/with-observable")
          (:file "macro/handmade-observable")
          (:file "cl-reex"))))
