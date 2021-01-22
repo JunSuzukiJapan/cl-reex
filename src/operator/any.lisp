@@ -41,8 +41,8 @@
   (when (and (is-active op)
              (funcall (predicate op) x) )
     (on-next (observer op) t)
-    (set-completed op)
-    (on-completed (observer op)) ))
+    (on-completed (observer op))
+    (set-completed op) ))
 
 (defmethod on-error ((op operator-any) x)
   (when (is-active op)
@@ -52,8 +52,8 @@
 (defmethod on-completed ((op operator-any))
   (when (is-active op)
     (on-next (observer op) nil)
-    (set-completed op)
-    (on-completed (observer op)) ))
+    (on-completed (observer op))
+    (set-completed op) ))
 
 (set-function-like-operator 'any 'make-operator-any)
 

@@ -121,8 +121,8 @@
                 (on-completed value)
                 (set-completed value) )
               (return)))))
-    (set-completed op)
-    (on-completed (observer op)) ))
+    (on-completed (observer op))
+    (set-completed op) ))
 
 ;; set to operator-table
 (set-function-like-operator 'group-by 'make-operator-group-by)

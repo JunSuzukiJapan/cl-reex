@@ -31,6 +31,7 @@
 (defvar subscription (with-observable source
   (subscribe observer) ))
 
+(sleep 0.01)
 (add logger "sleep 0.1 sec")
 (sleep 0.1)
 

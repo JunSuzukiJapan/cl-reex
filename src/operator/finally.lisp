@@ -50,10 +50,10 @@
 
 (defmethod on-completed ((op operator-finally))
   (when (is-active op)
-    (set-completed op)
     (unwind-protect
          (on-completed (observer op))
-      (funcall (action op)) )))
+      (funcall (action op))
+    (set-completed op) )))
 
 (defmethod subscribe ((op operator-finally) observer)
   (handler-bind

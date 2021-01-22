@@ -58,8 +58,8 @@
         (pop lst) )
       (dolist (item (nreverse lst))
         (on-next observer item) ))
-    (set-completed op)
-    (on-completed (observer op)) ))
+    (on-completed (observer op))
+    (set-completed op) ))
 
 
 (set-one-arg-operator 'skip-last 'make-operator-skip-last)

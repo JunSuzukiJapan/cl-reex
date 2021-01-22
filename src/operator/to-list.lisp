@@ -51,8 +51,8 @@
 (defmethod on-completed ((op operator-to-list))
   (when (is-active op)
     (on-next (observer op) (reverse (items op)))
-    (set-completed op)
-    (on-completed (observer op)) ))
+    (on-completed (observer op))
+    (set-completed op) ))
 
 ;;
 ;; subscribe

@@ -50,8 +50,8 @@
 
 (defmethod on-completed ((op operator-select))
   (when (is-active op)
-    (set-completed op)
-    (on-completed (observer op)) ))
+    (on-completed (observer op))
+    (set-completed op) ))
 
 (set-function-like-operator 'select 'make-operator-select)
 

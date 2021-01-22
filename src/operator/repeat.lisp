@@ -54,8 +54,8 @@
     (incf (current-count op))
     (if (>= (current-count op) (count-num op))
         (progn
-          (set-completed op)
-          (on-completed (observer op)))
+          (on-completed (observer op))
+          (set-completed op) )
         (subscribe (observable op) op) )))
 
 (defmethod subscribe ((op operator-repeat) observer)

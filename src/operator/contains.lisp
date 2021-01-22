@@ -41,8 +41,8 @@
   (when (and (is-active op)
              (eq (item op) x) )
     (on-next (observer op) t)
-    (set-completed op)
-    (on-completed (observer op)) ))
+    (on-completed (observer op))
+    (set-completed op) ))
 
 (defmethod on-error ((op operator-contains) x)
   (when (is-active op)
@@ -52,8 +52,8 @@
 (defmethod on-completed ((op operator-contains))
   (when (is-active op)
     (on-next (observer op) nil)
-    (set-completed op)
-    (on-completed (observer op)) ))
+    (on-completed (observer op))
+    (set-completed op) ))
 
 (set-one-arg-operator 'contains 'make-operator-contains)
 

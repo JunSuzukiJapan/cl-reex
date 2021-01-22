@@ -64,8 +64,8 @@
   (on-error (observer op) x) )
 
 (defmethod on-completed ((op operator-skip-until))
-  (set-completed op)
-  (on-completed (observer op)) )
+  (on-completed (observer op))
+  (set-completed op) )
 
 (set-one-arg-operator 'skip-until 'make-operator-skip-until)
 

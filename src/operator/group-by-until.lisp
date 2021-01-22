@@ -112,8 +112,8 @@
                 (on-completed value)
                 (set-completed value) )
               (return)))))
-    (set-completed op)
-    (on-completed (observer op)) ))
+    (on-completed (observer op))
+    (set-completed op) ))
 
 ;; set to operator-table
 (set-one-arg-two-body-function-like-operator 'group-by-until 'make-operator-group-by-until)

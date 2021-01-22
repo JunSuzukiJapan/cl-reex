@@ -65,8 +65,8 @@
 
 (defmethod on-completed ((op operator-zip))
   (when (is-active op)
-    (set-completed op)
-    (on-completed (observer op)) ))
+    (on-completed (observer op))
+    (set-completed op) ))
 
 (defmethod subscribe ((op operator-zip) observer)
   (let ((other-observer (make-observer
@@ -82,10 +82,10 @@
                          (on-completed ()
                                        (when (is-active op)
                                          (set-completed op)
-                                         (on-completed (observer op)) )))))
+                                         (on-completed observer op) )))))
     (setf (other-subscription op) (subscribe (other op) other-observer)) )
-
   (call-next-method) )
+
 
 (defmethod cleanup-operator ((op operator-zip))
   (when (slot-boundp op 'other-subscription)

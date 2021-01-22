@@ -88,8 +88,8 @@
 
 (defmethod on-completed ((op operator-catch*))
   (when (is-active op)
-    (set-completed op)
-    (on-completed (observer op)) ))
+    (on-completed (observer op))
+    (set-completed op) ))
 
       
 (defmethod subscribe ((op operator-catch*) observer)

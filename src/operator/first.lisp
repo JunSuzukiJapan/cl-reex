@@ -47,12 +47,12 @@
     (if (slot-boundp op 'predicate)
       (when (funcall (predicate op) x)
         (on-next (observer op) x)
-        (set-completed op)
-        (on-completed (observer op)) )
+        (on-completed (observer op))
+        (set-completed op) )
       (progn
         (on-next (observer op) x)
-        (set-completed op)
-        (on-completed (observer op)) ))))
+        (on-completed (observer op))
+        (set-completed op)))))
 
 (defmethod on-error ((op operator-first) x)
   (when (is-active op)

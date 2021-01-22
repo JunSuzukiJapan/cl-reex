@@ -54,8 +54,8 @@
            (ary (make-array (length lst)
                             :initial-contents lst )))
     (on-next (observer op) ary))
-    (set-completed op)
-    (on-completed (observer op)) ))
+    (on-completed (observer op))
+    (set-completed op) ))
 
 ;;
 ;; subscribe

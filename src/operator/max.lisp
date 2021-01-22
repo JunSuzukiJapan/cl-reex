@@ -49,9 +49,9 @@
 
 (defmethod on-completed ((op operator-max))
   (when (is-active op)
-    (set-completed op)
     (on-next (observer op) (max-num op))
-    (on-completed (observer op)) ))
+    (on-completed (observer op))
+    (set-completed op) ))
 
 (set-zero-arg-operator 'max 'make-operator-max)
 

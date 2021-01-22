@@ -80,8 +80,8 @@
                           (on-error observer x) )
                       ;; on-completed
                       (on-completed ()
-                          (set-completed amb)
-                          (on-completed observer)) ))
+                          (on-completed observer)
+                          (set-completed amb) )))
            (sub (subscribe source observer)) )
       (push (cons source sub) (pairs amb)) ))
 

@@ -46,8 +46,8 @@
     (incf (current-count op))
     (when (> (current-count op) (count-num op))
       (on-next (observer op) x)
-      (set-completed op)
-      (on-completed (observer op)) )))
+      (on-completed (observer op))
+      (set-completed op) )))
 
 (defmethod on-error ((op operator-element-at) x)
   (when (is-active op)

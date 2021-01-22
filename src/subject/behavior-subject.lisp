@@ -49,16 +49,16 @@
 
 (defmethod on-error ((sub behavior-subject) x)
   (when (is-active sub)
-    (set-error sub)
     (setf (error-item sub) x)
     (dolist (observer (observers sub))
-      (on-error observer x) )))
+      (on-error observer x) )
+    (set-error sub) ))
 
 (defmethod on-completed ((sub behavior-subject))
   (when (is-active sub)
-    (set-completed sub)
     (dolist (observer (observers sub))
-      (on-completed observer) )))
+      (on-completed observer) )
+    (set-completed sub) ))
 
 
 ;;

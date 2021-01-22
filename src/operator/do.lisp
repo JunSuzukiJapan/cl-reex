@@ -76,11 +76,11 @@
 
 (defmethod on-completed ((op operator-do))
   (when (is-active op)
-    (set-completed op)
     (let ((f (get-on-completed op)))
       (when (not (null f))
         (funcall (get-on-completed op)) ))
-    (on-completed (observer op)) ))
+    (on-completed (observer op))
+    (set-completed op) ))
 
 (set-on-next-error-completed-operator 'do 'make-operator-do)
 

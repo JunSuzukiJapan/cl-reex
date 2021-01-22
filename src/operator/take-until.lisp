@@ -67,8 +67,8 @@
 
 (defmethod on-completed ((op operator-take-until))
   (when (is-active op)
-    (set-completed op)
-    (on-completed (observer op)) ))
+    (on-completed (observer op))
+    (set-completed op) ))
 
 (set-one-arg-operator 'take-until 'make-operator-take-until)
 

@@ -48,8 +48,8 @@
 (defmethod on-completed ((op operator-sum))
   (when (is-active op)
     (on-next (observer op) (sum op))
-    (set-completed op)
-    (on-completed (observer op)) ))
+    (on-completed (observer op))
+    (set-completed op) ))
 
 (set-zero-arg-operator 'sum 'make-operator-sum)
 

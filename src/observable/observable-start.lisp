@@ -53,15 +53,15 @@
   (if (slot-boundp obs 'result)
       (progn
         (on-next observer (result obs))
-        (set-completed obs)
-        (on-completed observer) )
+        (on-completed observer)
+        (set-completed obs) )
       (let ((thread (bt:make-thread
                      (lambda ()
                        (dolist (expr (exprs obs))
                          (setf (result obs) (eval expr) ))
                        (on-next observer (result obs))
-                       (set-completed obs)
-                       (on-completed observer) ))))
+                       (on-completed observer) 
+                       (set-completed obs) ))))
         (setf (thread obs) thread) ))
   (make-instance 'disposable-observable-start-object
                  :object obs

@@ -53,8 +53,8 @@
 
 (defmethod on-completed ((op operator-distinct))
   (when (is-active op)
-    (set-completed op)
-    (on-completed (observer op)) ))
+    (on-completed (observer op))
+    (set-completed op) ))
 
 
 (set-zero-arg-operator 'distinct 'make-operator-distinct)

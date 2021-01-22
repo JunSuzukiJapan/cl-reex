@@ -67,8 +67,8 @@
     (if (has-last-item op)
         (progn
           (on-next (observer op) (last-item op))
-          (set-completed op)
-          (on-completed (observer op)) )
+          (on-completed (observer op))
+          (set-completed op) )
         (progn
           (set-error op)
           (let ((err (make-condition 'sequence-contains-no-elements-error)))

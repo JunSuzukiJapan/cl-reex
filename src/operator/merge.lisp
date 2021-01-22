@@ -60,8 +60,8 @@
 
 (defmethod on-completed ((op operator-merge))
   (when (is-active op)
-    (set-completed op)
-    (on-completed (observer op)) ))
+    (on-completed (observer op))
+    (set-completed op) ))
 
 
 (defmethod subscribe ((op operator-merge) observer)
@@ -87,8 +87,8 @@
                         ;; on-completed
                         (on-completed ()
                                       (when (is-active op)
-                                        (set-completed op)
-                                        (on-completed (observer op))) )))
+                                        (on-completed (observer op)))
+                                        (set-completed op) )))
              (sub (subscribe source observer)) )
         (push (cons source sub) (pairs op)) ))
 

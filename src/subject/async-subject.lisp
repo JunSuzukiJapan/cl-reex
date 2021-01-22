@@ -47,20 +47,20 @@
 
 (defmethod on-error ((sub async-subject) x)
   (when (is-active sub)
-    (set-error sub)
     (setf (error-item sub) x)
     (dolist (observer (observers sub))
-      (on-error observer x) )))
+      (on-error observer x) )
+    (set-error sub) ))
 
 (defmethod on-completed ((sub async-subject))
   (when (is-active sub)
-    (set-completed sub)
     (when (slot-boundp sub 'current-item)
       (let ((item (current-item sub)))
         (dolist (observer (observers sub))
           (on-next observer item) )))
     (dolist (observer (observers sub))
-      (on-completed observer) )))
+      (on-completed observer) )
+    (set-completed sub) ))
 
 
 ;;

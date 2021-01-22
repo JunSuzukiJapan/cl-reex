@@ -62,8 +62,8 @@
   (when (is-active op)
     (if (slot-boundp op 'acc)
         (progn
-          (set-completed op)
-          (on-completed (observer op)) )
+          (on-completed (observer op))
+          (set-completed op) )
         (let ((err (make-condition 'sequence-contains-no-elements-error)))
           (set-error op)
           (on-error (observer op) err) ))))

@@ -48,17 +48,17 @@
 
 (defmethod on-error ((sub replay-subject) x)
   (when (is-active sub)
-    (set-error sub)
     (push `(on-error ,x) (events sub))
     (dolist (observer (observers sub))
-      (on-error observer x) )))
+      (on-error observer x) )
+    (set-error sub) ))
 
 (defmethod on-completed ((sub replay-subject))
   (when (is-active sub)
-    (set-completed sub)
     (push `(on-completed) (events sub))
     (dolist (observer (observers sub))
-      (on-completed observer) )))
+      (on-completed observer) )
+    (set-completed sub) ))
 
 
 ;;

@@ -54,8 +54,8 @@
   (when (is-active op)
     (if (null (next-observable op))
         (progn
-          (set-completed op)
-          (on-completed (observer op)) )
+          (on-completed (observer op))
+          (set-completed op) )
         (let ((obs (car (next-observable op))))
           (setf (next-observable op) (cdr (next-observable op)))
 

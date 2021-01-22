@@ -47,8 +47,8 @@
 
 (defmethod on-completed ((op operator-ignore-elements))
   (when (is-active op)
-    (set-completed op)
-    (on-completed (observer op)) ))
+    (on-completed (observer op))
+    (set-completed op) ))
 
 
 (set-zero-arg-operator 'ignore-elements 'make-operator-ignore-elements)

@@ -51,10 +51,10 @@
 
 (defmethod on-completed ((op operator-average))
   (when (is-active op)
-    (set-completed op)
     (on-next (observer op)
              (/ (sum op) (count-num op)) )
-    (on-completed (observer op)) ))
+    (on-completed (observer op))
+    (set-completed op) ))
 
 (set-zero-arg-operator 'average 'make-operator-average)
 

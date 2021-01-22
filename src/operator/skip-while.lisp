@@ -54,8 +54,8 @@
 
 (defmethod on-completed ((op operator-skip-while))
   (when (is-active op)
-    (set-completed op)
-    (on-completed (observer op)) ))
+    (on-completed (observer op))
+    (set-completed op) ))
 
 (defmethod subscribe ((op operator-skip-while) observer)
   (handler-bind

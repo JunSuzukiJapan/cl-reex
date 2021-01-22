@@ -62,11 +62,11 @@
     (if (slot-boundp op 'acc)
         (progn
           (on-next (observer op) (acc op))
-          (set-completed op)
-          (on-completed (observer op)) )
+          (on-completed (observer op))
+          (set-completed op) )
         (let ((err (make-condition 'sequence-contains-no-elements-error)))
-          (set-error op)
-          (on-error (observer op) err) ))))
+          (on-error (observer op) err)
+          (set-error op) ))))
 
 (set-function-like-operator-with-init-value 'reduce 'make-operator-reduce)
 
