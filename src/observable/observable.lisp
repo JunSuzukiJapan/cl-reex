@@ -122,6 +122,10 @@
           :initform 0
           :accessor count-num )))
 
+(defmethod is-observable ((obj observable-timer-object))
+  (declare (ignore obj))
+  t )
+
 (defmethod call-on-next ((dt disposable-timer))
   (let ((num (count-num dt)))
     (bt:make-thread (lambda ()
@@ -185,6 +189,10 @@
 ;;
 (defclass observable-empty-object () nil)
 
+(defmethod is-observable ((obj observable-empty-object))
+  (declare (ignore obj))
+  t )
+
 (defmethod subscribe ((empty observable-empty-object) observer)
   (on-completed observer)
   (make-instance 'disposable-do-nothing
@@ -198,6 +206,10 @@
 ;; observable never
 ;;
 (defclass observable-never-object () nil)
+
+(defmethod is-observable ((obj observable-never-object))
+  (declare (ignore obj))
+  t )
 
 (defmethod subscribe ((obj observable-never-object) observer)
   (make-instance 'disposable-do-nothing
@@ -213,6 +225,10 @@
 (defclass observable-throw-object ()
   ((error-obj :initarg :error-obj
               :accessor error-obj )))
+
+(defmethod is-observable ((obj observable-throw-object))
+  (declare (ignore obj))
+  t )
 
 (defun observable-throw (err-obj)
   (make-instance 'observable-throw-object
@@ -232,6 +248,10 @@
              :initform nil
              :accessor src-list) )
   (:documentation "Observable from List") )
+
+(defmethod is-observable ((obj observable-list))
+  (declare (ignore obj))
+  t )
 
 (defmethod subscribe ((lst observable-list) observer)
   (handler-bind
@@ -260,6 +280,10 @@
 (defclass observable-string ()
   ((source :initarg :source
            :accessor source)))
+
+(defmethod is-observable ((obj observable-string))
+  (declare (ignore obj))
+  t )
 
 (defmethod subscribe ((stream observable-string) observer)
   (handler-bind
@@ -290,6 +314,10 @@
            :initform #()
            :accessor source)) )
 
+(defmethod is-observable ((obj observable-array))
+  (declare (ignore obj))
+  t )
+
 (defmethod subscribe ((ary observable-array) observer)
   (handler-bind
       ((error #'(lambda (condition)
@@ -315,6 +343,10 @@
   ((source :initarg :source
            :accessor source)) )
 
+(defmethod is-observable ((obj observable-stream))
+  (declare (ignore obj))
+  t )
+  
 (defmethod subscribe ((stream observable-stream) observer)
   (handler-bind
          ((error (lambda (condition)
@@ -344,6 +376,10 @@
    (count :initarg :count
           :accessor count-num) ))
 
+(defmethod is-observable ((obj observable-range-object))
+  (declare (ignore obj))
+  t )
+  
 (defmethod subscribe ((obj observable-range-object) observer)
   (handler-bind
       ((error #'(lambda (condition)
@@ -374,6 +410,10 @@
   ((item :initarg :item
          :accessor item )))
 
+(defmethod is-observable ((obj observable-just-object))
+  (declare (ignore obj))
+  t )
+
 (defmethod subscribe ((obj observable-just-object) observer)
   (handler-bind
       ((error #'(lambda (condition)
@@ -401,6 +441,10 @@
          :accessor item )
    (count :initarg :count
           :accessor count-num )))
+
+(defmethod is-observable ((obj observable-repeat-object))
+  (declare (ignore obj))
+  t )
 
 (defmethod subscribe ((obj observable-repeat-object) observer)
   (handler-bind
