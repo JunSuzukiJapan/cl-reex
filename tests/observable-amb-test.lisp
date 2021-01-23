@@ -22,12 +22,14 @@
 ;; plan 1
 
 (defvar observable1 (with-observable (observable-timer 0.1)
+  (synchronize)
   (do (on-next (x)
                (declare (ignore x))
                (add logger (format nil "call 0.1"))))
   (concat (observable-of "observable-of: 0.1")) ))
 
 (defvar observable2 (with-observable (observable-timer 0.05)
+  (synchronize)
   (do (on-next (x)
                (declare (ignore x))
                (add logger (format nil "call 0.05"))))
@@ -38,7 +40,7 @@
                                        observable2 )
   (subscribe observer) ))
 
-(sleep 0.12)
+(sleep 0.2)
 
 (dispose subscription)
  

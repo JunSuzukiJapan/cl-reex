@@ -129,6 +129,8 @@
         :to-array )
   (:import-from :cl-reex.operator.sequence-equalp
         :sequence-equalp )
+  (:import-from :cl-reex.operator.synchronize
+        :synchronize )
   (:import-from :cl-reex.subject.subject
         :subject
         :make-subject )
@@ -224,6 +226,7 @@
         :to-list
         :to-array
         :sequence-equalp
+        :synchronize
         :subject
         :make-subject
         :behavior-subject
