@@ -9,6 +9,7 @@
   (:export :subscribe
         :observable
         :observable-object
+        :is-observable
         :is-active
         :observable-state
         :state
@@ -73,6 +74,13 @@
   ((state :initarg :state
           :initform 'active
           :accessor state )))
+
+(defgeneric is-observable (obj))
+(defmethod is-observable (obj) nil)
+
+(defmethod is-observable ((obj observable-object))
+  (declare (ignore obj))
+  t )
 
 (defgeneric is-active (obj))
 
