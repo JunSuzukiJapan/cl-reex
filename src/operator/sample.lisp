@@ -165,7 +165,7 @@
 ;; make operator
 ;;
 (defun make-operator-sample (observable arg)
-  (if (numberp arg)
+  (if (numberp (eval arg))
       (make-instance 'operator-sample-interval
                      :observable observable
                      :interval arg )
