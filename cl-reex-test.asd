@@ -66,6 +66,7 @@
        (:test-file "combine-latest-test")
        (:test-file "sequence-equalp-test")
        (:test-file "synchronize-test")
+       (:test-file "sample-test")
 	  )))
   :description "Test system for cl-reex"
 

@@ -12,6 +12,8 @@
         :subscribe)
   (:export :operator
         :predicate
+        :init-operator
+        :disposable-operator
         :cleanup-operator
         :func
         :subscription ))
@@ -41,13 +43,15 @@
 (defmethod dispose ((disposable disposable-operator))
   (cleanup-operator (operator disposable)) )
 
-
-(defmethod subscribe ((op operator) observer)
+(defmethod init-operator ((op operator) observer)
   (setf (observer op) observer)
   (when (slot-boundp op 'subscription)
     (dispose (subscription op)) )
   (set-active op)
-  (setf (subscription op) (subscribe (observable op) op))
+  (setf (subscription op) (subscribe (observable op) op)) )
+
+(defmethod subscribe ((op operator) observer)
+  (init-operator op observer)
   (make-instance 'disposable-operator
          :observable op
          :observer observer

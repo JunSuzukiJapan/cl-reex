@@ -63,6 +63,7 @@
          (:file "operator/to-array")
          (:file "operator/sequence-equalp")
          (:file "operator/synchronize")
+         (:file "operator/sample")
          (:file "macro/with-observable")
          (:file "macro/handmade-observable")
          (:file "cl-reex"))))
