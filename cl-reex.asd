@@ -64,6 +64,7 @@
          (:file "operator/sequence-equalp")
          (:file "operator/synchronize")
          (:file "operator/sample")
+         (:file "operator/throttle")
          (:file "macro/with-observable")
          (:file "macro/handmade-observable")
          (:file "cl-reex"))))

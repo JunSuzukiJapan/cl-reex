@@ -133,6 +133,8 @@
         :synchronize )
   (:import-from :cl-reex.operator.sample
         :sample )
+  (:import-from :cl-reex.operator.throttle
+        :throttle )
   (:import-from :cl-reex.subject.subject
         :subject
         :make-subject )
@@ -230,6 +232,7 @@
         :sequence-equalp
         :synchronize
         :sample
+        :throttle
         :subject
         :make-subject
         :behavior-subject

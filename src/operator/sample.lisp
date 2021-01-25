@@ -47,7 +47,9 @@
 (defun kill-thread (op)
   (when (and (slot-boundp op 'thread)
              (bt:thread-alive-p (thread op)) )
-    (bt:destroy-thread (thread op)) ))
+    (bt:destroy-thread (thread op))
+    (setf (thread op) nil)
+    (setf (has-item op) nil) ))
 
 (defmethod cleanup-operator ((op operator-sample-interval))
   (kill-thread op) )
