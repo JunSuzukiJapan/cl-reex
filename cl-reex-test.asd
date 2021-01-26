@@ -68,6 +68,7 @@
        (:test-file "synchronize-test")
        (:test-file "sample-test")
        (:test-file "throttle-test")
+       (:test-file "observable-merge-test")
 	  )))
   :description "Test system for cl-reex"
 

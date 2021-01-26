@@ -11,6 +11,9 @@
         :observable-object
         :is-observable
         :is-active
+        :is-error
+        :is-completed
+        :is-disposed
         :observable-state
         :state
         :active
@@ -45,7 +48,7 @@
 (defgeneric dispose (obj))
 
 (deftype observable-state ()
-  '(member active error completed disposed) )
+  '(member active error completed) )
 
 ;;
 ;; Util
@@ -73,7 +76,10 @@
 (defclass observable-object ()
   ((state :initarg :state
           :initform 'active
-          :accessor state )))
+          :accessor state )
+   (disposedp :initarg :disposedp
+              :initform nil
+              :accessor disposedp )))
 
 (defgeneric is-observable (obj))
 (defmethod is-observable (obj) nil)
@@ -83,9 +89,21 @@
   t )
 
 (defgeneric is-active (obj))
+(defgeneric is-error (obj))
+(defgeneric is-completed (obj))
+(defgeneric is-disposed (obj))
 
 (defmethod is-active ((obj observable-object))
   (eq (state obj) 'active) )
+
+(defmethod is-error ((obj observable-object))
+  (eq (state obj) 'error) )
+
+(defmethod is-completed ((obj observable-object))
+  (eq (state obj) 'completed) )
+
+(defmethod is-disposed ((obj observable-object))
+  (disposedp obj) )
 
 (defmethod set-active ((obj observable-object))
   (setf (state obj) 'active) )
@@ -97,7 +115,7 @@
   (setf (state obj) 'completed) )
 
 (defmethod set-disposed ((obj observable-object))
-  (setf (state obj) 'disposed) )
+  (setf (disposedp obj) t) )
 
 ;;
 ;; observable-timer

@@ -25,6 +25,8 @@
         :foreach )
   (:import-from :cl-reex.observable.amb
         :observable-amb )
+  (:import-from :cl-reex.observable.merge
+        :observable-merge )
   (:import-from :cl-reex.observable.start
         :observable-start )
   (:import-from :cl-reex.error-conditions
@@ -175,6 +177,7 @@
         :observable-never
         :observable-throw
         :observable-amb
+        :observable-merge
         :observable-start
         :observer
         :make-observer
