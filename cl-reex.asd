@@ -66,6 +66,7 @@
          (:file "operator/synchronize")
          (:file "operator/sample")
          (:file "operator/throttle")
+         (:file "operator/select-many")
          (:file "macro/with-observable")
          (:file "macro/handmade-observable")
          (:file "cl-reex"))))

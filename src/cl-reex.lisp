@@ -137,6 +137,8 @@
         :sample )
   (:import-from :cl-reex.operator.throttle
         :throttle )
+  (:import-from :cl-reex.operator.select-many
+        :select-many )
   (:import-from :cl-reex.subject.subject
         :subject
         :make-subject )
@@ -236,6 +238,7 @@
         :synchronize
         :sample
         :throttle
+        :select-many
         :subject
         :make-subject
         :behavior-subject
