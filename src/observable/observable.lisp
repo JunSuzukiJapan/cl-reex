@@ -138,7 +138,10 @@
            :accessor thread )
    (count :initarg :count
           :initform 0
-          :accessor count-num )))
+          :accessor count-num )
+   (end-p :initarg :end-p
+          :initform nil
+          :accessor end-p )))
 
 (defmethod is-observable ((obj observable-timer-object))
   (declare (ignore obj))
@@ -152,6 +155,7 @@
 
 (defmethod dispose ((dt disposable-timer))
   (setf (interval dt) nil)
+  (setf (end-p dt) t)
   (let ((thread (thread dt)))
     (when (and (not (null thread))
                (bt:thread-alive-p thread) )
@@ -160,7 +164,8 @@
   (setf (thread dt) nil) )
 
 (defmethod end-loop-p ((dt disposable-timer))
-  (null (interval dt)) )
+  (or (end-p dt)
+      (null (interval dt)) ))
 
 (defun observable-timer (start &optional interval)
   (make-instance 'observable-timer-object

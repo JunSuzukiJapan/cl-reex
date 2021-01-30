@@ -139,6 +139,8 @@
         :throttle )
   (:import-from :cl-reex.operator.select-many
         :select-many )
+  (:import-from :cl-reex.operator.switch
+        :switch )
   (:import-from :cl-reex.subject.subject
         :subject
         :make-subject )
@@ -239,6 +241,7 @@
         :sample
         :throttle
         :select-many
+        :switch
         :subject
         :make-subject
         :behavior-subject

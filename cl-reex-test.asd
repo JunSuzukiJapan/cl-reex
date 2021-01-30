@@ -70,6 +70,7 @@
        (:test-file "throttle-test")
        (:test-file "observable-merge-test")
        (:test-file "select-many-test")
+       (:test-file "switch-test")
 	  )))
   :description "Test system for cl-reex"
 

@@ -24,11 +24,18 @@
 
 (defclass operator (observable-object)
   ((observable :initarg :observable
-               :accessor observable)
+               :accessor observable )
    (observer :initarg :observer
-             :accessor observer)
+             :accessor observer )
    (subscription :initarg :subscription
-                 :accessor subscription) ))
+                 :accessor subscription )
+   (self :initarg :self
+         :accessor self) ))
+
+;; initialize self after make-instance operator
+(defmethod initialize-instance :after ((object operator) &key)
+    (setf (self object) object) )
+
 
 (defclass disposable-operator (disposable-do-nothing)
   ((operator :initarg :operator

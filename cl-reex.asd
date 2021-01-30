@@ -67,6 +67,7 @@
          (:file "operator/sample")
          (:file "operator/throttle")
          (:file "operator/select-many")
+         (:file "operator/switch")
          (:file "macro/with-observable")
          (:file "macro/handmade-observable")
          (:file "cl-reex"))))
